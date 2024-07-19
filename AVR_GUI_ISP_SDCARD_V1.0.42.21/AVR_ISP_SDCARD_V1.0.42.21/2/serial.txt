@@ -1,0 +1,3 @@
+[settings]
+startaddress=0000h
+nextserial=00000000h

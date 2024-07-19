@@ -1,0 +1,79 @@
+// Useful message printing definitions
+#include "optiLoader.h"
+#include "avr910.h"
+#include <stdio.h>
+#include <ctype.h>
+/*
+ * Low level support functions
+ */
+
+/*
+ * flashprint
+ * print a text string direct from flash memory to Serial
+ */
+//void flashprint (char *p,uint16_t length)
+//{
+//    byte c;
+//    while(length--){
+//     c=*p;
+//     if(isalnum(c)!=1)return;
+//     putchar(c);
+//     p++;
+//    }
+//}
+
+/*
+ * hexton
+ * Turn a Hex digit (0..9, A..F) into the equivalent binary value (0-16)
+ */
+byte hexton (byte h)
+{
+  if (h >= '0' && h <= '9')
+    return(h - '0');
+  if (h >= 'A' && h <= 'F')
+    return((h - 'A') + 10);
+  error("Bad hex digit!");
+}
+//byte hextob (byte h,byte l)
+//{
+//  return (hexton(h)<<4)|hexton(l);
+//}
+byte hextobyte(char *str)
+{
+  return hexton(*str)<<4 | hexton(*(str+sizeof(byte))); //read 0xFF  1=F, 1=F sizeof(byte)=1 byte
+}
+void hextobytes(byte *str,byte *arr,byte len)
+{
+  byte i;
+  for(i=0;i<len;i++){
+   arr[i]=hextobyte(str+(i*2*sizeof(byte)));
+  }
+}
+UINT hextouint(char *str)
+{
+  return (UINT)((UINT)hextobyte(str)<<8 | (UINT)hextobyte(str+2*sizeof(byte))); //read 0xFFFF 1=F 2=F, 1=F 2=F   sizeof(UINT)=2 bytes
+}
+ULONG hextoulong(char *str)
+{
+  return (ULONG)((ULONG)hextouint(str)<<16 | (ULONG)hextouint(str+2*sizeof(UINT)));//read 0xFFFFFFFF 1=F 2=F 3=F 4=F, 1=F 2=F 3=F 4=F sizeof(ULONG)=4 bytes
+}
+void error(const char *str)
+{
+   puts("Error ");
+   puts(str);
+}
+/*
+ * pulse
+ * turn a pin on and off a few times; indicates life via LED
+ */
+//#define PTIME 30
+//void pulse (int pin, int times) {
+//  do {
+//    digitalWrite(pin, HIGH);
+//    delay(PTIME);
+//    digitalWrite(pin, LOW);
+//    delay(PTIME);
+//  }
+//  while (times--);
+//}
+

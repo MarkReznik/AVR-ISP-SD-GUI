@@ -1,0 +1,5 @@
+main DSTACK_USAGE:0 DSTACK_LEVEL:0 FILE:"Self_programming_main.c" LINE:39
+SD_readSingleBlock DSTACK_USAGE:14 DSTACK_LEVEL:14 FILE:"spi_sdcard.c" LINE:311
+SD_command DSTACK_USAGE:7 DSTACK_LEVEL:21 FILE:"spi_sdcard.c" LINE:54
+SD_readRes1 DSTACK_USAGE:4 DSTACK_LEVEL:25 FILE:"spi_sdcard.c" LINE:81
+SPI_transfer DSTACK_USAGE:1 DSTACK_LEVEL:26 FILE:"spi_sdcard.c" LINE:20

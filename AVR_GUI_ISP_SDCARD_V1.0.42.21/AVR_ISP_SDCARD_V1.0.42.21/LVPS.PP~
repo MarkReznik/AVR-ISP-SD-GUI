@@ -1,0 +1,232 @@
+[History]
+Created=2/1/2015 10:37:08 PM
+EQTools Version=4.0.0.3645
+CreatedFloat=42036.9424562384
+
+[Project Header]
+Target Prog=FS2003
+Project Type=PC Control - Project ends in Programming Mode
+Unique Id=LVPS
+Unique Id Hint=LVPS
+File Name=lvps
+Creation Date=42036.9281910995
+Minimum Firmware Version:=5.36
+Special Module Type=0
+
+[Config Structure]
+SPI Version=2
+SpiDelay=6.67
+DataDelay=6.67
+ExternalOscillator=0
+Internal Oscillator Index=0
+Write Calib to Flash=1
+Calib Location=32766
+MediumDataDelay=2
+MediumSpiDelay=2
+Fast SPI=115.2 KHz
+Slow SPI=115.2 KHz
+TargetOscillatorFreq=1000000
+OP4 Clock Frequency=0
+Erase Device=1
+Hardware SPI=0
+Random=2040337
+
+[State]
+Pin 0 Enable=0
+Pin 0 Delay=50
+Pin 0 Reset=TRI
+Pin 0 OutputState1=TRI
+Pin 0 OutputState2=TRI
+Pin 0 OutputState3=TRI
+Pin 0 OutputState4=TRI
+Pin 0 OutputState5=TRI
+Pin 1 Enable=0
+Pin 1 Delay=50
+Pin 1 Reset=LAH
+Pin 1 OutputState1=ODL
+Pin 1 OutputState2=TRI
+Pin 1 OutputState3=ODL
+Pin 1 OutputState4=TRI
+Pin 1 OutputState5=TRI
+Pin 2 Enable=0
+Pin 2 Delay=50
+Pin 2 Reset=LAL
+Pin 2 OutputState1=ODL
+Pin 2 OutputState2=TRI
+Pin 2 OutputState3=ODL
+Pin 2 OutputState4=TRI
+Pin 2 OutputState5=TRI
+Pin 3 Enable=0
+Pin 3 Delay=0
+Pin 3 Reset=TRI
+Pin 3 OutputState1=TRI
+Pin 3 OutputState2=TRI
+Pin 3 OutputState3=TRI
+Pin 3 OutputState4=TRI
+Pin 3 OutputState5=TRI
+Pin 4 Enable=0
+Pin 4 Delay=0
+Pin 4 Reset=TRI
+Pin 4 OutputState1=TRI
+Pin 4 OutputState2=TRI
+Pin 4 OutputState3=TRI
+Pin 4 OutputState4=TRI
+Pin 4 OutputState5=TRI
+Pin 0 Desc=RESET
+Pin 1 Desc=MOSI
+Pin 2 Desc=MISO
+Pin 3 Desc=SCK
+Pin 4 Desc=SPARE/SCK2
+Pin 5 Desc=SPARE
+Description=1 - Active LOW RESET - RESET Driven HIGH (50ms) and LOW (50ms)
+Notes=- This statemachine should be used with any device with an Active LOW RESET such as an Atmel AVR Microcontroller.|- The programmer will drive the RESET pin HIGH for 50ms and then LOW for 50ms|- The MOSI and SCK pins are driven LOW for the duration of the RESET to ensure the device enters 'Serial Programming Mode'.|- Suitable for use with 'Active LOW' RESET circuits where the time constant of the RESET circuit is less than 50ms.|- This is typical of most commonly used Capacitor / Resistor RESET circuits.|- If a RESET control/monitoring device is used, ensure that an Open Collector type controller is employed and time constant is <50ms.
+
+[tsPreProg Notes]
+Count=6
+0=- This statemachine should be used with any device with an Active LOW RESET such as an Atmel AVR Microcontroller.
+1=- The programmer will drive the RESET pin HIGH for 50ms and then LOW for 50ms
+2=- The MOSI and SCK pins are driven LOW for the duration of the RESET to ensure the device enters 'Serial Programming Mode'.
+3=- Suitable for use with 'Active LOW' RESET circuits where the time constant of the RESET circuit is less than 50ms.
+4=- This is typical of most commonly used Capacitor / Resistor RESET circuits.
+5=- If a RESET control/monitoring device is used, ensure that an Open Collector type controller is employed and time constant is <50ms
+
+[JTAG]
+ReadJTAGID=0
+ID=0
+ReadJTAGIDCommand=0
+heIRLength=0
+
+[I2C Settings]
+Frquency=1.8432 MHz
+
+[Options]
+ELF File=1
+Pre-Erase Fuse Settings=1
+Post-Erase Fuse Settings=1
+Pre-Lock Fuse Settings=1
+Security Settings=1
+Retries=1
+
+[ELF File]
+Name=D:\MyProjects\My_AVR_Programmer\m64_ISP_SDCARD_V04\lvps.elf
+Relative Name=D:\MyProjects\My_AVR_Programmer\m64_ISP_SDCARD_V04\lvps.elf
+FlashFileName=D:\MyProjects\My_AVR_Programmer\m64_ISP_SDCARD_V04\lvps_Flash.hex
+Relative FlashFileName=D:\MyProjects\My_AVR_Programmer\m64_ISP_SDCARD_V04\lvps_Flash.hex
+EepromFileName=
+Relative EepromFileName=
+Fuse File=D:\MyProjects\My_AVR_Programmer\m64_ISP_SDCARD_V04\lvps_Fuses.eff
+Relative Fuse File=D:\MyProjects\My_AVR_Programmer\m64_ISP_SDCARD_V04\lvps_Fuses.eff
+Lock File=D:\MyProjects\My_AVR_Programmer\m64_ISP_SDCARD_V04\lvps_Lock.eff
+Relative Lock File=D:\MyProjects\My_AVR_Programmer\m64_ISP_SDCARD_V04\lvps_Lock.eff
+Signature=0x1E9502
+
+[Target]
+UniqueId=322
+Device Name=ATmega32
+Device Version=1.06R
+PollingMethod=0
+Device Library=C:\Program Files\Equinox\EQTools\Lib\ATmega32.XML
+Device Library Desc=ATmega(AVR) Library (SPI/JTAG)
+Device Library Version=1.06R
+
+[Signature1]
+Value=0x1E9502
+Enabled=1
+
+[Signature2]
+Value=
+
+[Signature3]
+Value=
+
+[Pre Erase Fuses]
+Item 0 Value=1 - UNPROGRAMMED
+Item 1 Value=1 - UNPROGRAMMED
+Item 2 Value=1 - UNPROGRAMMED
+Item 3 Value=1 - UNPROGRAMMED
+Item 4 Value=1 - UNPROGRAMMED
+Item 5 Value=1 - UNPROGRAMMED
+Item 6 Value=1 - UNPROGRAMMED
+Item 7 Value=1 - UNPROGRAMMED
+Item 8 Value=1 - UNPROGRAMMED
+Item 9 Value=0 - PROGRAMMED
+Item 10 Value=0 - PROGRAMMED
+Item 11 Value=0 - PROGRAMMED
+Item 12 Value=0 - PROGRAMMED
+Item 13 Value=Read Only
+Item 14 Value=1 - UNPROGRAMMED
+Item 15 Value=1 - UNPROGRAMMED
+Enabled=1
+Read From File=1
+Fuse File=D:\MyProjects\My_AVR_Programmer\m64_ISP_SDCARD_V04\lvps_Fuses.eff
+Relative Fuse File=D:\MyProjects\My_AVR_Programmer\m64_ISP_SDCARD_V04\lvps_Fuses.eff
+
+[Post Erase Fuse Bytes]
+Item 0 Value=1 - UNPROGRAMMED
+Item 1 Value=1 - UNPROGRAMMED
+Item 2 Value=1 - UNPROGRAMMED
+Item 3 Value=1 - UNPROGRAMMED
+Item 4 Value=1 - UNPROGRAMMED
+Item 5 Value=1 - UNPROGRAMMED
+Item 6 Value=1 - UNPROGRAMMED
+Item 7 Value=1 - UNPROGRAMMED
+Item 8 Value=1 - UNPROGRAMMED
+Item 9 Value=0 - PROGRAMMED
+Item 10 Value=0 - PROGRAMMED
+Item 11 Value=0 - PROGRAMMED
+Item 12 Value=0 - PROGRAMMED
+Item 13 Value=Read Only
+Item 14 Value=1 - UNPROGRAMMED
+Item 15 Value=1 - UNPROGRAMMED
+Enabled=0
+Read From File=1
+Fuse File=D:\MyProjects\My_AVR_Programmer\m64_ISP_SDCARD_V04\lvps_Fuses.eff
+Relative Fuse File=D:\MyProjects\My_AVR_Programmer\m64_ISP_SDCARD_V04\lvps_Fuses.eff
+
+[Pre Lock Fuse Bytes]
+Item 0 Value=1 - UNPROGRAMMED
+Item 1 Value=0 - PROGRAMMED
+Item 2 Value=0 - PROGRAMMED
+Item 3 Value=0 - PROGRAMMED
+Item 4 Value=0 - PROGRAMMED
+Item 5 Value=1 - UNPROGRAMMED
+Item 6 Value=1 - UNPROGRAMMED
+Item 7 Value=1 - UNPROGRAMMED
+Item 8 Value=1 - UNPROGRAMMED
+Item 9 Value=0 - PROGRAMMED
+Item 10 Value=0 - PROGRAMMED
+Item 11 Value=1 - UNPROGRAMMED
+Item 12 Value=1 - UNPROGRAMMED
+Item 13 Value=Read Only
+Item 14 Value=0 - PROGRAMMED
+Item 15 Value=1 - UNPROGRAMMED
+Enabled=0
+
+[Lock Bytes]
+Item 0 Value=1 - UNPROGRAMMED
+Item 1 Value=1 - UNPROGRAMMED
+Item 2 Value=1 - UNPROGRAMMED
+Item 3 Value=1 - UNPROGRAMMED
+Item 4 Value=1 - UNPROGRAMMED
+Item 5 Value=1 - UNPROGRAMMED
+Enabled=1
+Read From File=1
+Fuse File=D:\MyProjects\My_AVR_Programmer\m64_ISP_SDCARD_V04\lvps_Lock.eff
+Relative Fuse File=D:\MyProjects\My_AVR_Programmer\m64_ISP_SDCARD_V04\lvps_Lock.eff
+
+[Flash]
+MaxFlashWriteTime=10
+Polling=1
+Radio=1
+Relative Path=lvps_Flash.hex
+File=D:\MyProjects\My_AVR_Programmer\m64_ISP_SDCARD_V04\lvps_Flash.hex
+Binary Offset=0
+
+[EEPROM]
+MaxEepromWriteTime=12
+Polling=1
+
+[UserSig]
+MaxUserSigWriteTime=10
+Polling=1
+

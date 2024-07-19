@@ -1,0 +1,12 @@
+Bootloader from SD card for AVR ISD SD project
+Version history:
+0.1: Initial
+0.2: Add Support only FAT32
+0.3: Add Support FAT16 DOS
+0.4: Removed debug points
+
+
+AVR ISR SD Bootloader use:
+1. Put app update file (flash.dat) into folder '0'.
+2. Before power up, press and hold START button (see GREEN LED blinling) then press and hold DOWN(NEXT) button. 
+3. Release buttons after 3 sec.

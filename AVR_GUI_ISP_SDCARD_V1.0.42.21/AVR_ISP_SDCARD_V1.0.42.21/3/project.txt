@@ -1,0 +1,14 @@
+hexfile=AVRispSD.hex
+progname=AVR ISP SD m64
+chipname=Atmega64
+chipcode=45h
+signature=1E9602h
+progfuses=3FE491FFh
+normfuses=3CE491FFh
+maskfuses=3FFFFF03h
+chipsize=00010000h
+pagesize=0080h
+debug=00h
+ready=01h
+maxprogs=00000020h
+fw_ver=1.0.1 

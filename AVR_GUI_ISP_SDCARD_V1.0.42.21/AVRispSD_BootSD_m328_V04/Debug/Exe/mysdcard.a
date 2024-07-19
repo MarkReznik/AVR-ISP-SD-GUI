@@ -1,0 +1,337 @@
+;#include "common.h"
+;PCODE: $00000000 VOL: 0
+	#ifndef __SLEEP_DEFINED__
+;PCODE: $00000001 VOL: 0
+	#define __SLEEP_DEFINED__
+;PCODE: $00000002 VOL: 0
+	.EQU __se_bit=0x20
+;PCODE: $00000003 VOL: 0
+	.EQU __sm_mask=0x1C
+;PCODE: $00000004 VOL: 0
+	.EQU __sm_powerdown=0x10
+;PCODE: $00000005 VOL: 0
+	.EQU __sm_powersave=0x18
+;PCODE: $00000006 VOL: 0
+	.EQU __sm_standby=0x14
+;PCODE: $00000007 VOL: 0
+	.EQU __sm_ext_standby=0x1C
+;PCODE: $00000008 VOL: 0
+	.EQU __sm_adc_noise_red=0x08
+;PCODE: $00000009 VOL: 0
+	.SET power_ctrl_reg=mcucr
+;PCODE: $0000000A VOL: 0
+	#endif
+;PCODE: $0000000B VOL: 0
+;PCODE: $0000000C VOL: 0
+;
+;#include "mysdcard.h"
+;
+;#ifdef PETITFATFS
+;/* MMC/SD/SD HC card support */
+;#include "mmc.h"
+;/* PETIT FATFS support */
+;#include "pff.h"
+;#endif
+;
+;/* sprintf */
+;#include <stdio.h>
+;/* string functions */
+;#include <string.h>
+;
+;#define TRUE 1
+;#define FALSE 0
+;
+;
+;
+;// Declare your global variables here
+;/* FAT function result */
+;FRESULT res;
+;/* number of bytes written/read to the file */
+;UINT nbytes,nbytesCounter;
+;//ULONG nSector;
+;/* will hold the information for logical drive 0: */
+;#ifndef PETITFATFS
+;FATFS fat;
+;/* will hold the file information */
+;FIL file;
+;/* will hold the file information */
+;FILINFO fno;
+;#else
+;FATFS fs;          /* Work area (file system object) for the volume */
+;#endif
+;
+;/* file path */
+;char path[]="0:/10/file1234.txt";
+
+	.DSEG
+;/* file read buffer */
+;unsigned char buffer[512];//;
+;/* byte counter to save read bytes till now */
+;ULONG ReadByteCounter;
+;ULONG WriteByteCounter;
+;DWORD LastOffset;
+;
+;
+;
+;UCHAR sd_mount(void)
+; 0003 0033 {
+
+	.CSEG
+;PCODE: $0000000D VOL: 0
+;PCODE: $0000000E VOL: 0
+; 0003 0034     UCHAR retry=3;
+; 0003 0035     while(retry)
+;PCODE: $0000000F VOL: 0
+;	retry -> R17
+;PCODE: $00000010 VOL: 0
+;PCODE: $00000011 VOL: 0
+;PCODE: $00000012 VOL: 0
+;PCODE: $00000013 VOL: 0
+;PCODE: $00000014 VOL: 0
+; 0003 0036     {
+; 0003 0037         retry--;
+;PCODE: $00000015 VOL: 0
+;PCODE: $00000016 VOL: 0
+; 0003 0038         /* initialize SPI interface and card driver */
+; 0003 0039         #ifdef PETITFATFS
+; 0003 003A         if((res=disk_initialize())!=0){
+;PCODE: $00000017 VOL: 0
+;PCODE: $00000018 VOL: 0
+;PCODE: $00000019 VOL: 0
+;PCODE: $0000001A VOL: 0
+; 0003 003B         #else
+; 0003 003C         if((res=disk_initialize(0))!=0){//0=DRIVE NUMBER
+; 0003 003D         #endif
+; 0003 003E             #ifdef PRINT_DEBUG
+; 0003 003F                 if(debug){
+; 0003 0040                 while(tx_counter);
+; 0003 0041                 printf("\r\nSPI Init Failed. Return status %d.\r\n",res);
+; 0003 0042                 if (res & STA_NOINIT) printf("Disk init failed");
+; 0003 0043                 else
+; 0003 0044                 if (res & STA_NODISK) printf("Card not present");
+; 0003 0045                 else
+; 0003 0046                 if (res & STA_PROTECT) printf("Card write\nprotected");
+; 0003 0047                 while(tx_counter);}
+; 0003 0048             #endif
+; 0003 0049             #ifdef PRINT_LCD
+; 0003 004A                 if (res & STA_NOINIT) lcd_putsf_row3(3,"Disk init failed");
+; 0003 004B                 else
+; 0003 004C                 if (res & STA_NODISK) lcd_putsf_row3(3,"Card not present");
+; 0003 004D                 else
+; 0003 004E                 if (res & STA_PROTECT) lcd_putsf_row3(3,"Card write prot");
+; 0003 004F             #endif
+; 0003 0050             if(retry){
+;PCODE: $0000001B VOL: 0
+;PCODE: $0000001C VOL: 0
+; 0003 0051                 continue;
+;PCODE: $0000001D VOL: 0
+; 0003 0052             }
+; 0003 0053             else{
+;PCODE: $0000001E VOL: 0
+;PCODE: $0000001F VOL: 0
+; 0003 0054                 //delay_ms(500);
+; 0003 0055                 //StandaloneMode=SDFAIL;
+; 0003 0056                 return FALSE;
+;PCODE: $00000020 VOL: 0
+;PCODE: $00000021 VOL: 0
+;PCODE: $00000022 VOL: 0
+; 0003 0057             }
+;PCODE: $00000023 VOL: 0
+; 0003 0058         }
+; 0003 0059         /* mount logical drive 0: */
+; 0003 005A         #ifdef PETITFATFS
+; 0003 005B         if ((res=pf_mount(&fs))==FR_OK)
+;PCODE: $00000024 VOL: 0
+;PCODE: $00000025 VOL: 0
+;PCODE: $00000026 VOL: 0
+;PCODE: $00000027 VOL: 0
+;PCODE: $00000028 VOL: 0
+;PCODE: $00000029 VOL: 0
+; 0003 005C         #else
+; 0003 005D         if((res=f_mount(0,&fat))==FR_OK)
+; 0003 005E         #endif
+; 0003 005F         {
+; 0003 0060             #ifdef PRINT_DEBUG
+; 0003 0061             if(debug){
+; 0003 0062             while(tx_counter);
+; 0003 0063             printf("\r\nLogical drive 0: mounted OK\r\n");
+; 0003 0064             while(tx_counter);}
+; 0003 0065             #endif
+; 0003 0066         }
+; 0003 0067         else{
+;PCODE: $0000002A VOL: 0
+;PCODE: $0000002B VOL: 0
+; 0003 0068             if(retry)
+;PCODE: $0000002C VOL: 0
+;PCODE: $0000002D VOL: 0
+; 0003 0069                 continue;
+;PCODE: $0000002E VOL: 0
+; 0003 006A             else
+;PCODE: $0000002F VOL: 0
+;PCODE: $00000030 VOL: 0
+; 0003 006B                 /* an error occured, display it and stop */
+; 0003 006C                 goto print_error;
+;PCODE: $00000031 VOL: 0
+; 0003 006D         }
+;PCODE: $00000032 VOL: 0
+;PCODE: $00000033 VOL: 0
+; 0003 006E         return TRUE;
+;PCODE: $00000034 VOL: 0
+;PCODE: $00000035 VOL: 0
+;PCODE: $00000036 VOL: 0
+; 0003 006F     }
+;PCODE: $00000037 VOL: 0
+;PCODE: $00000038 VOL: 0
+; 0003 0070 print_error:
+;PCODE: $00000039 VOL: 0
+; 0003 0071     //RESerror(res);
+; 0003 0072     return FALSE;
+;PCODE: $0000003A VOL: 0
+;PCODE: $0000003B VOL: 0
+;PCODE: $0000003C VOL: 0
+; 0003 0073 }
+;PCODE: $0000003D VOL: 0
+;
+;UCHAR fileRead(void)
+; 0003 0076 {
+;PCODE: $0000003E VOL: 0
+;PCODE: $0000003F VOL: 0
+; 0003 0077     /* read and display the file's content.
+; 0003 0078        make sure to leave space for a NULL terminator
+; 0003 0079        in the buffer, so maximum sizeof(buffer)-1 bytes can be read */
+; 0003 007A     UINT  i;//buffer index
+; 0003 007B     //UCHAR rollVal=tmpimage.rollValue;//roll[(tmpimage.RollCounter)%ROLL_SIZE];
+; 0003 007C     UCHAR rollVal=0;
+; 0003 007D     #ifndef  PETITFATFS
+; 0003 007E     res=f_read(&file,buffer,sizeof(buffer),&nbytes);
+; 0003 007F     #else
+; 0003 0080     res=pf_read(buffer,sizeof(buffer),&nbytes);
+;PCODE: $00000040 VOL: 0
+;	i -> R16,R17
+;	rollVal -> R19
+;PCODE: $00000041 VOL: 0
+;PCODE: $00000042 VOL: 0
+;PCODE: $00000043 VOL: 0
+;PCODE: $00000044 VOL: 0
+;PCODE: $00000045 VOL: 0
+;PCODE: $00000046 VOL: 0
+;PCODE: $00000047 VOL: 0
+;PCODE: $00000048 VOL: 0
+;PCODE: $00000049 VOL: 0
+; 0003 0081     #endif
+; 0003 0082     if ((res)==FR_OK){
+;PCODE: $0000004A VOL: 0
+;PCODE: $0000004B VOL: 0
+; 0003 0083       if(rollVal!=0){
+;PCODE: $0000004C VOL: 0
+;PCODE: $0000004D VOL: 0
+; 0003 0084         for(i=0;i<(nbytes);i++)
+;PCODE: $0000004E VOL: 0
+;PCODE: $0000004F VOL: 0
+;PCODE: $00000050 VOL: 0
+;PCODE: $00000051 VOL: 0
+;PCODE: $00000052 VOL: 0
+;PCODE: $00000053 VOL: 0
+;PCODE: $00000054 VOL: 0
+;PCODE: $00000055 VOL: 0
+;PCODE: $00000056 VOL: 0
+; 0003 0085            {
+; 0003 0086                 buffer[i]=(buffer[i]<<1)|(buffer[i]>>7);  //ROL
+;PCODE: $00000057 VOL: 0
+;PCODE: $00000058 VOL: 0
+;PCODE: $00000059 VOL: 0
+;PCODE: $0000005A VOL: 0
+;PCODE: $0000005B VOL: 0
+;PCODE: $0000005C VOL: 0
+;PCODE: $0000005D VOL: 0
+;PCODE: $0000005E VOL: 0
+;PCODE: $0000005F VOL: 0
+;PCODE: $00000060 VOL: 0
+;PCODE: $00000061 VOL: 0
+;PCODE: $00000062 VOL: 0
+;PCODE: $00000063 VOL: 0
+;PCODE: $00000064 VOL: 0
+;PCODE: $00000065 VOL: 0
+; 0003 0087                 buffer[i]^=rollVal;        //XOR
+;PCODE: $00000066 VOL: 0
+;PCODE: $00000067 VOL: 0
+;PCODE: $00000068 VOL: 0
+;PCODE: $00000069 VOL: 0
+;PCODE: $0000006A VOL: 0
+; 0003 0088            }
+;PCODE: $0000006B VOL: 0
+;PCODE: $0000006C VOL: 0
+;PCODE: $0000006D VOL: 0
+;PCODE: $0000006E VOL: 0
+;PCODE: $0000006F VOL: 0
+; 0003 0089        }
+; 0003 008A     }
+;PCODE: $00000070 VOL: 0
+; 0003 008B     else
+;PCODE: $00000071 VOL: 0
+;PCODE: $00000072 VOL: 0
+; 0003 008C         goto print_error;
+;PCODE: $00000073 VOL: 0
+; 0003 008D     //buffer[nbytes]=NULL;
+; 0003 008E     LastOffset+=nbytes;
+;PCODE: $00000074 VOL: 0
+;PCODE: $00000075 VOL: 0
+;PCODE: $00000076 VOL: 0
+;PCODE: $00000077 VOL: 0
+;PCODE: $00000078 VOL: 0
+;PCODE: $00000079 VOL: 0
+; 0003 008F     nbytesCounter=0;
+;PCODE: $0000007A VOL: 0
+;PCODE: $0000007B VOL: 0
+; 0003 0090     return TRUE;
+;PCODE: $0000007C VOL: 0
+;PCODE: $0000007D VOL: 0
+;PCODE: $0000007E VOL: 0
+;PCODE: $0000007F VOL: 0
+; 0003 0091 print_error:
+;PCODE: $00000080 VOL: 0
+; 0003 0092     //RESerror(res);
+; 0003 0093     return FALSE;
+;PCODE: $00000081 VOL: 0
+;PCODE: $00000082 VOL: 0
+;PCODE: $00000083 VOL: 0
+;PCODE: $00000084 VOL: 0
+; 0003 0094 }
+;PCODE: $00000085 VOL: 0
+;
+;UCHAR pgm_read_byte_sd(void)
+; 0003 0097 {
+;PCODE: $00000086 VOL: 0
+;PCODE: $00000087 VOL: 0
+; 0003 0098    UCHAR result;
+; 0003 0099    if(nbytesCounter>=nbytes){
+;PCODE: $00000088 VOL: 0
+;	result -> R17
+;PCODE: $00000089 VOL: 0
+;PCODE: $0000008A VOL: 0
+;PCODE: $0000008B VOL: 0
+;PCODE: $0000008C VOL: 0
+; 0003 009A         fileRead();
+;PCODE: $0000008D VOL: 0
+; 0003 009B    }
+; 0003 009C    result=buffer[nbytesCounter++];
+;PCODE: $0000008E VOL: 0
+;PCODE: $0000008F VOL: 0
+;PCODE: $00000090 VOL: 0
+;PCODE: $00000091 VOL: 0
+;PCODE: $00000092 VOL: 0
+;PCODE: $00000093 VOL: 0
+;PCODE: $00000094 VOL: 0
+;PCODE: $00000095 VOL: 0
+; 0003 009D    ReadByteCounter++;
+;PCODE: $00000096 VOL: 0
+;PCODE: $00000097 VOL: 0
+;PCODE: $00000098 VOL: 0
+;PCODE: $00000099 VOL: 0
+; 0003 009E    return result;
+;PCODE: $0000009A VOL: 0
+;PCODE: $0000009B VOL: 0
+;PCODE: $0000009C VOL: 0
+; 0003 009F }
+;PCODE: $0000009D VOL: 0
+;

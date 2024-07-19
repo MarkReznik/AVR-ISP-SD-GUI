@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+    <fileVersion>2</fileVersion>
+    <fileChecksum>2237633789</fileChecksum>
+    <configuration>
+        <name>Debug</name>
+        <outputs>
+            <file>$PROJ_DIR$\Debug\Obj\main.r90</file>
+            <file>$PROJ_DIR$\Debug\Obj\Self_programming_main.__cstat.et</file>
+            <file>$PROJ_DIR$\Debug\Obj\Self_programming.__cstat.et</file>
+            <file>$PROJ_DIR$\Debug\Exe\selfboot.d90</file>
+            <file>$PROJ_DIR$\Debug\Obj\selfboot.pbd</file>
+            <file>$PROJ_DIR$\Debug\Obj\main.pbi</file>
+            <file>$PROJ_DIR$\Self_programming.h</file>
+            <file>$PROJ_DIR$\Self_programming.c</file>
+            <file>$PROJ_DIR$\Self_programming_main.c</file>
+            <file>$TOOLKIT_DIR$\inc\bitdefinitions\iom128.inc</file>
+            <file>$TOOLKIT_DIR$\inc\iomacro.h</file>
+            <file>$TOOLKIT_DIR$\inc\intrinsics.h</file>
+            <file>$TOOLKIT_DIR$\inc\ioavr.h</file>
+            <file>$TOOLKIT_DIR$\inc\inavr.h</file>
+            <file>$PROJ_DIR$\Debug\Obj\Self_programming_main.pbi</file>
+            <file>$PROJ_DIR$\Debug\Obj\Self_programming.pbi</file>
+            <file>$PROJ_DIR$\Debug\Obj\Self_programming_main.r90</file>
+            <file>$PROJ_DIR$\Debug\Obj\Self_programming.r90</file>
+            <file>$TOOLKIT_DIR$\inc\iom128.h</file>
+            <file>$PROJ_DIR$\main.c</file>
+            <file>$PROJ_DIR$\Debug\Exe\selfboot.r90</file>
+            <file>$TOOLKIT_DIR$\config\lnkm128s.xcl</file>
+            <file>$PROJ_DIR$\Debug\List\selfboot.map</file>
+            <file>$TOOLKIT_DIR$\lib\dlib\dlAVR-3s-ec_mul-n.r90</file>
+            <file>$PROJ_DIR$\lnkm128s.xcl</file>
+        </outputs>
+        <file>
+            <name>$PROJ_DIR$\Debug\Exe\selfboot.d90</name>
+            <outputs>
+                <tool>
+                    <name>XLINK</name>
+                    <file> 22</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>XLINK</name>
+                    <file> 24 17 16 23</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\Self_programming.c</name>
+            <outputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 15</file>
+                </tool>
+                <tool>
+                    <name>ICCAVR</name>
+                    <file> 17</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 2</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 6 13 18 10 9 11 12</file>
+                </tool>
+                <tool>
+                    <name>ICCAVR</name>
+                    <file> 12 18 10 9 13 11 6</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\Self_programming_main.c</name>
+            <outputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 14</file>
+                </tool>
+                <tool>
+                    <name>ICCAVR</name>
+                    <file> 16</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 1</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 12 10 6 18 13 9 11</file>
+                </tool>
+                <tool>
+                    <name>ICCAVR</name>
+                    <file> 12 18 10 9 13 11 6</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>[ROOT_NODE]</name>
+            <outputs>
+                <tool>
+                    <name>XLINK</name>
+                    <file> 3 22</file>
+                </tool>
+                <tool>
+                    <name>XAR</name>
+                    <file> 20</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\main.c</name>
+            <outputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 5</file>
+                </tool>
+                <tool>
+                    <name>ICCAVR</name>
+                    <file> 0</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\Debug\Exe\selfboot.r90</name>
+            <inputs>
+                <tool>
+                    <name>XAR</name>
+                    <file> 17 16</file>
+                </tool>
+            </inputs>
+        </file>
+    </configuration>
+    <configuration>
+        <name>Release</name>
+        <outputs />
+        <forcedrebuild>
+            <name>[MULTI_TOOL]</name>
+            <tool>XLINK</tool>
+        </forcedrebuild>
+    </configuration>
+</project>

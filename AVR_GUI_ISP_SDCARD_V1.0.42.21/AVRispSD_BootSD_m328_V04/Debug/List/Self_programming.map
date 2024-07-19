@@ -1,0 +1,58 @@
+RAM Allocation [bytes]
+Variable                                                                          Address   Size
+------------------------------------------------------------------------------------------------
+result                                                                            0x0320       5
+sdBuf                                                                             0x0325     512
+testBuf                                                                           0x0525     128
+appStartAdr                                                                       0x05A5       4
+adr                                                                               0x05A9       4
+SectorsPerFat                                                                     0x05AD       4
+fat_begin_lba                                                                     0x05B1       4
+cluster_begin_lba                                                                 0x05B5       4
+fat_file_adr                                                                      0x05B9       4
+fat_file_next_adr                                                                 0x05BD       4
+filesize                                                                          0x05C1       4
+readbytes                                                                         0x05C5       4
+checksumCnt                                                                       0x05C9       2
+app_pointer                                                                       0x05CB       2
+partition_type                                                                    0x05CD       1
+
+EEPROM Allocation [bytes]
+Variable                                                                          Address   Size
+------------------------------------------------------------------------------------------------
+
+Register Allocation
+Variable                                                                          Register  Size
+------------------------------------------------------------------------------------------------
+token                                                                             R5           1
+SectorsPerCluster                                                                 R4           1
+RootEntryCnt                                                                      R6,R7        2
+appPages                                                                          R8,R9        2
+pagesCnt                                                                          R10,R11      2
+bytesChecksum                                                                     R12,R13      2
+
+FLASH Allocation [words]
+Function                                                                          Address   Size
+------------------------------------------------------------------------------------------------
+WriteFlashPage                                                                    0x0387E     89
+WriteBufToFlash                                                                   0x038EF      6
+dospm                                                                             0x038F5     17
+__AddrToZWordToR1R0ByteToSPMCR_SPM_F                                              0x03906     13
+__AddrToZByteToSPMCR_SPM_E                                                        0x03913     21
+__AddrToZByteToSPMCR_SPM_W                                                        0x03928     24
+__AddrToZByteToSPMCR_SPM_EW                                                       0x03940     38
+main                                                                              0x03966    756
+compbuf                                                                           0x03C5A     22
+errorSD                                                                           0x03C70     21
+buf2num                                                                           0x03C85     41
+TestADCs                                                                          0x03CAE     41
+SPI_init                                                                          0x03CD7      9
+SPI_transfer                                                                      0x03CE0      9
+SD_powerUpSeq                                                                     0x03CE9     16
+SD_command                                                                        0x03CF9     33
+SD_readRes1                                                                       0x03D1A     20
+SD_readRes7                                                                       0x03D34     29
+SD_readOCR                                                                        0x03D5C     13
+SD_sendOpCond                                                                     0x03D71     16
+SD_init                                                                           0x03D81     62
+SD_readSingleBlock                                                                0x03DBF     93

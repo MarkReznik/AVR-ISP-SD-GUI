@@ -1,0 +1,160 @@
+#include "common.h"
+
+#include "mysdcard.h"
+
+#ifdef PETITFATFS
+/* MMC/SD/SD HC card support */
+#include "mmc.h"
+/* PETIT FATFS support */
+#include "pff.h"
+#endif
+
+/* sprintf */
+#include <stdio.h>
+/* string functions */
+#include <string.h>
+
+#define TRUE 1
+#define FALSE 0
+
+
+
+// Declare your global variables here
+/* FAT function result */
+FRESULT res;
+/* number of bytes written/read to the file */
+UINT nbytes,nbytesCounter;
+//ULONG nSector;
+/* will hold the information for logical drive 0: */
+#ifndef PETITFATFS
+FATFS fat;
+/* will hold the file information */
+FIL file;
+/* will hold the file information */
+FILINFO fno;
+#else
+FATFS fs;          /* Work area (file system object) for the volume */
+#endif
+
+/* file path */
+char path[]="0:/10/file1234.txt";
+/* file read buffer */
+unsigned char buffer[512];//;
+/* byte counter to save read bytes till now */
+ULONG ReadByteCounter;
+ULONG WriteByteCounter;
+DWORD LastOffset;
+
+
+
+UCHAR sd_mount(void)
+{
+    UCHAR retry=3;
+    while(retry)
+    {
+        retry--;
+        /* initialize SPI interface and card driver */
+        #ifdef PETITFATFS
+        if((res=disk_initialize())!=0){
+        #else
+        if((res=disk_initialize(0))!=0){//0=DRIVE NUMBER
+        #endif
+            #ifdef PRINT_DEBUG
+                if(debug){
+                while(tx_counter);
+                printf("\r\nSPI Init Failed. Return status %d.\r\n",res);
+                if (res & STA_NOINIT) printf("Disk init failed");
+                else
+                if (res & STA_NODISK) printf("Card not present");
+                else
+                if (res & STA_PROTECT) printf("Card write\nprotected");
+                while(tx_counter);}
+            #endif
+            #ifdef PRINT_LCD
+                if (res & STA_NOINIT) lcd_putsf_row3(3,"Disk init failed");
+                else
+                if (res & STA_NODISK) lcd_putsf_row3(3,"Card not present");
+                else
+                if (res & STA_PROTECT) lcd_putsf_row3(3,"Card write prot");                
+            #endif
+            if(retry){
+                continue;
+            }
+            else{
+                //delay_ms(500);
+                //StandaloneMode=SDFAIL;
+                return FALSE;
+            }
+        }
+        /* mount logical drive 0: */
+        #ifdef PETITFATFS
+        if ((res=pf_mount(&fs))==FR_OK)
+        #else
+        if((res=f_mount(0,&fat))==FR_OK)
+        #endif
+        {
+            #ifdef PRINT_DEBUG
+            if(debug){
+            while(tx_counter);
+            printf("\r\nLogical drive 0: mounted OK\r\n");
+            while(tx_counter);}
+            #endif
+        }
+        else{
+            if(retry)
+                continue;
+            else
+                /* an error occured, display it and stop */
+                goto print_error;
+        }
+        return TRUE;
+    }
+print_error:
+    //RESerror(res);
+    return FALSE;
+}
+
+UCHAR fileRead(void)
+{
+    /* read and display the file's content.
+       make sure to leave space for a NULL terminator
+       in the buffer, so maximum sizeof(buffer)-1 bytes can be read */
+    UINT  i;//buffer index
+    //UCHAR rollVal=tmpimage.rollValue;//roll[(tmpimage.RollCounter)%ROLL_SIZE];
+    UCHAR rollVal=0;
+    #ifndef  PETITFATFS
+    res=f_read(&file,buffer,sizeof(buffer),&nbytes);
+    #else
+    res=pf_read(buffer,sizeof(buffer),&nbytes);
+    #endif
+    if ((res)==FR_OK){
+      if(rollVal!=0){
+        for(i=0;i<(nbytes);i++)
+           {
+                buffer[i]=(buffer[i]<<1)|(buffer[i]>>7);  //ROL
+                buffer[i]^=rollVal;        //XOR
+           }
+       }
+    }
+    else
+        goto print_error;
+    //buffer[nbytes]=NULL;
+    LastOffset+=nbytes;
+    nbytesCounter=0;
+    return TRUE;
+print_error:
+    //RESerror(res);
+    return FALSE;
+}
+
+UCHAR pgm_read_byte_sd(void)
+{
+   UCHAR result;
+   if(nbytesCounter>=nbytes){
+        fileRead();
+   }
+   result=buffer[nbytesCounter++];
+   ReadByteCounter++;
+   return result;
+}
+

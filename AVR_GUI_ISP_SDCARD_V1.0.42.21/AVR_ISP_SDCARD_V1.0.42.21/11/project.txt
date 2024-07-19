@@ -1,0 +1,14 @@
+hexfile=cpm8.hex
+progname=Codephone m8
+chipname=Atmega8A
+chipcode=76h
+signature=1E9307h
+progfuses=3F2491FFh
+normfuses=3C2391FFh
+maskfuses=3FFFFF00h
+chipsize=00002000h
+pagesize=0040h
+debug=00h
+ready=01h
+maxprogs=00002000h
+fw_ver=1.0.3 

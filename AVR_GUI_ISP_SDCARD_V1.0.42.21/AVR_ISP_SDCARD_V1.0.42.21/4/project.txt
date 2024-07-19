@@ -1,0 +1,14 @@
+hexfile=cptiny44.hex
+progname=Codephone tn44
+chipname=Attiny44
+chipcode=0Fh
+signature=1E9207h
+progfuses=03E2DFFFh
+normfuses=00FFC6FFh
+maskfuses=03FFFF01h
+chipsize=00001000h
+pagesize=0020h
+debug=01h
+ready=01h
+maxprogs=00002000h
+fw_ver=1.0.1 

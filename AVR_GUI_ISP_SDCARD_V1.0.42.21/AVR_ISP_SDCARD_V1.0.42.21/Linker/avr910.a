@@ -1,0 +1,4792 @@
+;PCODE: $00000000 VOL: 0
+	#ifndef __SLEEP_DEFINED__
+;PCODE: $00000001 VOL: 0
+	#define __SLEEP_DEFINED__
+;PCODE: $00000002 VOL: 0
+	.EQU __se_bit=0x01
+;PCODE: $00000003 VOL: 0
+	.EQU __sm_mask=0x0E
+;PCODE: $00000004 VOL: 0
+	.EQU __sm_adc_noise_red=0x02
+;PCODE: $00000005 VOL: 0
+	.EQU __sm_powerdown=0x04
+;PCODE: $00000006 VOL: 0
+	.EQU __sm_powersave=0x06
+;PCODE: $00000007 VOL: 0
+	.EQU __sm_standby=0x0C
+;PCODE: $00000008 VOL: 0
+	.EQU __sm_ext_standby=0x0E
+;PCODE: $00000009 VOL: 0
+	.SET power_ctrl_reg=smcr
+;PCODE: $0000000A VOL: 0
+	#endif
+;PCODE: $0000000B VOL: 0
+;PCODE: $0000000C VOL: 0
+;void LOW_SCK_DELEY()
+; 0001 0021 {
+
+	.CSEG
+;PCODE: $0000000D VOL: 0
+;PCODE: $0000000E VOL: 0
+; 0001 0022 unsigned char us_cnt = spidiv;
+; 0001 0023 while(1){
+;PCODE: $0000000F VOL: 0
+;	us_cnt -> R17
+;PCODE: $00000010 VOL: 0
+;PCODE: $00000011 VOL: 0
+;PCODE: $00000012 VOL: 0
+; 0001 0024 //delay_us(1);
+; 0001 0025 #asm("NOP")
+;PCODE: $00000013 VOL: 0
+; 0001 0026 //#asm("NOP")
+; 0001 0027 //#asm("NOP")
+; 0001 0028 if(us_cnt!=0)
+;PCODE: $00000014 VOL: 0
+;PCODE: $00000015 VOL: 0
+; 0001 0029 break;
+;PCODE: $00000016 VOL: 0
+; 0001 002A us_cnt--;
+;PCODE: $00000017 VOL: 0
+;PCODE: $00000018 VOL: 0
+;PCODE: $00000019 VOL: 0
+; 0001 002B }
+;PCODE: $0000001A VOL: 0
+;PCODE: $0000001B VOL: 0
+; 0001 002C }
+;PCODE: $0000001C VOL: 0
+;PCODE: $0000001D VOL: 0
+;PCODE: $0000001E VOL: 0
+;UCHAR ExSPI(UCHAR wr_data);
+;void CatchPorts(void);
+;void ReleasePorts(void);
+;UCHAR GetOneChar(void);
+;void PutOneChar(UCHAR data);
+;UCHAR Write123(UCHAR byte1, UCHAR byte2, UCHAR byte3);
+;UCHAR Write1234(UCHAR byte1, UCHAR byte2, UCHAR byte3, UCHAR byte4);
+;void PollData(UCHAR command, UCHAR data);
+;void CheckCommParams(UCHAR req_bytes);
+;void SetProgMode(void);
+;void GetDevCodes(void);
+;void SetDevType(void);
+;void SetLED(void);
+;void ClrLED(void);
+;void tx123rx4(void);
+;void tx1234rx4(void);
+;void GetBlockMode(void);
+;void GetSWID(void);
+;void GetSWVer(void);
+;void GetHWVer(void);
+;void GetAutoIncAddr(void);
+;void SetAddr(void);
+;void GetPROGType(void);
+;void ChipErase(void);
+;void WriteFuse(void);
+;void WriteHFuse(void);
+;void WriteEXTFuse(void);
+;void WriteLock(void);
+;void ReadLock(void);
+;void ReadFuse(void);
+;void ReadHFuse(void);
+;void ReadEXTFuse(void);
+;void ReadSignature(void);
+;void ReadCalibrationByte(void);
+;void LeaveProgMode(void);
+;void WriteProgLB(void);
+;void WriteProgHB(void);
+;void WriteProgOneLB(void);
+;void WriteProgOneHB(void);
+;void WritePage(void);
+;void ReadProg(UCHAR com_byte1, UCHAR com_byte2);
+;void WriteData(void);
+;void WriteOneData(void);
+;void ReadData(void);
+;void ReadBlockCommand(void);
+;void WriteBlockCommand(void);
+;void ReadBlock(void);
+;void WriteBlock(void);
+;void ReBoot(void);
+;void AVR910_Standalone(flash char *commands)
+; 0001 00CF {
+;PCODE: $0000001F VOL: 0
+;PCODE: $00000020 VOL: 0
+; 0001 00D0 UCHAR i;
+; 0001 00D1 //   #ifdef PRINT_DEBUG
+; 0001 00D2 //   printf("\r\n Commands is: %p",commands);
+; 0001 00D3 //   while(tx_counter);
+; 0001 00D4 //   #endif
+; 0001 00D5 AVR910_SendRxToUart();//clear send to uart tx buffer
+;PCODE: $00000021 VOL: 0
+;	*commands -> Y+1
+;	i -> R17
+;PCODE: $00000022 VOL: 0
+; 0001 00D6 FIFO_Reset();
+;PCODE: $00000023 VOL: 0
+; 0001 00D7 for(i=0;i<strlenf(commands);i++)
+;PCODE: $00000024 VOL: 0
+;PCODE: $00000025 VOL: 0
+;PCODE: $00000026 VOL: 0
+;PCODE: $00000027 VOL: 0
+;PCODE: $00000028 VOL: 0
+;PCODE: $00000029 VOL: 0
+;PCODE: $0000002A VOL: 0
+;PCODE: $0000002B VOL: 0
+;PCODE: $0000002C VOL: 0
+;PCODE: $0000002D VOL: 0
+;PCODE: $0000002E VOL: 0
+;PCODE: $0000002F VOL: 0
+;PCODE: $00000030 VOL: 0
+; 0001 00D8 FIFO_Write(commands[i]);
+;PCODE: $00000031 VOL: 0
+;PCODE: $00000032 VOL: 0
+;PCODE: $00000033 VOL: 0
+;PCODE: $00000034 VOL: 0
+;PCODE: $00000035 VOL: 0
+;PCODE: $00000036 VOL: 0
+;PCODE: $00000037 VOL: 0
+;PCODE: $00000038 VOL: 0
+;PCODE: $00000039 VOL: 0
+;PCODE: $0000003A VOL: 0
+;PCODE: $0000003B VOL: 0
+;PCODE: $0000003C VOL: 0
+; 0001 00D9 AVR910_Command();
+;PCODE: $0000003D VOL: 0
+; 0001 00DA //   #ifdef PRINT_DEBUG
+; 0001 00DB //   printf("\r\n Response is: %c",g_txBuf[0]);
+; 0001 00DC //   while(tx_counter);
+; 0001 00DD //   #endif
+; 0001 00DE }
+;PCODE: $0000003E VOL: 0
+;PCODE: $0000003F VOL: 0
+;PCODE: $00000040 VOL: 0
+;PCODE: $00000041 VOL: 0
+;PCODE: $00000042 VOL: 0
+;void AVR910_Init(void)
+; 0001 00E3 {
+;PCODE: $00000043 VOL: 0
+;PCODE: $00000044 VOL: 0
+; 0001 00E4 // конфигурируем выводы светодиодов
+; 0001 00E5 //LED_DDR 	|= (1 << PIN_LED_WR) | (1 << PIN_LED_RD)| (1 << PIN_LED_PASS);
+; 0001 00E6 //LED_PORT	&= ~((1 << PIN_LED_WR) | (1 << PIN_LED_RD)| (1 << PIN_LED_PASS));
+; 0001 00E7 LED_OK_INIT();
+;PCODE: $00000045 VOL: 0
+;PCODE: $00000046 VOL: 0
+;PCODE: $00000047 VOL: 0
+;PCODE: $00000048 VOL: 0
+; 0001 00E8 LED_ERR_INIT();
+;PCODE: $00000049 VOL: 0
+;PCODE: $0000004A VOL: 0
+;PCODE: $0000004B VOL: 0
+;PCODE: $0000004C VOL: 0
+; 0001 00E9 //MUX_SEL_INIT();
+; 0001 00EA ReleasePorts();
+;PCODE: $0000004D VOL: 0
+; 0001 00EB // конфигурируем вход low_sck
+; 0001 00EC //ISP_PORT	|= (1 << PIN_LOW_SCK); // подтягиваем ко входу пуллап
+; 0001 00ED //ISP_DDR		&= ~(1 << PIN_LOW_SCK);	// конфигурируем как вход
+; 0001 00EE //ISP_PORT	|= (1 << PIN_SS); // подтягиваем ко входу пуллап
+; 0001 00EF //ISP_DDR		|= (1 << PIN_SS);	// конфигурируем как вход
+; 0001 00F0 // конфигурируем таймер-счетчик TC1
+; 0001 00F1 //    TCCR1A = (0 << WGM11)| (0 << WGM10)|			   // CTC
+; 0001 00F2 //      		 (0 << COM1A1) | (1 << COM1A0);			   // Toggle OC1A on Compare Match
+; 0001 00F3 //	TCCR1B = (0 << CS12) | (0 << CS11) | (1 << CS10) | // clkIO /1 (No prescaling)
+; 0001 00F4 //      		 (0 << WGM13)| (1 << WGM12);			   // CTC
+; 0001 00F5 //    OCR1A  = (UINT)5;
+; 0001 00F6 //
+; 0001 00F7 //    // выводим меандр
+; 0001 00F8 //	//ISP_DDR |= (1 << PIN_CLOCK);
+; 0001 00F9 //    CLOCK_DDR |= (1 << PIN_CLOCK);
+; 0001 00FA // конфигурируем SPI порт
+; 0001 00FB //SPSR = 0x00; // очищаем SPI2X
+; 0001 00FC 
+; 0001 00FD // инициализируем AVR910 глобальные переменные
+; 0001 00FE g_Addr = 0;
+;PCODE: $0000004E VOL: 0
+;PCODE: $0000004F VOL: 0
+; 0001 00FF g_BlockMode = FALSE;
+;PCODE: $00000050 VOL: 0
+;PCODE: $00000051 VOL: 0
+; 0001 0100 g_NeedParams = FALSE;
+;PCODE: $00000052 VOL: 0
+;PCODE: $00000053 VOL: 0
+; 0001 0101 FIFO_Reset();
+;PCODE: $00000054 VOL: 0
+; 0001 0102 g_IsFuseClock=FALSE;
+;PCODE: $00000055 VOL: 0
+;PCODE: $00000056 VOL: 0
+; 0001 0103 //ReleasePorts();
+; 0001 0104 //initBTN;
+; 0001 0105 }
+;PCODE: $00000057 VOL: 0
+;PCODE: $00000058 VOL: 0
+;void AVR910_Command(void)
+; 0001 010C {
+;PCODE: $00000059 VOL: 0
+;PCODE: $0000005A VOL: 0
+; 0001 010D g_txWR = g_txRD = 0;	// сбрасываем буфер передачи
+;PCODE: $0000005B VOL: 0
+;PCODE: $0000005C VOL: 0
+;PCODE: $0000005D VOL: 0
+; 0001 010E 
+; 0001 010F // копируем данные из буфера USB в FIFO программатора
+; 0001 0110 //while(len--)
+; 0001 0111 //FIFO_Write(*data++);
+; 0001 0112 
+; 0001 0113 
+; 0001 0114 // считываем принятые из USB данные
+; 0001 0115 while(0 < g_FIFODataSize)
+;PCODE: $0000005E VOL: 0
+;PCODE: $0000005F VOL: 0
+;PCODE: $00000060 VOL: 0
+;PCODE: $00000061 VOL: 0
+; 0001 0116 {
+; 0001 0117 // проверка блочного режима работы
+; 0001 0118 if(TRUE == g_BlockMode)
+;PCODE: $00000062 VOL: 0
+;PCODE: $00000063 VOL: 0
+;PCODE: $00000064 VOL: 0
+; 0001 0119 {
+; 0001 011A // проверка операции (запись, чтение)
+; 0001 011B if(OPERATION_WRITE == g_Operation)
+;PCODE: $00000065 VOL: 0
+;PCODE: $00000066 VOL: 0
+;PCODE: $00000067 VOL: 0
+; 0001 011C {
+; 0001 011D // блочная операция записи
+; 0001 011E WriteBlock();
+;PCODE: $00000068 VOL: 0
+; 0001 011F continue;
+;PCODE: $00000069 VOL: 0
+; 0001 0120 }
+; 0001 0121 else
+;PCODE: $0000006A VOL: 0
+;PCODE: $0000006B VOL: 0
+; 0001 0122 {
+; 0001 0123 // операция чтения еще не закончилась
+; 0001 0124 // а мы получили данные - прерываем операцию чтения и блочный режим
+; 0001 0125 g_BlockMode = FALSE;
+;PCODE: $0000006C VOL: 0
+;PCODE: $0000006D VOL: 0
+; 0001 0126 }
+;PCODE: $0000006E VOL: 0
+; 0001 0127 }
+; 0001 0128 
+; 0001 0129 // Проверяем, обрабатываем ли мы команду
+; 0001 012A if(FALSE == g_NeedParams)
+;PCODE: $0000006F VOL: 0
+;PCODE: $00000070 VOL: 0
+;PCODE: $00000071 VOL: 0
+;PCODE: $00000072 VOL: 0
+; 0001 012B g_Command = GetOneChar();
+;PCODE: $00000073 VOL: 0
+;PCODE: $00000074 VOL: 0
+; 0001 012C 
+; 0001 012D 
+; 0001 012E // Анализируем команду
+; 0001 012F switch(g_Command)
+;PCODE: $00000075 VOL: 0
+;PCODE: $00000076 VOL: 0
+;PCODE: $00000077 VOL: 0
+; 0001 0130 {
+; 0001 0131 case ESC:
+;PCODE: $00000078 VOL: 0
+;PCODE: $00000079 VOL: 0
+;PCODE: $0000007A VOL: 0
+; 0001 0132 break;
+;PCODE: $0000007B VOL: 0
+; 0001 0133 case 'P': SetProgMode();
+;PCODE: $0000007C VOL: 0
+;PCODE: $0000007D VOL: 0
+;PCODE: $0000007E VOL: 0
+;PCODE: $0000007F VOL: 0
+;PCODE: $00000080 VOL: 0
+; 0001 0134 break;
+;PCODE: $00000081 VOL: 0
+; 0001 0135 case 'a': GetAutoIncAddr();
+;PCODE: $00000082 VOL: 0
+;PCODE: $00000083 VOL: 0
+;PCODE: $00000084 VOL: 0
+;PCODE: $00000085 VOL: 0
+;PCODE: $00000086 VOL: 0
+; 0001 0136 break;
+;PCODE: $00000087 VOL: 0
+; 0001 0137 case 'A': SetAddr();
+;PCODE: $00000088 VOL: 0
+;PCODE: $00000089 VOL: 0
+;PCODE: $0000008A VOL: 0
+;PCODE: $0000008B VOL: 0
+;PCODE: $0000008C VOL: 0
+; 0001 0138 break;
+;PCODE: $0000008D VOL: 0
+; 0001 0139 case 'S': GetSWID();
+;PCODE: $0000008E VOL: 0
+;PCODE: $0000008F VOL: 0
+;PCODE: $00000090 VOL: 0
+;PCODE: $00000091 VOL: 0
+;PCODE: $00000092 VOL: 0
+; 0001 013A break;
+;PCODE: $00000093 VOL: 0
+; 0001 013B case 'V': GetSWVer();
+;PCODE: $00000094 VOL: 0
+;PCODE: $00000095 VOL: 0
+;PCODE: $00000096 VOL: 0
+;PCODE: $00000097 VOL: 0
+;PCODE: $00000098 VOL: 0
+; 0001 013C break;
+;PCODE: $00000099 VOL: 0
+; 0001 013D case 'v': GetHWVer();
+;PCODE: $0000009A VOL: 0
+;PCODE: $0000009B VOL: 0
+;PCODE: $0000009C VOL: 0
+;PCODE: $0000009D VOL: 0
+;PCODE: $0000009E VOL: 0
+; 0001 013E break;
+;PCODE: $0000009F VOL: 0
+; 0001 013F case 'p': GetPROGType();
+;PCODE: $000000A0 VOL: 0
+;PCODE: $000000A1 VOL: 0
+;PCODE: $000000A2 VOL: 0
+;PCODE: $000000A3 VOL: 0
+;PCODE: $000000A4 VOL: 0
+; 0001 0140 break;
+;PCODE: $000000A5 VOL: 0
+; 0001 0141 case 'T': SetDevType();
+;PCODE: $000000A6 VOL: 0
+;PCODE: $000000A7 VOL: 0
+;PCODE: $000000A8 VOL: 0
+;PCODE: $000000A9 VOL: 0
+;PCODE: $000000AA VOL: 0
+; 0001 0142 break;
+;PCODE: $000000AB VOL: 0
+; 0001 0143 case 't': GetDevCodes();
+;PCODE: $000000AC VOL: 0
+;PCODE: $000000AD VOL: 0
+;PCODE: $000000AE VOL: 0
+;PCODE: $000000AF VOL: 0
+;PCODE: $000000B0 VOL: 0
+; 0001 0144 break;
+;PCODE: $000000B1 VOL: 0
+; 0001 0145 case 'x': SetLED();
+;PCODE: $000000B2 VOL: 0
+;PCODE: $000000B3 VOL: 0
+;PCODE: $000000B4 VOL: 0
+;PCODE: $000000B5 VOL: 0
+;PCODE: $000000B6 VOL: 0
+; 0001 0146 break;
+;PCODE: $000000B7 VOL: 0
+; 0001 0147 case 'y': ClrLED();
+;PCODE: $000000B8 VOL: 0
+;PCODE: $000000B9 VOL: 0
+;PCODE: $000000BA VOL: 0
+;PCODE: $000000BB VOL: 0
+;PCODE: $000000BC VOL: 0
+; 0001 0148 break;
+;PCODE: $000000BD VOL: 0
+; 0001 0149 case ':': tx123rx4();
+;PCODE: $000000BE VOL: 0
+;PCODE: $000000BF VOL: 0
+;PCODE: $000000C0 VOL: 0
+;PCODE: $000000C1 VOL: 0
+;PCODE: $000000C2 VOL: 0
+; 0001 014A break;
+;PCODE: $000000C3 VOL: 0
+; 0001 014B case '.': tx1234rx4();
+;PCODE: $000000C4 VOL: 0
+;PCODE: $000000C5 VOL: 0
+;PCODE: $000000C6 VOL: 0
+;PCODE: $000000C7 VOL: 0
+;PCODE: $000000C8 VOL: 0
+; 0001 014C break;
+;PCODE: $000000C9 VOL: 0
+; 0001 014D case 'b': GetBlockMode();
+;PCODE: $000000CA VOL: 0
+;PCODE: $000000CB VOL: 0
+;PCODE: $000000CC VOL: 0
+;PCODE: $000000CD VOL: 0
+;PCODE: $000000CE VOL: 0
+; 0001 014E break;
+;PCODE: $000000CF VOL: 0
+; 0001 014F case 'e': ChipErase();
+;PCODE: $000000D0 VOL: 0
+;PCODE: $000000D1 VOL: 0
+;PCODE: $000000D2 VOL: 0
+;PCODE: $000000D3 VOL: 0
+;PCODE: $000000D4 VOL: 0
+; 0001 0150 break;
+;PCODE: $000000D5 VOL: 0
+; 0001 0151 case 'E': ReBoot(); // External commands
+;PCODE: $000000D6 VOL: 0
+;PCODE: $000000D7 VOL: 0
+;PCODE: $000000D8 VOL: 0
+;PCODE: $000000D9 VOL: 0
+;PCODE: $000000DA VOL: 0
+; 0001 0152 break;
+;PCODE: $000000DB VOL: 0
+; 0001 0153 case 'L': LeaveProgMode();
+;PCODE: $000000DC VOL: 0
+;PCODE: $000000DD VOL: 0
+;PCODE: $000000DE VOL: 0
+;PCODE: $000000DF VOL: 0
+;PCODE: $000000E0 VOL: 0
+; 0001 0154 break;
+;PCODE: $000000E1 VOL: 0
+; 0001 0155 case 'l': WriteLock();
+;PCODE: $000000E2 VOL: 0
+;PCODE: $000000E3 VOL: 0
+;PCODE: $000000E4 VOL: 0
+;PCODE: $000000E5 VOL: 0
+;PCODE: $000000E6 VOL: 0
+; 0001 0156 break;
+;PCODE: $000000E7 VOL: 0
+; 0001 0157 case 'f': WriteFuse();
+;PCODE: $000000E8 VOL: 0
+;PCODE: $000000E9 VOL: 0
+;PCODE: $000000EA VOL: 0
+;PCODE: $000000EB VOL: 0
+;PCODE: $000000EC VOL: 0
+; 0001 0158 break;
+;PCODE: $000000ED VOL: 0
+; 0001 0159 case 'Q': ReadLock();
+;PCODE: $000000EE VOL: 0
+;PCODE: $000000EF VOL: 0
+;PCODE: $000000F0 VOL: 0
+;PCODE: $000000F1 VOL: 0
+;PCODE: $000000F2 VOL: 0
+; 0001 015A break;
+;PCODE: $000000F3 VOL: 0
+; 0001 015B case 'F': ReadFuse();
+;PCODE: $000000F4 VOL: 0
+;PCODE: $000000F5 VOL: 0
+;PCODE: $000000F6 VOL: 0
+;PCODE: $000000F7 VOL: 0
+;PCODE: $000000F8 VOL: 0
+; 0001 015C break;
+;PCODE: $000000F9 VOL: 0
+; 0001 015D case 'n': WriteHFuse();
+;PCODE: $000000FA VOL: 0
+;PCODE: $000000FB VOL: 0
+;PCODE: $000000FC VOL: 0
+;PCODE: $000000FD VOL: 0
+;PCODE: $000000FE VOL: 0
+; 0001 015E break;
+;PCODE: $000000FF VOL: 0
+; 0001 015F case 'N': ReadHFuse();
+;PCODE: $00000100 VOL: 0
+;PCODE: $00000101 VOL: 0
+;PCODE: $00000102 VOL: 0
+;PCODE: $00000103 VOL: 0
+;PCODE: $00000104 VOL: 0
+; 0001 0160 break;
+;PCODE: $00000105 VOL: 0
+; 0001 0161 case 'o': WriteEXTFuse();
+;PCODE: $00000106 VOL: 0
+;PCODE: $00000107 VOL: 0
+;PCODE: $00000108 VOL: 0
+;PCODE: $00000109 VOL: 0
+;PCODE: $0000010A VOL: 0
+; 0001 0162 break;
+;PCODE: $0000010B VOL: 0
+; 0001 0163 case 'O': ReadEXTFuse();
+;PCODE: $0000010C VOL: 0
+;PCODE: $0000010D VOL: 0
+;PCODE: $0000010E VOL: 0
+;PCODE: $0000010F VOL: 0
+;PCODE: $00000110 VOL: 0
+; 0001 0164 break;
+;PCODE: $00000111 VOL: 0
+; 0001 0165 case 's': ReadSignature();
+;PCODE: $00000112 VOL: 0
+;PCODE: $00000113 VOL: 0
+;PCODE: $00000114 VOL: 0
+;PCODE: $00000115 VOL: 0
+;PCODE: $00000116 VOL: 0
+; 0001 0166 break;
+;PCODE: $00000117 VOL: 0
+; 0001 0167 case 'W': ReadCalibrationByte();
+;PCODE: $00000118 VOL: 0
+;PCODE: $00000119 VOL: 0
+;PCODE: $0000011A VOL: 0
+;PCODE: $0000011B VOL: 0
+;PCODE: $0000011C VOL: 0
+; 0001 0168 break;
+;PCODE: $0000011D VOL: 0
+; 0001 0169 case 'd': ReadData();
+;PCODE: $0000011E VOL: 0
+;PCODE: $0000011F VOL: 0
+;PCODE: $00000120 VOL: 0
+;PCODE: $00000121 VOL: 0
+;PCODE: $00000122 VOL: 0
+; 0001 016A break;
+;PCODE: $00000123 VOL: 0
+; 0001 016B case 'g': ReadBlockCommand();
+;PCODE: $00000124 VOL: 0
+;PCODE: $00000125 VOL: 0
+;PCODE: $00000126 VOL: 0
+;PCODE: $00000127 VOL: 0
+;PCODE: $00000128 VOL: 0
+; 0001 016C break;
+;PCODE: $00000129 VOL: 0
+; 0001 016D case 'B': WriteBlockCommand();
+;PCODE: $0000012A VOL: 0
+;PCODE: $0000012B VOL: 0
+;PCODE: $0000012C VOL: 0
+;PCODE: $0000012D VOL: 0
+;PCODE: $0000012E VOL: 0
+; 0001 016E break;
+;PCODE: $0000012F VOL: 0
+; 0001 016F case 'R': ReadProg(0x28, 0x20);
+;PCODE: $00000130 VOL: 0
+;PCODE: $00000131 VOL: 0
+;PCODE: $00000132 VOL: 0
+;PCODE: $00000133 VOL: 0
+;PCODE: $00000134 VOL: 0
+;PCODE: $00000135 VOL: 0
+;PCODE: $00000136 VOL: 0
+;PCODE: $00000137 VOL: 0
+;PCODE: $00000138 VOL: 0
+; 0001 0170 break;
+;PCODE: $00000139 VOL: 0
+; 0001 0171 case 'c': WriteProgOneLB();
+;PCODE: $0000013A VOL: 0
+;PCODE: $0000013B VOL: 0
+;PCODE: $0000013C VOL: 0
+;PCODE: $0000013D VOL: 0
+;PCODE: $0000013E VOL: 0
+; 0001 0172 break;
+;PCODE: $0000013F VOL: 0
+; 0001 0173 case 'C': WriteProgOneHB();
+;PCODE: $00000140 VOL: 0
+;PCODE: $00000141 VOL: 0
+;PCODE: $00000142 VOL: 0
+;PCODE: $00000143 VOL: 0
+;PCODE: $00000144 VOL: 0
+; 0001 0174 break;
+;PCODE: $00000145 VOL: 0
+; 0001 0175 case 'm': WritePage(); PutOneChar(ACK);// OK
+;PCODE: $00000146 VOL: 0
+;PCODE: $00000147 VOL: 0
+;PCODE: $00000148 VOL: 0
+;PCODE: $00000149 VOL: 0
+;PCODE: $0000014A VOL: 0
+;PCODE: $0000014B VOL: 0
+;PCODE: $0000014C VOL: 0
+;PCODE: $0000014D VOL: 0
+; 0001 0176 break;
+;PCODE: $0000014E VOL: 0
+; 0001 0177 case 'D': WriteOneData();
+;PCODE: $0000014F VOL: 0
+;PCODE: $00000150 VOL: 0
+;PCODE: $00000151 VOL: 0
+;PCODE: $00000152 VOL: 0
+;PCODE: $00000153 VOL: 0
+; 0001 0178 break;
+;PCODE: $00000154 VOL: 0
+; 0001 0179 default: PutOneChar(NACK);
+;PCODE: $00000155 VOL: 0
+;PCODE: $00000156 VOL: 0
+;PCODE: $00000157 VOL: 0
+;PCODE: $00000158 VOL: 0
+; 0001 017A break;
+;PCODE: $00000159 VOL: 0
+; 0001 017B }
+;PCODE: $0000015A VOL: 0
+; 0001 017C 
+; 0001 017D // если байт параметров команды не хватает, ждем
+; 0001 017E if(TRUE == g_NeedParams)
+;PCODE: $0000015B VOL: 0
+;PCODE: $0000015C VOL: 0
+;PCODE: $0000015D VOL: 0
+; 0001 017F break;
+;PCODE: $0000015E VOL: 0
+; 0001 0180 }
+;PCODE: $0000015F VOL: 0
+;PCODE: $00000160 VOL: 0
+;PCODE: $00000161 VOL: 0
+; 0001 0181 }
+;PCODE: $00000162 VOL: 0
+;PCODE: $00000163 VOL: 0
+;void ReBoot(void)
+; 0001 0183 {
+;PCODE: $00000164 VOL: 0
+;PCODE: $00000165 VOL: 0
+; 0001 0184 CHAR param;
+; 0001 0185 CheckCommParams(1);
+;PCODE: $00000166 VOL: 0
+;	param -> R17
+;PCODE: $00000167 VOL: 0
+;PCODE: $00000168 VOL: 0
+;PCODE: $00000169 VOL: 0
+; 0001 0186 if(TRUE == g_NeedParams)
+;PCODE: $0000016A VOL: 0
+;PCODE: $0000016B VOL: 0
+;PCODE: $0000016C VOL: 0
+; 0001 0187 return;
+;PCODE: $0000016D VOL: 0
+;PCODE: $0000016E VOL: 0
+; 0001 0188 
+; 0001 0189 param = GetOneChar();
+;PCODE: $0000016F VOL: 0
+;PCODE: $00000170 VOL: 0
+;PCODE: $00000171 VOL: 0
+; 0001 018A switch(param){
+;PCODE: $00000172 VOL: 0
+;PCODE: $00000173 VOL: 0
+; 0001 018B case 'D':PrintImage();
+;PCODE: $00000174 VOL: 0
+;PCODE: $00000175 VOL: 0
+;PCODE: $00000176 VOL: 0
+;PCODE: $00000177 VOL: 0
+; 0001 018C break;
+;PCODE: $00000178 VOL: 0
+; 0001 018D //case 'R':SetValueReady("ready",'0');
+; 0001 018E //         Call_GetDir();
+; 0001 018F break;
+;PCODE: $00000179 VOL: 0
+; 0001 0190 case '.':
+;PCODE: $0000017A VOL: 0
+;PCODE: $0000017B VOL: 0
+;PCODE: $0000017C VOL: 0
+;PCODE: $0000017D VOL: 0
+; 0001 0191 {
+; 0001 0192 #asm("WDR")
+;PCODE: $0000017E VOL: 0
+; 0001 0193 WDTCSR=0x18;
+;PCODE: $0000017F VOL: 0
+;PCODE: $00000180 VOL: 0
+; 0001 0194 WDTCSR=0x08|0x07;//2sec
+;PCODE: $00000181 VOL: 0
+;PCODE: $00000182 VOL: 0
+; 0001 0195 #ifdef  PRINT_DEBUG
+; 0001 0196 if(debug)printf("\r\nRebooting to bootlader...");
+; 0001 0197 #endif
+; 0001 0198 //delay_ms(1000);
+; 0001 0199 //((void(*)(void))(char *)0x3C00)(); // jump to 0x0000
+; 0001 019A }
+; 0001 019B break;
+;PCODE: $00000183 VOL: 0
+; 0001 019C default:
+;PCODE: $00000184 VOL: 0
+; 0001 019D break;
+;PCODE: $00000185 VOL: 0
+; 0001 019E }
+;PCODE: $00000186 VOL: 0
+; 0001 019F 
+; 0001 01A0 }
+;PCODE: $00000187 VOL: 0
+;PCODE: $00000188 VOL: 0
+;PCODE: $00000189 VOL: 0
+;UCHAR AVR910_IsRxData(UCHAR **data)
+; 0001 01A6 {
+;PCODE: $0000018A VOL: 0
+;PCODE: $0000018B VOL: 0
+; 0001 01A7 *data = &g_txBuf[g_txRD]; // устанавливаем адрес начала читаемых данных
+;	*data -> Y+0
+;PCODE: $0000018C VOL: 0
+;PCODE: $0000018D VOL: 0
+;PCODE: $0000018E VOL: 0
+;PCODE: $0000018F VOL: 0
+;PCODE: $00000190 VOL: 0
+; 0001 01A8 return (g_txWR - g_txRD); // возвращаем длину данных
+;PCODE: $00000191 VOL: 0
+;PCODE: $00000192 VOL: 0
+;PCODE: $00000193 VOL: 0
+;PCODE: $00000194 VOL: 0
+;PCODE: $00000195 VOL: 0
+; 0001 01A9 }
+;PCODE: $00000196 VOL: 0
+;void AVR910_ResetTXData(void)
+; 0001 01B1 {
+;PCODE: $00000197 VOL: 0
+;PCODE: $00000198 VOL: 0
+; 0001 01B2 g_txRD = g_txWR = 0;
+;PCODE: $00000199 VOL: 0
+;PCODE: $0000019A VOL: 0
+;PCODE: $0000019B VOL: 0
+; 0001 01B3 }
+;PCODE: $0000019C VOL: 0
+;PCODE: $0000019D VOL: 0
+;void AVR910_ClearTXData(UCHAR bytesRead)
+; 0001 01B5 {
+;PCODE: $0000019E VOL: 0
+;PCODE: $0000019F VOL: 0
+; 0001 01B6 // очищаем буфер от прочитанных данных и
+; 0001 01B7 // вычисляем новый указатель данных
+; 0001 01B8 g_txRD += bytesRead;
+;	bytesRead -> Y+0
+;PCODE: $000001A0 VOL: 0
+;PCODE: $000001A1 VOL: 0
+;PCODE: $000001A2 VOL: 0
+;PCODE: $000001A3 VOL: 0
+; 0001 01B9 
+; 0001 01BA // проверяем, пуст ли буфер
+; 0001 01BB if(g_txRD == g_txWR)
+;PCODE: $000001A4 VOL: 0
+;PCODE: $000001A5 VOL: 0
+;PCODE: $000001A6 VOL: 0
+;PCODE: $000001A7 VOL: 0
+; 0001 01BC {
+; 0001 01BD // если да, то сбрасываем буфер в ноль и
+; 0001 01BE // проверяем блочный режим работы и операцию чтения
+; 0001 01BF g_txRD = g_txWR = 0;
+;PCODE: $000001A8 VOL: 0
+;PCODE: $000001A9 VOL: 0
+;PCODE: $000001AA VOL: 0
+; 0001 01C0 if((TRUE == g_BlockMode) &&
+; 0001 01C1 (OPERATION_READ == g_Operation))
+;PCODE: $000001AB VOL: 0
+;PCODE: $000001AC VOL: 0
+;PCODE: $000001AD VOL: 0
+;PCODE: $000001AE VOL: 0
+;PCODE: $000001AF VOL: 0
+;PCODE: $000001B0 VOL: 0
+;PCODE: $000001B1 VOL: 0
+;PCODE: $000001B2 VOL: 0
+;PCODE: $000001B3 VOL: 0
+;PCODE: $000001B4 VOL: 0
+; 0001 01C2 ReadBlock();
+;PCODE: $000001B5 VOL: 0
+; 0001 01C3 }
+;PCODE: $000001B6 VOL: 0
+; 0001 01C4 }
+;PCODE: $000001B7 VOL: 0
+;PCODE: $000001B8 VOL: 0
+;PCODE: $000001B9 VOL: 0
+;PCODE: $000001BA VOL: 0
+;void AVR910_SendRxToUart(void)
+; 0001 01C6 {
+;PCODE: $000001BB VOL: 0
+;PCODE: $000001BC VOL: 0
+; 0001 01C7 UCHAR *data;
+; 0001 01C8 UCHAR bytesRead;
+; 0001 01C9 while((bytesRead = AVR910_IsRxData(&data)) > 0){
+;PCODE: $000001BD VOL: 0
+;	*data -> R16,R17
+;	bytesRead -> R19
+;PCODE: $000001BE VOL: 0
+;PCODE: $000001BF VOL: 0
+;PCODE: $000001C0 VOL: 0
+;PCODE: $000001C1 VOL: 0
+;PCODE: $000001C2 VOL: 0
+;PCODE: $000001C3 VOL: 0
+;PCODE: $000001C4 VOL: 0
+;PCODE: $000001C5 VOL: 0
+;PCODE: $000001C6 VOL: 0
+;PCODE: $000001C7 VOL: 0
+;PCODE: $000001C8 VOL: 0
+;PCODE: $000001C9 VOL: 0
+; 0001 01CA AVR910_ClearTXData(bytesRead);
+;PCODE: $000001CA VOL: 0
+;PCODE: $000001CB VOL: 0
+; 0001 01CB while(bytesRead--)
+;PCODE: $000001CC VOL: 0
+;PCODE: $000001CD VOL: 0
+;PCODE: $000001CE VOL: 0
+;PCODE: $000001CF VOL: 0
+;PCODE: $000001D0 VOL: 0
+;PCODE: $000001D1 VOL: 0
+; 0001 01CC #ifndef  USART_SPI
+; 0001 01CD putchar(*data++);
+; 0001 01CE #else
+; 0001 01CF *data++;
+;PCODE: $000001D2 VOL: 0
+;PCODE: $000001D3 VOL: 0
+;PCODE: $000001D4 VOL: 0
+;PCODE: $000001D5 VOL: 0
+;PCODE: $000001D6 VOL: 0
+;PCODE: $000001D7 VOL: 0
+; 0001 01D1 }
+;PCODE: $000001D8 VOL: 0
+;PCODE: $000001D9 VOL: 0
+; 0001 01D2 }
+;PCODE: $000001DA VOL: 0
+;PCODE: $000001DB VOL: 0
+;PCODE: $000001DC VOL: 0
+;PCODE: $000001DD VOL: 0
+;UCHAR ExSPI(UCHAR wr_data)
+; 0001 01D8 {
+;PCODE: $000001DE VOL: 0
+;PCODE: $000001DF VOL: 0
+; 0001 01D9 UCHAR ddd;
+; 0001 01DA 
+; 0001 01DB // проверяем джампер low_sck
+; 0001 01DC //  	if(ISP_PIN & (1 << PIN_LOW_SCK)) // не замкнут, аппаратный SPI
+; 0001 01DD //	{
+; 0001 01DE //        SPI_ON();	// включаем SPI
+; 0001 01DF //        SPDR = wr_data;	// загружаем SPI данными
+; 0001 01E0 //        while(!(SPSR & (1<<SPIF))){};	// ждем окончания передачи
+; 0001 01E1 //		return SPDR;	// возвращаем принятые данные
+; 0001 01E2 //    }
+; 0001 01E3 //    else // иначе софтверный SPI
+; 0001 01E4 {
+;PCODE: $000001E0 VOL: 0
+;	wr_data -> Y+1
+;	ddd -> R17
+; 0001 01E5 #ifdef USART_SPI
+; 0001 01E6 {
+; 0001 01E7 /* Wait for empty transmit buffer */
+; 0001 01E8 while ( ( UCSR0A & (1<<UDRE0))==0 );
+;PCODE: $000001E1 VOL: 0
+;PCODE: $000001E2 VOL: 0
+;PCODE: $000001E3 VOL: 0
+;PCODE: $000001E4 VOL: 0
+;PCODE: $000001E5 VOL: 0
+;PCODE: $000001E6 VOL: 0
+; 0001 01E9 /* Clear RXC0 before sends the data */
+; 0001 01EA ddd = UDR0;
+;PCODE: $000001E7 VOL: 0
+;PCODE: $000001E8 VOL: 0
+; 0001 01EB /* Put data into buffer, sends the data */
+; 0001 01EC UDR0 = wr_data;
+;PCODE: $000001E9 VOL: 0
+;PCODE: $000001EA VOL: 0
+; 0001 01ED /* Wait for data to be received */
+; 0001 01EE while ( (UCSR0A & (1<<RXC0))==0 );
+;PCODE: $000001EB VOL: 0
+;PCODE: $000001EC VOL: 0
+;PCODE: $000001ED VOL: 0
+;PCODE: $000001EE VOL: 0
+;PCODE: $000001EF VOL: 0
+;PCODE: $000001F0 VOL: 0
+; 0001 01EF /* Get and return received data from buffer */
+; 0001 01F0 //g_MyUDR=UDR0;
+; 0001 01F1 //return g_MyUDR;
+; 0001 01F2 return UDR0;
+;PCODE: $000001F1 VOL: 0
+;PCODE: $000001F2 VOL: 0
+;PCODE: $000001F3 VOL: 0
+;PCODE: $000001F4 VOL: 0
+;PCODE: $000001F5 VOL: 0
+; 0001 01F3 }
+; 0001 01F4 #else
+; 0001 01F5 //SPI_OFF();	// выключаем аппаратный SPI
+; 0001 01F6 UCHAR i;
+; 0001 01F7 UCHAR rd_data=0;
+; 0001 01F8 for(i = 0; i < 8; i++)
+; 0001 01F9 {
+; 0001 01FA // отправляем старший бит отправляемого байта
+; 0001 01FB if(0 != (wr_data & 0x80))
+; 0001 01FC SET_MOSI();//ISP_PORT |= (1 << PIN_MOSI); // = 1
+; 0001 01FD else
+; 0001 01FE CLR_MOSI();//ISP_PORT &= ~(1 << PIN_MOSI);	// = 0
+; 0001 01FF 
+; 0001 0200 // подготавливаем следующий бит
+; 0001 0201 wr_data <<=1;
+; 0001 0202 
+; 0001 0203 // принимаем очередной (начиная со старшего) бит
+; 0001 0204 // принимаемого байта
+; 0001 0205 rd_data <<= 1;
+; 0001 0206 if(0 != READ_MISO())//(ISP_PIN & (1 << PIN_MISO)))
+; 0001 0207 rd_data++; // устанавливаем единичный бит, если высокий принимаемый уровень
+; 0001 0208 
+; 0001 0209 // формируем импульс на выводе SCK МК
+; 0001 020A SET_SCK();//ISP_PORT |= (1 << PIN_SCK);	// высокий
+; 0001 020B if(g_IsFuseClock==TRUE)
+; 0001 020C FUSE_SCK_DELEY;
+; 0001 020D else
+; 0001 020E LOW_SCK_DELEY(); // задержка
+; 0001 020F CLR_SCK();//ISP_PORT &= ~(1 << PIN_SCK);	// низкий
+; 0001 0210 if(g_IsFuseClock==TRUE)
+; 0001 0211 FUSE_SCK_DELEY;
+; 0001 0212 else
+; 0001 0213 LOW_SCK_DELEY(); // задержка
+; 0001 0214 }
+; 0001 0215 return rd_data;
+; 0001 0216 #endif
+; 0001 0217 }
+; 0001 0218 }
+;PCODE: $000001F6 VOL: 0
+;void CatchPorts(void)
+; 0001 021E {
+;PCODE: $000001F7 VOL: 0
+;PCODE: $000001F8 VOL: 0
+; 0001 021F // подключаем выводы SPI к ISP разъему
+; 0001 0220 //ISP_DDR  |= (1 << PIN_SCK) | (1 << PIN_MOSI) | (1 << PIN_RESET);
+; 0001 0221 
+; 0001 0222 // подтягиваем пуллап к выводу MISO
+; 0001 0223 //ISP_PORT |= (1 << PIN_MISO);
+; 0001 0224 
+; 0001 0225 if(g_DeviceType == S89)
+;PCODE: $000001F9 VOL: 0
+;PCODE: $000001FA VOL: 0
+;PCODE: $000001FB VOL: 0
+; 0001 0226 SET_RESET();
+;PCODE: $000001FC VOL: 0
+;PCODE: $000001FD VOL: 0
+; 0001 0227 else{
+;PCODE: $000001FE VOL: 0
+;PCODE: $000001FF VOL: 0
+; 0001 0228 #asm("nop");
+;PCODE: $00000200 VOL: 0
+; 0001 0229 //delay_ms(30);
+; 0001 022A }
+;PCODE: $00000201 VOL: 0
+; 0001 022B 
+; 0001 022C /* ReSet MSPI mode of operation and SPI data mode 0. */
+; 0001 022D UCSR0C =0;
+;PCODE: $00000202 VOL: 0
+;PCODE: $00000203 VOL: 0
+; 0001 022E /* Disable receiver and transmitter. */
+; 0001 022F UCSR0B =0;
+;PCODE: $00000204 VOL: 0
+;PCODE: $00000205 VOL: 0
+; 0001 0230 UBRR0H = 0;
+;PCODE: $00000206 VOL: 0
+;PCODE: $00000207 VOL: 0
+; 0001 0231 //UBRR0L = 0;
+; 0001 0232 /* Setting the XCKn port pin as output, enables master
+; 0001 0233 mode. */
+; 0001 0234 DDRD.4=1;
+;PCODE: $00000208 VOL: 0
+;PCODE: $00000209 VOL: 0
+; 0001 0235 PORTD.4=1;//spi sck HIGH before reset HIGH
+;PCODE: $0000020A VOL: 0
+;PCODE: $0000020B VOL: 0
+; 0001 0236 delay_ms(1);
+;PCODE: $0000020C VOL: 0
+;PCODE: $0000020D VOL: 0
+;PCODE: $0000020E VOL: 0
+; 0001 0237 DDRD.5=1;//set reset as output
+;PCODE: $0000020F VOL: 0
+;PCODE: $00000210 VOL: 0
+; 0001 0238 PORTD.5=0;//spi reset high
+;PCODE: $00000211 VOL: 0
+;PCODE: $00000212 VOL: 0
+; 0001 0239 delay_ms(1);
+;PCODE: $00000213 VOL: 0
+;PCODE: $00000214 VOL: 0
+;PCODE: $00000215 VOL: 0
+; 0001 023A PORTD.4=0;//spi sck low before reset low
+;PCODE: $00000216 VOL: 0
+;PCODE: $00000217 VOL: 0
+; 0001 023B delay_ms(1);
+;PCODE: $00000218 VOL: 0
+;PCODE: $00000219 VOL: 0
+;PCODE: $0000021A VOL: 0
+; 0001 023C DDRD.1=1;//MOSI as out
+;PCODE: $0000021B VOL: 0
+;PCODE: $0000021C VOL: 0
+; 0001 023D DDRD.0=0;//MISO as in
+;PCODE: $0000021D VOL: 0
+;PCODE: $0000021E VOL: 0
+; 0001 023E PORTD.0=1;
+;PCODE: $0000021F VOL: 0
+;PCODE: $00000220 VOL: 0
+; 0001 023F delay_ms(1);
+;PCODE: $00000221 VOL: 0
+;PCODE: $00000222 VOL: 0
+;PCODE: $00000223 VOL: 0
+; 0001 0240 PORTD.0=0;
+;PCODE: $00000224 VOL: 0
+;PCODE: $00000225 VOL: 0
+; 0001 0241 /* Set MSPI mode of operation and SPI data mode 0. */
+; 0001 0242 UCSR0C =
+; 0001 0243 (1<<UMSEL01)|(1<<UMSEL00)|(0<<UCPHA0)|(0<<UCPOL0);
+;PCODE: $00000226 VOL: 0
+;PCODE: $00000227 VOL: 0
+; 0001 0244 /* Enable receiver and transmitter. */
+; 0001 0245 UCSR0B = (1<<RXEN0)|(1<<TXEN0);
+;PCODE: $00000228 VOL: 0
+;PCODE: $00000229 VOL: 0
+; 0001 0246 /* Set baud rate. */
+; 0001 0247 /* IMPORTANT: The Baud Rate must be set after the
+; 0001 0248 transmitter is enabled */
+; 0001 0249 //UBRR0L = 12;//baud;
+; 0001 024A //UBRR0L = 255;//baud;
+; 0001 024B g_MyUDR=UDR0;
+;PCODE: $0000022A VOL: 0
+;PCODE: $0000022B VOL: 0
+; 0001 024C 
+; 0001 024D PORTD.5=1;//spi reset low
+;PCODE: $0000022C VOL: 0
+;PCODE: $0000022D VOL: 0
+; 0001 024E //ISP_ON();
+; 0001 024F 
+; 0001 0250 // разрешаем SPI и устанавливаем скорость
+; 0001 0251 //SPI_ON();
+; 0001 0252 
+; 0001 0253 // переводим RESET в активное состояние
+; 0001 0254 if(g_DeviceType == S89)
+;PCODE: $0000022E VOL: 0
+;PCODE: $0000022F VOL: 0
+;PCODE: $00000230 VOL: 0
+; 0001 0255 SET_RESET();
+;PCODE: $00000231 VOL: 0
+;PCODE: $00000232 VOL: 0
+; 0001 0256 //else
+; 0001 0257 //CLR_RESET();
+; 0001 0258 AVR_DELAY_RESET();	// задержка
+;PCODE: $00000233 VOL: 0
+;PCODE: $00000234 VOL: 0
+;PCODE: $00000235 VOL: 0
+;PCODE: $00000236 VOL: 0
+; 0001 0259 
+; 0001 025A }
+;PCODE: $00000237 VOL: 0
+;PCODE: $00000238 VOL: 0
+;void ReleasePorts(void)
+; 0001 0260 {
+;PCODE: $00000239 VOL: 0
+;PCODE: $0000023A VOL: 0
+; 0001 0261 //CatchPorts();
+; 0001 0262 // запрещаем SPI
+; 0001 0263 //ISP_OFF();
+; 0001 0264 // отключаем выводы SPI от ISP разъема
+; 0001 0265 //ISP_DDR &=  ~((1 << PIN_SCK) | (1 << PIN_MISO) | (1 << PIN_MOSI) | (1 << PIN_RESET));
+; 0001 0266 //ISP_PORT &= ~((1 << PIN_SCK) | (1 << PIN_MISO) | (1 << PIN_MOSI) | (1 << PIN_RESET));
+; 0001 0267 }
+;PCODE: $0000023B VOL: 0
+;PCODE: $0000023C VOL: 0
+;UCHAR GetOneChar(void)
+; 0001 026D {
+;PCODE: $0000023D VOL: 0
+;PCODE: $0000023E VOL: 0
+; 0001 026E /*if(g_rxLen > 0)
+; 0001 026F {
+; 0001 0270 g_rxLen--;
+; 0001 0271 return *g_rxBuf++;
+; 0001 0272 }
+; 0001 0273 
+; 0001 0274 return 0;*/
+; 0001 0275 return FIFO_Read();
+;PCODE: $0000023F VOL: 0
+;PCODE: $00000240 VOL: 0
+; 0001 0276 }
+;PCODE: $00000241 VOL: 0
+;void PutOneChar(UCHAR data)
+; 0001 027D {
+;PCODE: $00000242 VOL: 0
+;PCODE: $00000243 VOL: 0
+; 0001 027E if(g_txWR < AVR910_TX_DATA_SIZE)
+;	data -> Y+0
+;PCODE: $00000244 VOL: 0
+;PCODE: $00000245 VOL: 0
+;PCODE: $00000246 VOL: 0
+; 0001 027F g_txBuf[g_txWR++] = data;
+;PCODE: $00000247 VOL: 0
+;PCODE: $00000248 VOL: 0
+;PCODE: $00000249 VOL: 0
+;PCODE: $0000024A VOL: 0
+;PCODE: $0000024B VOL: 0
+;PCODE: $0000024C VOL: 0
+;PCODE: $0000024D VOL: 0
+;PCODE: $0000024E VOL: 0
+; 0001 0280 }
+;PCODE: $0000024F VOL: 0
+;PCODE: $00000250 VOL: 0
+;PCODE: $00000251 VOL: 0
+;PCODE: $00000252 VOL: 0
+;UCHAR Write123(UCHAR byte1, UCHAR byte2, UCHAR byte3)
+; 0001 0286 {
+;PCODE: $00000253 VOL: 0
+;PCODE: $00000254 VOL: 0
+; 0001 0287 ExSPI(byte1);
+;	byte1 -> Y+2
+;	byte2 -> Y+1
+;	byte3 -> Y+0
+;PCODE: $00000255 VOL: 0
+;PCODE: $00000256 VOL: 0
+;PCODE: $00000257 VOL: 0
+; 0001 0288 ExSPI(byte2);
+;PCODE: $00000258 VOL: 0
+;PCODE: $00000259 VOL: 0
+;PCODE: $0000025A VOL: 0
+; 0001 0289 #ifdef USART_SPI
+; 0001 028A g_MyUDR=ExSPI(byte3);
+;PCODE: $0000025B VOL: 0
+;PCODE: $0000025C VOL: 0
+;PCODE: $0000025D VOL: 0
+;PCODE: $0000025E VOL: 0
+; 0001 028B return g_MyUDR;
+;PCODE: $0000025F VOL: 0
+;PCODE: $00000260 VOL: 0
+;PCODE: $00000261 VOL: 0
+; 0001 028C #endif
+; 0001 028D return ExSPI(byte3);
+;PCODE: $00000262 VOL: 0
+;PCODE: $00000263 VOL: 0
+;PCODE: $00000264 VOL: 0
+;PCODE: $00000265 VOL: 0
+;PCODE: $00000266 VOL: 0
+; 0001 028E }
+;PCODE: $00000267 VOL: 0
+;UCHAR Write1234(UCHAR byte1, UCHAR byte2, UCHAR byte3, UCHAR byte4)
+; 0001 0294 {
+;PCODE: $00000268 VOL: 0
+;PCODE: $00000269 VOL: 0
+; 0001 0295 ExSPI(byte1);
+;	byte1 -> Y+3
+;	byte2 -> Y+2
+;	byte3 -> Y+1
+;	byte4 -> Y+0
+;PCODE: $0000026A VOL: 0
+;PCODE: $0000026B VOL: 0
+;PCODE: $0000026C VOL: 0
+; 0001 0296 ExSPI(byte2);
+;PCODE: $0000026D VOL: 0
+;PCODE: $0000026E VOL: 0
+;PCODE: $0000026F VOL: 0
+; 0001 0297 ExSPI(byte3);
+;PCODE: $00000270 VOL: 0
+;PCODE: $00000271 VOL: 0
+;PCODE: $00000272 VOL: 0
+; 0001 0298 #ifdef USART_SPI
+; 0001 0299 g_MyUDR=ExSPI(byte4);
+;PCODE: $00000273 VOL: 0
+;PCODE: $00000274 VOL: 0
+;PCODE: $00000275 VOL: 0
+;PCODE: $00000276 VOL: 0
+; 0001 029A return g_MyUDR;
+;PCODE: $00000277 VOL: 0
+;PCODE: $00000278 VOL: 0
+;PCODE: $00000279 VOL: 0
+; 0001 029B #endif
+; 0001 029C return ExSPI(byte4);
+;PCODE: $0000027A VOL: 0
+;PCODE: $0000027B VOL: 0
+;PCODE: $0000027C VOL: 0
+;PCODE: $0000027D VOL: 0
+;PCODE: $0000027E VOL: 0
+; 0001 029D }
+;PCODE: $0000027F VOL: 0
+;void SetProgMode(void)
+; 0001 02A3 {
+;PCODE: $00000280 VOL: 0
+;PCODE: $00000281 VOL: 0
+; 0001 02A4 UCHAR progOK=0;
+; 0001 02A5 UCHAR c;
+; 0001 02A6 UCHAR err = ACK;
+; 0001 02A7 UCHAR ctrl_byte;
+; 0001 02A8 LED_RD_ON();
+;PCODE: $00000282 VOL: 0
+;	progOK -> R17
+;	c -> R16
+;	err -> R19
+;	ctrl_byte -> R18
+;PCODE: $00000283 VOL: 0
+;PCODE: $00000284 VOL: 0
+;PCODE: $00000285 VOL: 0
+;PCODE: $00000286 VOL: 0
+;PCODE: $00000287 VOL: 0
+;PCODE: $00000288 VOL: 0
+; 0001 02A9 LED_WR_ON();
+;PCODE: $00000289 VOL: 0
+;PCODE: $0000028A VOL: 0
+; 0001 02AA g_IsFuseClock=TRUE;
+;PCODE: $0000028B VOL: 0
+;PCODE: $0000028C VOL: 0
+; 0001 02AB ReleasePorts(); 	// отключаем порты
+;PCODE: $0000028D VOL: 0
+; 0001 02AC // проверяем код устройства
+; 0001 02AD if(S89 == g_DeviceType) //89S
+;PCODE: $0000028E VOL: 0
+;PCODE: $0000028F VOL: 0
+;PCODE: $00000290 VOL: 0
+; 0001 02AE {
+; 0001 02AF //ReleasePorts(); // отключаем порты
+; 0001 02B0 CatchPorts();	// подключаем порты к ISP
+;PCODE: $00000291 VOL: 0
+; 0001 02B1 S89_DELAY_RESET();	// задержка
+;PCODE: $00000292 VOL: 0
+;PCODE: $00000293 VOL: 0
+;PCODE: $00000294 VOL: 0
+; 0001 02B2 
+; 0001 02B3 // посылаем команду входа в режим программирования
+; 0001 02B4 S89_PROG_EN();
+;PCODE: $00000295 VOL: 0
+;PCODE: $00000296 VOL: 0
+;PCODE: $00000297 VOL: 0
+;PCODE: $00000298 VOL: 0
+;PCODE: $00000299 VOL: 0
+;PCODE: $0000029A VOL: 0
+;PCODE: $0000029B VOL: 0
+; 0001 02B5 progOK=1;
+;PCODE: $0000029C VOL: 0
+;PCODE: $0000029D VOL: 0
+; 0001 02B6 }
+; 0001 02B7 else
+;PCODE: $0000029E VOL: 0
+;PCODE: $0000029F VOL: 0
+; 0001 02B8 {
+; 0001 02B9 // синхронизируемся с подключенным чипом
+; 0001 02BA #ifdef PRINT_LCD
+; 0001 02BB lcd_putsf_row(3,"Echo53:");
+; 0001 02BC #endif
+; 0001 02BD for(c = 0; c < 3; c++)
+;PCODE: $000002A0 VOL: 0
+;PCODE: $000002A1 VOL: 0
+;PCODE: $000002A2 VOL: 0
+;PCODE: $000002A3 VOL: 0
+;PCODE: $000002A4 VOL: 0
+;PCODE: $000002A5 VOL: 0
+;PCODE: $000002A6 VOL: 0
+;PCODE: $000002A7 VOL: 0
+;PCODE: $000002A8 VOL: 0
+; 0001 02BE {
+; 0001 02BF 
+; 0001 02C0 CatchPorts();		// подключаем порты к ISP
+;PCODE: $000002A9 VOL: 0
+; 0001 02C1 //AVR_DELAY_RESET();	// задержка
+; 0001 02C2 
+; 0001 02C3 // 32 цикла попыток засинхронизироваться с программируемым МК
+; 0001 02C4 
+; 0001 02C5 // пытаемся вывести чип в режим программирования
+; 0001 02C6 // при посылке 3-го байта в SPI чип должен вернуть код предыдущей посылки
+; 0001 02C7 ctrl_byte = AVR_PROG_EN();
+;PCODE: $000002AA VOL: 0
+;PCODE: $000002AB VOL: 0
+;PCODE: $000002AC VOL: 0
+;PCODE: $000002AD VOL: 0
+;PCODE: $000002AE VOL: 0
+;PCODE: $000002AF VOL: 0
+;PCODE: $000002B0 VOL: 0
+;PCODE: $000002B1 VOL: 0
+; 0001 02C8 ExSPI(0x00);
+;PCODE: $000002B2 VOL: 0
+;PCODE: $000002B3 VOL: 0
+;PCODE: $000002B4 VOL: 0
+; 0001 02C9 #ifdef PRINT_LCD
+; 0001 02CA lcd_puts_hex(g_MyUDR);
+; 0001 02CB #endif
+; 0001 02CC // получили верный контрольный байт - синхронизация выполнена
+; 0001 02CD if(0x53 == ctrl_byte){
+;PCODE: $000002B5 VOL: 0
+;PCODE: $000002B6 VOL: 0
+;PCODE: $000002B7 VOL: 0
+; 0001 02CE progOK=1;
+;PCODE: $000002B8 VOL: 0
+;PCODE: $000002B9 VOL: 0
+; 0001 02CF break;//goto m1;
+;PCODE: $000002BA VOL: 0
+; 0001 02D0 }
+; 0001 02D1 // если нет валидного возврата, то сдвигаем при каждой попытке строб
+; 0001 02D2 /*
+; 0001 02D3 SET_SCK();
+; 0001 02D4 delay_us(50);//__delay_cycles(600); // задержка 50 мкс
+; 0001 02D5 CLR_SCK();
+; 0001 02D6 delay_us(50);//__delay_cycles(600);
+; 0001 02D7 */
+; 0001 02D8 }
+;PCODE: $000002BB VOL: 0
+;PCODE: $000002BC VOL: 0
+;PCODE: $000002BD VOL: 0
+;PCODE: $000002BE VOL: 0
+;PCODE: $000002BF VOL: 0
+;PCODE: $000002C0 VOL: 0
+; 0001 02D9 // если мы не засинхронизировались,
+; 0001 02DA // считаем, что устройство не найдено
+; 0001 02DB if(progOK==0){
+;PCODE: $000002C1 VOL: 0
+;PCODE: $000002C2 VOL: 0
+; 0001 02DC ReleasePorts(); // отключаем порты
+;PCODE: $000002C3 VOL: 0
+; 0001 02DD err = NACK; // посылаем код ошибки
+;PCODE: $000002C4 VOL: 0
+;PCODE: $000002C5 VOL: 0
+; 0001 02DE if(CanShow)
+;PCODE: $000002C6 VOL: 0
+;PCODE: $000002C7 VOL: 0
+;PCODE: $000002C8 VOL: 0
+; 0001 02DF delay_ms(500);
+;PCODE: $000002C9 VOL: 0
+;PCODE: $000002CA VOL: 0
+;PCODE: $000002CB VOL: 0
+; 0001 02E0 }
+;PCODE: $000002CC VOL: 0
+; 0001 02E1 else
+;PCODE: $000002CD VOL: 0
+;PCODE: $000002CE VOL: 0
+; 0001 02E2 delay_ms(100);
+;PCODE: $000002CF VOL: 0
+;PCODE: $000002D0 VOL: 0
+;PCODE: $000002D1 VOL: 0
+; 0001 02E3 }
+;PCODE: $000002D2 VOL: 0
+;PCODE: $000002D3 VOL: 0
+; 0001 02E4 //:m1
+; 0001 02E5 PutOneChar(err);
+;PCODE: $000002D4 VOL: 0
+;PCODE: $000002D5 VOL: 0
+; 0001 02E6 if(progOK==0){
+;PCODE: $000002D6 VOL: 0
+;PCODE: $000002D7 VOL: 0
+; 0001 02E7 LED_WR_OFF();//CLR_LED_WR();
+;PCODE: $000002D8 VOL: 0
+;PCODE: $000002D9 VOL: 0
+; 0001 02E8 LED_RD_OFF();//CLR_LED_RD();
+;PCODE: $000002DA VOL: 0
+;PCODE: $000002DB VOL: 0
+; 0001 02E9 }
+; 0001 02EA g_IsFuseClock=FALSE;
+;PCODE: $000002DC VOL: 0
+;PCODE: $000002DD VOL: 0
+;PCODE: $000002DE VOL: 0
+; 0001 02EB }
+;PCODE: $000002DF VOL: 0
+;PCODE: $000002E0 VOL: 0
+;PCODE: $000002E1 VOL: 0
+;PCODE: $000002E2 VOL: 0
+;void GetDevCodes(void)
+; 0001 02F1 {
+;PCODE: $000002E3 VOL: 0
+;PCODE: $000002E4 VOL: 0
+; 0001 02F2 UCHAR code, i = 0;
+; 0001 02F3 do
+;PCODE: $000002E5 VOL: 0
+;PCODE: $000002E6 VOL: 0
+;	code -> R17
+;	i -> R16
+;PCODE: $000002E7 VOL: 0
+;PCODE: $000002E8 VOL: 0
+;PCODE: $000002E9 VOL: 0
+; 0001 02F4 {
+; 0001 02F5 code = DeviceDesc[i];
+;PCODE: $000002EA VOL: 0
+;PCODE: $000002EB VOL: 0
+;PCODE: $000002EC VOL: 0
+;PCODE: $000002ED VOL: 0
+; 0001 02F6 PutOneChar(code);
+;PCODE: $000002EE VOL: 0
+;PCODE: $000002EF VOL: 0
+; 0001 02F7 i += 2;
+;PCODE: $000002F0 VOL: 0
+;PCODE: $000002F1 VOL: 0
+; 0001 02F8 }
+; 0001 02F9 while(0!= code);
+;PCODE: $000002F2 VOL: 0
+;PCODE: $000002F3 VOL: 0
+;PCODE: $000002F4 VOL: 0
+;PCODE: $000002F5 VOL: 0
+;PCODE: $000002F6 VOL: 0
+; 0001 02FA }
+;PCODE: $000002F7 VOL: 0
+;PCODE: $000002F8 VOL: 0
+;PCODE: $000002F9 VOL: 0
+;void SetDevType(void)
+; 0001 0302 {
+;PCODE: $000002FA VOL: 0
+;PCODE: $000002FB VOL: 0
+; 0001 0303 UCHAR code, err = NACK, i = 0, request;
+; 0001 0304 
+; 0001 0305 // проверяем, есть ли данные для команды
+; 0001 0306 CheckCommParams(1);
+;PCODE: $000002FC VOL: 0
+;	code -> R17
+;	err -> R16
+;	i -> R19
+;	request -> R18
+;PCODE: $000002FD VOL: 0
+;PCODE: $000002FE VOL: 0
+;PCODE: $000002FF VOL: 0
+;PCODE: $00000300 VOL: 0
+;PCODE: $00000301 VOL: 0
+;PCODE: $00000302 VOL: 0
+;PCODE: $00000303 VOL: 0
+; 0001 0307 if(TRUE == g_NeedParams)
+;PCODE: $00000304 VOL: 0
+;PCODE: $00000305 VOL: 0
+;PCODE: $00000306 VOL: 0
+; 0001 0308 return;
+;PCODE: $00000307 VOL: 0
+;PCODE: $00000308 VOL: 0
+;PCODE: $00000309 VOL: 0
+; 0001 0309 
+; 0001 030A request = GetOneChar();
+;PCODE: $0000030A VOL: 0
+;PCODE: $0000030B VOL: 0
+;PCODE: $0000030C VOL: 0
+; 0001 030B 
+; 0001 030C // сравниваем все коды МК в таблице устройств с полученным
+; 0001 030D // пока код МК не равен 0
+; 0001 030E while(0 != (code = DeviceDesc[i]))
+;PCODE: $0000030D VOL: 0
+;PCODE: $0000030E VOL: 0
+;PCODE: $0000030F VOL: 0
+;PCODE: $00000310 VOL: 0
+;PCODE: $00000311 VOL: 0
+;PCODE: $00000312 VOL: 0
+;PCODE: $00000313 VOL: 0
+;PCODE: $00000314 VOL: 0
+; 0001 030F {
+; 0001 0310 // если код совпал, есть поддерживаемое устройство,
+; 0001 0311 // формируем данные для устройства
+; 0001 0312 if(request == code)
+;PCODE: $00000315 VOL: 0
+;PCODE: $00000316 VOL: 0
+;PCODE: $00000317 VOL: 0
+; 0001 0313 {
+; 0001 0314 // устанавливаем тип МК
+; 0001 0315 g_DeviceCode = DeviceDesc[i];
+;PCODE: $00000318 VOL: 0
+;PCODE: $00000319 VOL: 0
+;PCODE: $0000031A VOL: 0
+;PCODE: $0000031B VOL: 0
+;PCODE: $0000031C VOL: 0
+; 0001 0316 g_DevicePollCode = DeviceDesc[i + 1];
+;PCODE: $0000031D VOL: 0
+;PCODE: $0000031E VOL: 0
+;PCODE: $0000031F VOL: 0
+;PCODE: $00000320 VOL: 0
+;PCODE: $00000321 VOL: 0
+;PCODE: $00000322 VOL: 0
+; 0001 0317 err = ACK;
+;PCODE: $00000323 VOL: 0
+;PCODE: $00000324 VOL: 0
+; 0001 0318 if(0x7F < g_DeviceCode)
+;PCODE: $00000325 VOL: 0
+;PCODE: $00000326 VOL: 0
+;PCODE: $00000327 VOL: 0
+; 0001 0319 g_DeviceType = S89;
+;PCODE: $00000328 VOL: 0
+;PCODE: $00000329 VOL: 0
+; 0001 031A else
+;PCODE: $0000032A VOL: 0
+;PCODE: $0000032B VOL: 0
+; 0001 031B if((g_DevicePollCode == 0x7F) ||
+; 0001 031C (g_DevicePollCode == 0xFF))
+;PCODE: $0000032C VOL: 0
+;PCODE: $0000032D VOL: 0
+;PCODE: $0000032E VOL: 0
+;PCODE: $0000032F VOL: 0
+;PCODE: $00000330 VOL: 0
+;PCODE: $00000331 VOL: 0
+;PCODE: $00000332 VOL: 0
+;PCODE: $00000333 VOL: 0
+; 0001 031D g_DeviceType = CLASSIC;
+;PCODE: $00000334 VOL: 0
+;PCODE: $00000335 VOL: 0
+; 0001 031E else
+;PCODE: $00000336 VOL: 0
+;PCODE: $00000337 VOL: 0
+; 0001 031F g_DeviceType = MEGA;
+;PCODE: $00000338 VOL: 0
+;PCODE: $00000339 VOL: 0
+; 0001 0320 }
+;PCODE: $0000033A VOL: 0
+;PCODE: $0000033B VOL: 0
+; 0001 0321 
+; 0001 0322 i += 2;
+;PCODE: $0000033C VOL: 0
+;PCODE: $0000033D VOL: 0
+;PCODE: $0000033E VOL: 0
+; 0001 0323 }
+;PCODE: $0000033F VOL: 0
+;PCODE: $00000340 VOL: 0
+; 0001 0324 
+; 0001 0325 PutOneChar(err);
+;PCODE: $00000341 VOL: 0
+;PCODE: $00000342 VOL: 0
+; 0001 0326 }
+;PCODE: $00000343 VOL: 0
+;PCODE: $00000344 VOL: 0
+;PCODE: $00000345 VOL: 0
+;PCODE: $00000346 VOL: 0
+;void SetLED(void)
+; 0001 032D {
+;PCODE: $00000347 VOL: 0
+;PCODE: $00000348 VOL: 0
+; 0001 032E // проверяем, есть ли данные для команды
+; 0001 032F CheckCommParams(1);
+;PCODE: $00000349 VOL: 0
+;PCODE: $0000034A VOL: 0
+;PCODE: $0000034B VOL: 0
+; 0001 0330 if(TRUE == g_NeedParams)
+;PCODE: $0000034C VOL: 0
+;PCODE: $0000034D VOL: 0
+;PCODE: $0000034E VOL: 0
+; 0001 0331 return;
+;PCODE: $0000034F VOL: 0
+; 0001 0332 
+; 0001 0333 GetOneChar();
+;PCODE: $00000350 VOL: 0
+;PCODE: $00000351 VOL: 0
+; 0001 0334 PutOneChar(ACK);
+;PCODE: $00000352 VOL: 0
+;PCODE: $00000353 VOL: 0
+;PCODE: $00000354 VOL: 0
+; 0001 0335 }
+;PCODE: $00000355 VOL: 0
+;PCODE: $00000356 VOL: 0
+;void ClrLED(void)
+; 0001 033C {
+;PCODE: $00000357 VOL: 0
+;PCODE: $00000358 VOL: 0
+; 0001 033D // проверяем, есть ли данные для команды
+; 0001 033E CheckCommParams(1);
+;PCODE: $00000359 VOL: 0
+;PCODE: $0000035A VOL: 0
+;PCODE: $0000035B VOL: 0
+; 0001 033F if(TRUE == g_NeedParams)
+;PCODE: $0000035C VOL: 0
+;PCODE: $0000035D VOL: 0
+;PCODE: $0000035E VOL: 0
+; 0001 0340 return;
+;PCODE: $0000035F VOL: 0
+; 0001 0341 
+; 0001 0342 GetOneChar();
+;PCODE: $00000360 VOL: 0
+;PCODE: $00000361 VOL: 0
+; 0001 0343 PutOneChar(ACK);
+;PCODE: $00000362 VOL: 0
+;PCODE: $00000363 VOL: 0
+;PCODE: $00000364 VOL: 0
+; 0001 0344 }
+;PCODE: $00000365 VOL: 0
+;PCODE: $00000366 VOL: 0
+;void tx123rx4(void)
+; 0001 034B {
+;PCODE: $00000367 VOL: 0
+;PCODE: $00000368 VOL: 0
+; 0001 034C UCHAR b1,b2,b3;
+; 0001 034D // проверяем, есть ли данные для команды
+; 0001 034E CheckCommParams(3);
+;PCODE: $00000369 VOL: 0
+;	b1 -> R17
+;	b2 -> R16
+;	b3 -> R19
+;PCODE: $0000036A VOL: 0
+;PCODE: $0000036B VOL: 0
+;PCODE: $0000036C VOL: 0
+; 0001 034F if(TRUE == g_NeedParams)
+;PCODE: $0000036D VOL: 0
+;PCODE: $0000036E VOL: 0
+;PCODE: $0000036F VOL: 0
+; 0001 0350 return;
+;PCODE: $00000370 VOL: 0
+;PCODE: $00000371 VOL: 0
+;PCODE: $00000372 VOL: 0
+; 0001 0351 
+; 0001 0352 LED_RD_ON();
+;PCODE: $00000373 VOL: 0
+;PCODE: $00000374 VOL: 0
+;PCODE: $00000375 VOL: 0
+; 0001 0353 LED_WR_ON();
+;PCODE: $00000376 VOL: 0
+;PCODE: $00000377 VOL: 0
+; 0001 0354 
+; 0001 0355 b1 = GetOneChar();
+;PCODE: $00000378 VOL: 0
+;PCODE: $00000379 VOL: 0
+; 0001 0356 b2 = GetOneChar();
+;PCODE: $0000037A VOL: 0
+;PCODE: $0000037B VOL: 0
+; 0001 0357 b3 = GetOneChar();
+;PCODE: $0000037C VOL: 0
+;PCODE: $0000037D VOL: 0
+; 0001 0358 PutOneChar(Write1234(b1, b2, b3, 0x00));
+;PCODE: $0000037E VOL: 0
+;PCODE: $0000037F VOL: 0
+;PCODE: $00000380 VOL: 0
+;PCODE: $00000381 VOL: 0
+;PCODE: $00000382 VOL: 0
+;PCODE: $00000383 VOL: 0
+;PCODE: $00000384 VOL: 0
+;PCODE: $00000385 VOL: 0
+; 0001 0359 PutOneChar(ACK);
+;PCODE: $00000386 VOL: 0
+;PCODE: $00000387 VOL: 0
+;PCODE: $00000388 VOL: 0
+; 0001 035A DELAY_WR_FLASH();
+;PCODE: $00000389 VOL: 0
+;PCODE: $0000038A VOL: 0
+;PCODE: $0000038B VOL: 0
+; 0001 035B 
+; 0001 035C LED_RD_OFF();
+;PCODE: $0000038C VOL: 0
+;PCODE: $0000038D VOL: 0
+; 0001 035D LED_WR_OFF();
+;PCODE: $0000038E VOL: 0
+;PCODE: $0000038F VOL: 0
+; 0001 035E }
+;PCODE: $00000390 VOL: 0
+;PCODE: $00000391 VOL: 0
+;PCODE: $00000392 VOL: 0
+;PCODE: $00000393 VOL: 0
+;void tx1234rx4(void)
+; 0001 0365 {
+;PCODE: $00000394 VOL: 0
+;PCODE: $00000395 VOL: 0
+; 0001 0366 UCHAR b1,b2,b3,b4;
+; 0001 0367 // проверяем, есть ли данные для команды
+; 0001 0368 CheckCommParams(4);
+;PCODE: $00000396 VOL: 0
+;	b1 -> R17
+;	b2 -> R16
+;	b3 -> R19
+;	b4 -> R18
+;PCODE: $00000397 VOL: 0
+;PCODE: $00000398 VOL: 0
+;PCODE: $00000399 VOL: 0
+; 0001 0369 if(TRUE == g_NeedParams)
+;PCODE: $0000039A VOL: 0
+;PCODE: $0000039B VOL: 0
+;PCODE: $0000039C VOL: 0
+; 0001 036A return;
+;PCODE: $0000039D VOL: 0
+;PCODE: $0000039E VOL: 0
+;PCODE: $0000039F VOL: 0
+; 0001 036B 
+; 0001 036C LED_RD_ON();
+;PCODE: $000003A0 VOL: 0
+;PCODE: $000003A1 VOL: 0
+;PCODE: $000003A2 VOL: 0
+; 0001 036D LED_WR_ON();
+;PCODE: $000003A3 VOL: 0
+;PCODE: $000003A4 VOL: 0
+; 0001 036E 
+; 0001 036F b1 = GetOneChar();
+;PCODE: $000003A5 VOL: 0
+;PCODE: $000003A6 VOL: 0
+; 0001 0370 b2 = GetOneChar();
+;PCODE: $000003A7 VOL: 0
+;PCODE: $000003A8 VOL: 0
+; 0001 0371 b3 = GetOneChar();
+;PCODE: $000003A9 VOL: 0
+;PCODE: $000003AA VOL: 0
+; 0001 0372 b4 = GetOneChar();
+;PCODE: $000003AB VOL: 0
+;PCODE: $000003AC VOL: 0
+; 0001 0373 PutOneChar(Write1234(b1, b2, b3, b4));
+;PCODE: $000003AD VOL: 0
+;PCODE: $000003AE VOL: 0
+;PCODE: $000003AF VOL: 0
+;PCODE: $000003B0 VOL: 0
+;PCODE: $000003B1 VOL: 0
+;PCODE: $000003B2 VOL: 0
+;PCODE: $000003B3 VOL: 0
+; 0001 0374 PutOneChar(ACK);
+;PCODE: $000003B4 VOL: 0
+;PCODE: $000003B5 VOL: 0
+;PCODE: $000003B6 VOL: 0
+; 0001 0375 DELAY_WR_FLASH();
+;PCODE: $000003B7 VOL: 0
+;PCODE: $000003B8 VOL: 0
+;PCODE: $000003B9 VOL: 0
+; 0001 0376 
+; 0001 0377 LED_RD_OFF();
+;PCODE: $000003BA VOL: 0
+;PCODE: $000003BB VOL: 0
+; 0001 0378 LED_WR_OFF();
+;PCODE: $000003BC VOL: 0
+;PCODE: $000003BD VOL: 0
+; 0001 0379 }
+;PCODE: $000003BE VOL: 0
+;PCODE: $000003BF VOL: 0
+;PCODE: $000003C0 VOL: 0
+;PCODE: $000003C1 VOL: 0
+;void WriteProgLB(void)
+; 0001 037F {
+;PCODE: $000003C2 VOL: 0
+;PCODE: $000003C3 VOL: 0
+; 0001 0380 UCHAR data;
+; 0001 0381 // зажигаем индикатор записи
+; 0001 0382 LED_WR_ON();
+;PCODE: $000003C4 VOL: 0
+;	data -> R17
+;PCODE: $000003C5 VOL: 0
+;PCODE: $000003C6 VOL: 0
+; 0001 0383 
+; 0001 0384 // получаем байт данных
+; 0001 0385 data = GetOneChar();
+;PCODE: $000003C7 VOL: 0
+;PCODE: $000003C8 VOL: 0
+; 0001 0386 
+; 0001 0387 // пишем байт
+; 0001 0388 if(g_DeviceType == S89)
+;PCODE: $000003C9 VOL: 0
+;PCODE: $000003CA VOL: 0
+;PCODE: $000003CB VOL: 0
+; 0001 0389 S89_WR_FLASH(g_Addr, data);
+;PCODE: $000003CC VOL: 0
+;PCODE: $000003CD VOL: 0
+;PCODE: $000003CE VOL: 0
+;PCODE: $000003CF VOL: 0
+;PCODE: $000003D0 VOL: 0
+;PCODE: $000003D1 VOL: 0
+;PCODE: $000003D2 VOL: 0
+;PCODE: $000003D3 VOL: 0
+;PCODE: $000003D4 VOL: 0
+;PCODE: $000003D5 VOL: 0
+;PCODE: $000003D6 VOL: 0
+;PCODE: $000003D7 VOL: 0
+;PCODE: $000003D8 VOL: 0
+;PCODE: $000003D9 VOL: 0
+;PCODE: $000003DA VOL: 0
+;PCODE: $000003DB VOL: 0
+;PCODE: $000003DC VOL: 0
+; 0001 038A else
+;PCODE: $000003DD VOL: 0
+;PCODE: $000003DE VOL: 0
+; 0001 038B AVR_WR_FLASH_LB(g_Addr, data);
+;PCODE: $000003DF VOL: 0
+;PCODE: $000003E0 VOL: 0
+;PCODE: $000003E1 VOL: 0
+;PCODE: $000003E2 VOL: 0
+;PCODE: $000003E3 VOL: 0
+;PCODE: $000003E4 VOL: 0
+;PCODE: $000003E5 VOL: 0
+;PCODE: $000003E6 VOL: 0
+;PCODE: $000003E7 VOL: 0
+;PCODE: $000003E8 VOL: 0
+; 0001 038C 
+; 0001 038D // проверяем запись байта
+; 0001 038E PollData(0x20, data);
+;PCODE: $000003E9 VOL: 0
+;PCODE: $000003EA VOL: 0
+;PCODE: $000003EB VOL: 0
+;PCODE: $000003EC VOL: 0
+;PCODE: $000003ED VOL: 0
+; 0001 038F 
+; 0001 0390 // инкрементируем адрес, если 89S
+; 0001 0391 if(S89 == g_DeviceType)
+;PCODE: $000003EE VOL: 0
+;PCODE: $000003EF VOL: 0
+;PCODE: $000003F0 VOL: 0
+; 0001 0392 g_Addr++;
+;PCODE: $000003F1 VOL: 0
+;PCODE: $000003F2 VOL: 0
+;PCODE: $000003F3 VOL: 0
+;PCODE: $000003F4 VOL: 0
+; 0001 0393 
+; 0001 0394 // гасим индикатор записи
+; 0001 0395 LED_WR_OFF();
+;PCODE: $000003F5 VOL: 0
+;PCODE: $000003F6 VOL: 0
+;PCODE: $000003F7 VOL: 0
+; 0001 0396 }
+;PCODE: $000003F8 VOL: 0
+;PCODE: $000003F9 VOL: 0
+;PCODE: $000003FA VOL: 0
+;void WriteProgHB(void)
+; 0001 039C {
+;PCODE: $000003FB VOL: 0
+;PCODE: $000003FC VOL: 0
+; 0001 039D UCHAR data;
+; 0001 039E if(S89 != g_DeviceType)
+;PCODE: $000003FD VOL: 0
+;	data -> R17
+;PCODE: $000003FE VOL: 0
+;PCODE: $000003FF VOL: 0
+;PCODE: $00000400 VOL: 0
+; 0001 039F {
+; 0001 03A0 // зажигаем индикатор записи
+; 0001 03A1 LED_WR_ON();
+;PCODE: $00000401 VOL: 0
+;PCODE: $00000402 VOL: 0
+; 0001 03A2 
+; 0001 03A3 // получаем старший байт данных
+; 0001 03A4 data = GetOneChar();
+;PCODE: $00000403 VOL: 0
+;PCODE: $00000404 VOL: 0
+; 0001 03A5 
+; 0001 03A6 // пишем в SPI старший байт
+; 0001 03A7 AVR_WR_FLASH_HB(g_Addr, data);
+;PCODE: $00000405 VOL: 0
+;PCODE: $00000406 VOL: 0
+;PCODE: $00000407 VOL: 0
+;PCODE: $00000408 VOL: 0
+;PCODE: $00000409 VOL: 0
+;PCODE: $0000040A VOL: 0
+;PCODE: $0000040B VOL: 0
+;PCODE: $0000040C VOL: 0
+;PCODE: $0000040D VOL: 0
+;PCODE: $0000040E VOL: 0
+; 0001 03A8 
+; 0001 03A9 // проверяем запись байта
+; 0001 03AA PollData(0x28, data);
+;PCODE: $0000040F VOL: 0
+;PCODE: $00000410 VOL: 0
+;PCODE: $00000411 VOL: 0
+;PCODE: $00000412 VOL: 0
+; 0001 03AB 
+; 0001 03AC // инкрементируем адрес
+; 0001 03AD g_Addr++;
+;PCODE: $00000413 VOL: 0
+;PCODE: $00000414 VOL: 0
+;PCODE: $00000415 VOL: 0
+;PCODE: $00000416 VOL: 0
+; 0001 03AE 
+; 0001 03AF // гасим индикатор записи
+; 0001 03B0 LED_WR_OFF();
+;PCODE: $00000417 VOL: 0
+;PCODE: $00000418 VOL: 0
+; 0001 03B1 }
+; 0001 03B2 }
+;PCODE: $00000419 VOL: 0
+;PCODE: $0000041A VOL: 0
+;PCODE: $0000041B VOL: 0
+;PCODE: $0000041C VOL: 0
+;void WriteProgOneLB(void)
+; 0001 03B8 {
+;PCODE: $0000041D VOL: 0
+;PCODE: $0000041E VOL: 0
+; 0001 03B9 // проверяем, есть ли данные для команды
+; 0001 03BA CheckCommParams(1);
+;PCODE: $0000041F VOL: 0
+;PCODE: $00000420 VOL: 0
+;PCODE: $00000421 VOL: 0
+; 0001 03BB if(TRUE == g_NeedParams)
+;PCODE: $00000422 VOL: 0
+;PCODE: $00000423 VOL: 0
+;PCODE: $00000424 VOL: 0
+; 0001 03BC return;
+;PCODE: $00000425 VOL: 0
+; 0001 03BD 
+; 0001 03BE WriteProgLB();
+;PCODE: $00000426 VOL: 0
+;PCODE: $00000427 VOL: 0
+; 0001 03BF PutOneChar(ACK); // OK
+;PCODE: $00000428 VOL: 0
+;PCODE: $00000429 VOL: 0
+;PCODE: $0000042A VOL: 0
+; 0001 03C0 }
+;PCODE: $0000042B VOL: 0
+;PCODE: $0000042C VOL: 0
+;void WriteProgOneHB(void)
+; 0001 03C6 {
+;PCODE: $0000042D VOL: 0
+;PCODE: $0000042E VOL: 0
+; 0001 03C7 // проверяем, есть ли данные для команды
+; 0001 03C8 CheckCommParams(1);
+;PCODE: $0000042F VOL: 0
+;PCODE: $00000430 VOL: 0
+;PCODE: $00000431 VOL: 0
+; 0001 03C9 if(TRUE == g_NeedParams)
+;PCODE: $00000432 VOL: 0
+;PCODE: $00000433 VOL: 0
+;PCODE: $00000434 VOL: 0
+; 0001 03CA return;
+;PCODE: $00000435 VOL: 0
+; 0001 03CB 
+; 0001 03CC WriteProgHB();
+;PCODE: $00000436 VOL: 0
+;PCODE: $00000437 VOL: 0
+; 0001 03CD PutOneChar(ACK); // OK
+;PCODE: $00000438 VOL: 0
+;PCODE: $00000439 VOL: 0
+;PCODE: $0000043A VOL: 0
+; 0001 03CE }
+;PCODE: $0000043B VOL: 0
+;PCODE: $0000043C VOL: 0
+;void WriteOneData(void)
+; 0001 03D4 {
+;PCODE: $0000043D VOL: 0
+;PCODE: $0000043E VOL: 0
+; 0001 03D5 // проверяем, есть ли данные для команды
+; 0001 03D6 CheckCommParams(1);
+;PCODE: $0000043F VOL: 0
+;PCODE: $00000440 VOL: 0
+;PCODE: $00000441 VOL: 0
+; 0001 03D7 if(TRUE == g_NeedParams)
+;PCODE: $00000442 VOL: 0
+;PCODE: $00000443 VOL: 0
+;PCODE: $00000444 VOL: 0
+; 0001 03D8 return;
+;PCODE: $00000445 VOL: 0
+; 0001 03D9 
+; 0001 03DA WriteData();
+;PCODE: $00000446 VOL: 0
+;PCODE: $00000447 VOL: 0
+; 0001 03DB PutOneChar(ACK); // OK
+;PCODE: $00000448 VOL: 0
+;PCODE: $00000449 VOL: 0
+;PCODE: $0000044A VOL: 0
+; 0001 03DC }
+;PCODE: $0000044B VOL: 0
+;PCODE: $0000044C VOL: 0
+;void PollData(UCHAR command, UCHAR data)
+; 0001 03E2 {
+;PCODE: $0000044D VOL: 0
+;PCODE: $0000044E VOL: 0
+; 0001 03E3 // проверяем поллинг
+; 0001 03E4 if(g_DevicePollCode & 0x0F)
+;	command -> Y+1
+;	data -> Y+0
+;PCODE: $0000044F VOL: 0
+;PCODE: $00000450 VOL: 0
+;PCODE: $00000451 VOL: 0
+; 0001 03E5 {
+; 0001 03E6 // если данные совпадают с кодом поллинга, мы не можем проверить запись
+; 0001 03E7 if(g_DevicePollCode == data)
+;PCODE: $00000452 VOL: 0
+;PCODE: $00000453 VOL: 0
+;PCODE: $00000454 VOL: 0
+;PCODE: $00000455 VOL: 0
+; 0001 03E8 DELAY_WR_FLASH();
+;PCODE: $00000456 VOL: 0
+;PCODE: $00000457 VOL: 0
+;PCODE: $00000458 VOL: 0
+; 0001 03E9 
+; 0001 03EA else
+;PCODE: $00000459 VOL: 0
+;PCODE: $0000045A VOL: 0
+; 0001 03EB {
+; 0001 03EC // 256 циклов поллинга
+; 0001 03ED UCHAR cycle = 0xFF;
+; 0001 03EE do
+;PCODE: $0000045B VOL: 0
+;PCODE: $0000045C VOL: 0
+;PCODE: $0000045D VOL: 0
+;	command -> Y+2
+;	data -> Y+1
+;	cycle -> Y+0
+;PCODE: $0000045E VOL: 0
+; 0001 03EF {
+; 0001 03F0 // читаем записанные
+; 0001 03F1 if(S89 == g_DeviceType) // 89S
+;PCODE: $0000045F VOL: 0
+;PCODE: $00000460 VOL: 0
+;PCODE: $00000461 VOL: 0
+; 0001 03F2 {
+; 0001 03F3 if(data == S89_RD_FLASH(g_Addr))
+;PCODE: $00000462 VOL: 0
+;PCODE: $00000463 VOL: 0
+;PCODE: $00000464 VOL: 0
+;PCODE: $00000465 VOL: 0
+;PCODE: $00000466 VOL: 0
+;PCODE: $00000467 VOL: 0
+;PCODE: $00000468 VOL: 0
+;PCODE: $00000469 VOL: 0
+;PCODE: $0000046A VOL: 0
+;PCODE: $0000046B VOL: 0
+;PCODE: $0000046C VOL: 0
+;PCODE: $0000046D VOL: 0
+;PCODE: $0000046E VOL: 0
+;PCODE: $0000046F VOL: 0
+;PCODE: $00000470 VOL: 0
+;PCODE: $00000471 VOL: 0
+;PCODE: $00000472 VOL: 0
+;PCODE: $00000473 VOL: 0
+;PCODE: $00000474 VOL: 0
+;PCODE: $00000475 VOL: 0
+;PCODE: $00000476 VOL: 0
+; 0001 03F4 break; // OK
+;PCODE: $00000477 VOL: 0
+; 0001 03F5 }
+;PCODE: $00000478 VOL: 0
+; 0001 03F6 else // AVR
+;PCODE: $00000479 VOL: 0
+;PCODE: $0000047A VOL: 0
+; 0001 03F7 {
+; 0001 03F8 if(data == Write1234(command, HIBYTE(g_Addr), LOBYTE(g_Addr), 0x00))
+;PCODE: $0000047B VOL: 0
+;PCODE: $0000047C VOL: 0
+;PCODE: $0000047D VOL: 0
+;PCODE: $0000047E VOL: 0
+;PCODE: $0000047F VOL: 0
+;PCODE: $00000480 VOL: 0
+;PCODE: $00000481 VOL: 0
+;PCODE: $00000482 VOL: 0
+;PCODE: $00000483 VOL: 0
+;PCODE: $00000484 VOL: 0
+;PCODE: $00000485 VOL: 0
+;PCODE: $00000486 VOL: 0
+;PCODE: $00000487 VOL: 0
+;PCODE: $00000488 VOL: 0
+; 0001 03F9 break; // OK
+;PCODE: $00000489 VOL: 0
+; 0001 03FA }
+;PCODE: $0000048A VOL: 0
+;PCODE: $0000048B VOL: 0
+; 0001 03FB }
+; 0001 03FC while(--cycle);
+;PCODE: $0000048C VOL: 0
+;PCODE: $0000048D VOL: 0
+;PCODE: $0000048E VOL: 0
+;PCODE: $0000048F VOL: 0
+;PCODE: $00000490 VOL: 0
+;PCODE: $00000491 VOL: 0
+;PCODE: $00000492 VOL: 0
+; 0001 03FD 
+; 0001 03FE // если валидный код так и не получен (((
+; 0001 03FF if(0 == cycle)
+;PCODE: $00000493 VOL: 0
+;PCODE: $00000494 VOL: 0
+;PCODE: $00000495 VOL: 0
+; 0001 0400 DELAY_WR_FLASH();
+;PCODE: $00000496 VOL: 0
+;PCODE: $00000497 VOL: 0
+;PCODE: $00000498 VOL: 0
+; 0001 0401 }
+;PCODE: $00000499 VOL: 0
+;PCODE: $0000049A VOL: 0
+;PCODE: $0000049B VOL: 0
+; 0001 0402 }
+; 0001 0403 }
+;PCODE: $0000049C VOL: 0
+;PCODE: $0000049D VOL: 0
+;PCODE: $0000049E VOL: 0
+;PCODE: $0000049F VOL: 0
+;void WritePage(void)
+; 0001 0409 {
+;PCODE: $000004A0 VOL: 0
+;PCODE: $000004A1 VOL: 0
+; 0001 040A // загружаем команду Write Programm Memory Page
+; 0001 040B if(MEGA == g_DeviceType) //mega/tiny AVR
+;PCODE: $000004A2 VOL: 0
+;PCODE: $000004A3 VOL: 0
+;PCODE: $000004A4 VOL: 0
+; 0001 040C {
+; 0001 040D UINT page_addr = g_Addr;
+; 0001 040E if(TRUE == g_BlockMode)
+;PCODE: $000004A5 VOL: 0
+;	page_addr -> Y+0
+;PCODE: $000004A6 VOL: 0
+;PCODE: $000004A7 VOL: 0
+;PCODE: $000004A8 VOL: 0
+;PCODE: $000004A9 VOL: 0
+;PCODE: $000004AA VOL: 0
+; 0001 040F page_addr--;
+;PCODE: $000004AB VOL: 0
+;PCODE: $000004AC VOL: 0
+;PCODE: $000004AD VOL: 0
+; 0001 0410 Write1234(0x4C, HIBYTE(page_addr), LOBYTE(page_addr), 0x00);
+;PCODE: $000004AE VOL: 0
+;PCODE: $000004AF VOL: 0
+;PCODE: $000004B0 VOL: 0
+;PCODE: $000004B1 VOL: 0
+;PCODE: $000004B2 VOL: 0
+;PCODE: $000004B3 VOL: 0
+;PCODE: $000004B4 VOL: 0
+;PCODE: $000004B5 VOL: 0
+;PCODE: $000004B6 VOL: 0
+;PCODE: $000004B7 VOL: 0
+;PCODE: $000004B8 VOL: 0
+;PCODE: $000004B9 VOL: 0
+; 0001 0411 DELAY_WR_FLASH();
+;PCODE: $000004BA VOL: 0
+;PCODE: $000004BB VOL: 0
+;PCODE: $000004BC VOL: 0
+; 0001 0412 }
+;PCODE: $000004BD VOL: 0
+; 0001 0413 }
+;PCODE: $000004BE VOL: 0
+;PCODE: $000004BF VOL: 0
+;PCODE: $000004C0 VOL: 0
+;void ReadProg(UCHAR com_byte1, UCHAR com_byte2)
+; 0001 0419 {
+;PCODE: $000004C1 VOL: 0
+;PCODE: $000004C2 VOL: 0
+; 0001 041A // зажигаем индикатор чтения
+; 0001 041B LED_RD_ON();
+;	com_byte1 -> Y+1
+;	com_byte2 -> Y+0
+;PCODE: $000004C3 VOL: 0
+;PCODE: $000004C4 VOL: 0
+; 0001 041C 
+; 0001 041D if(S89 != g_DeviceType)// AVR - читаем слово
+;PCODE: $000004C5 VOL: 0
+;PCODE: $000004C6 VOL: 0
+;PCODE: $000004C7 VOL: 0
+; 0001 041E {
+; 0001 041F PutOneChar(Write1234(com_byte1, HIBYTE(g_Addr), LOBYTE(g_Addr), 0x00));
+;PCODE: $000004C8 VOL: 0
+;PCODE: $000004C9 VOL: 0
+;PCODE: $000004CA VOL: 0
+;PCODE: $000004CB VOL: 0
+;PCODE: $000004CC VOL: 0
+;PCODE: $000004CD VOL: 0
+;PCODE: $000004CE VOL: 0
+;PCODE: $000004CF VOL: 0
+;PCODE: $000004D0 VOL: 0
+;PCODE: $000004D1 VOL: 0
+;PCODE: $000004D2 VOL: 0
+;PCODE: $000004D3 VOL: 0
+;PCODE: $000004D4 VOL: 0
+; 0001 0420 PutOneChar(Write1234(com_byte2, HIBYTE(g_Addr), LOBYTE(g_Addr), 0x00));
+;PCODE: $000004D5 VOL: 0
+;PCODE: $000004D6 VOL: 0
+;PCODE: $000004D7 VOL: 0
+;PCODE: $000004D8 VOL: 0
+;PCODE: $000004D9 VOL: 0
+;PCODE: $000004DA VOL: 0
+;PCODE: $000004DB VOL: 0
+;PCODE: $000004DC VOL: 0
+;PCODE: $000004DD VOL: 0
+;PCODE: $000004DE VOL: 0
+;PCODE: $000004DF VOL: 0
+;PCODE: $000004E0 VOL: 0
+;PCODE: $000004E1 VOL: 0
+; 0001 0421 }
+; 0001 0422 else//S89 - читаем байт
+;PCODE: $000004E2 VOL: 0
+;PCODE: $000004E3 VOL: 0
+; 0001 0423 {
+; 0001 0424 PutOneChar(S89_RD_FLASH(g_Addr));
+;PCODE: $000004E4 VOL: 0
+;PCODE: $000004E5 VOL: 0
+;PCODE: $000004E6 VOL: 0
+;PCODE: $000004E7 VOL: 0
+;PCODE: $000004E8 VOL: 0
+;PCODE: $000004E9 VOL: 0
+;PCODE: $000004EA VOL: 0
+;PCODE: $000004EB VOL: 0
+;PCODE: $000004EC VOL: 0
+;PCODE: $000004ED VOL: 0
+;PCODE: $000004EE VOL: 0
+;PCODE: $000004EF VOL: 0
+;PCODE: $000004F0 VOL: 0
+;PCODE: $000004F1 VOL: 0
+;PCODE: $000004F2 VOL: 0
+;PCODE: $000004F3 VOL: 0
+;PCODE: $000004F4 VOL: 0
+;PCODE: $000004F5 VOL: 0
+;PCODE: $000004F6 VOL: 0
+;PCODE: $000004F7 VOL: 0
+; 0001 0425 }
+;PCODE: $000004F8 VOL: 0
+; 0001 0426 
+; 0001 0427 // инкременируем адрес
+; 0001 0428 g_Addr++;
+;PCODE: $000004F9 VOL: 0
+;PCODE: $000004FA VOL: 0
+;PCODE: $000004FB VOL: 0
+;PCODE: $000004FC VOL: 0
+; 0001 0429 
+; 0001 042A // гасим индикатор чтения
+; 0001 042B LED_RD_OFF();
+;PCODE: $000004FD VOL: 0
+;PCODE: $000004FE VOL: 0
+; 0001 042C }
+;PCODE: $000004FF VOL: 0
+;PCODE: $00000500 VOL: 0
+;PCODE: $00000501 VOL: 0
+;void WriteData(void)
+; 0001 0432 {
+;PCODE: $00000502 VOL: 0
+;PCODE: $00000503 VOL: 0
+; 0001 0433 UCHAR data;
+; 0001 0434 // зажигаем индикатор записи
+; 0001 0435 LED_WR_ON();
+;PCODE: $00000504 VOL: 0
+;	data -> R17
+;PCODE: $00000505 VOL: 0
+;PCODE: $00000506 VOL: 0
+; 0001 0436 
+; 0001 0437 // получаем байт данных
+; 0001 0438 data = GetOneChar();
+;PCODE: $00000507 VOL: 0
+;PCODE: $00000508 VOL: 0
+; 0001 0439 
+; 0001 043A // проверяем тип устройства
+; 0001 043B if(S89 != g_DeviceType) // AVR
+;PCODE: $00000509 VOL: 0
+;PCODE: $0000050A VOL: 0
+;PCODE: $0000050B VOL: 0
+; 0001 043C AVR_WR_EEPROM(g_Addr, data);
+;PCODE: $0000050C VOL: 0
+;PCODE: $0000050D VOL: 0
+;PCODE: $0000050E VOL: 0
+;PCODE: $0000050F VOL: 0
+;PCODE: $00000510 VOL: 0
+;PCODE: $00000511 VOL: 0
+;PCODE: $00000512 VOL: 0
+;PCODE: $00000513 VOL: 0
+;PCODE: $00000514 VOL: 0
+;PCODE: $00000515 VOL: 0
+; 0001 043D else // 89S
+;PCODE: $00000516 VOL: 0
+;PCODE: $00000517 VOL: 0
+; 0001 043E if(0x86 == g_DeviceCode)// EEPROM есть только у 8252
+;PCODE: $00000518 VOL: 0
+;PCODE: $00000519 VOL: 0
+;PCODE: $0000051A VOL: 0
+; 0001 043F S89_WR_EEPROM(g_Addr, data);
+;PCODE: $0000051B VOL: 0
+;PCODE: $0000051C VOL: 0
+;PCODE: $0000051D VOL: 0
+;PCODE: $0000051E VOL: 0
+;PCODE: $0000051F VOL: 0
+;PCODE: $00000520 VOL: 0
+;PCODE: $00000521 VOL: 0
+;PCODE: $00000522 VOL: 0
+;PCODE: $00000523 VOL: 0
+;PCODE: $00000524 VOL: 0
+;PCODE: $00000525 VOL: 0
+;PCODE: $00000526 VOL: 0
+;PCODE: $00000527 VOL: 0
+;PCODE: $00000528 VOL: 0
+;PCODE: $00000529 VOL: 0
+;PCODE: $0000052A VOL: 0
+;PCODE: $0000052B VOL: 0
+;PCODE: $0000052C VOL: 0
+; 0001 0440 
+; 0001 0441 DELAY_WR_EEPROM();
+;PCODE: $0000052D VOL: 0
+;PCODE: $0000052E VOL: 0
+;PCODE: $0000052F VOL: 0
+;PCODE: $00000530 VOL: 0
+;PCODE: $00000531 VOL: 0
+; 0001 0442 
+; 0001 0443 // инкрементируем адрес
+; 0001 0444 g_Addr++;
+;PCODE: $00000532 VOL: 0
+;PCODE: $00000533 VOL: 0
+;PCODE: $00000534 VOL: 0
+;PCODE: $00000535 VOL: 0
+; 0001 0445 
+; 0001 0446 // гасим индикатор записи
+; 0001 0447 LED_WR_OFF();
+;PCODE: $00000536 VOL: 0
+;PCODE: $00000537 VOL: 0
+; 0001 0448 }
+;PCODE: $00000538 VOL: 0
+;PCODE: $00000539 VOL: 0
+;PCODE: $0000053A VOL: 0
+;void ReadData(void)
+; 0001 044E {
+;PCODE: $0000053B VOL: 0
+;PCODE: $0000053C VOL: 0
+; 0001 044F // зажигаем индикатор чтения
+; 0001 0450 LED_RD_ON();
+;PCODE: $0000053D VOL: 0
+;PCODE: $0000053E VOL: 0
+; 0001 0451 
+; 0001 0452 // проверяем тип устройства
+; 0001 0453 if(S89 != g_DeviceType)// AVR
+;PCODE: $0000053F VOL: 0
+;PCODE: $00000540 VOL: 0
+;PCODE: $00000541 VOL: 0
+; 0001 0454 PutOneChar(Write1234(0xA0, HIBYTE(g_Addr), LOBYTE(g_Addr), 0x00));
+;PCODE: $00000542 VOL: 0
+;PCODE: $00000543 VOL: 0
+;PCODE: $00000544 VOL: 0
+;PCODE: $00000545 VOL: 0
+;PCODE: $00000546 VOL: 0
+;PCODE: $00000547 VOL: 0
+;PCODE: $00000548 VOL: 0
+;PCODE: $00000549 VOL: 0
+;PCODE: $0000054A VOL: 0
+;PCODE: $0000054B VOL: 0
+;PCODE: $0000054C VOL: 0
+;PCODE: $0000054D VOL: 0
+;PCODE: $0000054E VOL: 0
+; 0001 0455 else
+;PCODE: $0000054F VOL: 0
+;PCODE: $00000550 VOL: 0
+; 0001 0456 if(0x86 == g_DeviceCode)//S89 EEPROM имеется только у 8252
+;PCODE: $00000551 VOL: 0
+;PCODE: $00000552 VOL: 0
+;PCODE: $00000553 VOL: 0
+; 0001 0457 PutOneChar(Write123(((HIBYTE(g_Addr) << 3) | 0x05), LOBYTE(g_Addr), 0x00));
+;PCODE: $00000554 VOL: 0
+;PCODE: $00000555 VOL: 0
+;PCODE: $00000556 VOL: 0
+;PCODE: $00000557 VOL: 0
+;PCODE: $00000558 VOL: 0
+;PCODE: $00000559 VOL: 0
+;PCODE: $0000055A VOL: 0
+;PCODE: $0000055B VOL: 0
+;PCODE: $0000055C VOL: 0
+;PCODE: $0000055D VOL: 0
+;PCODE: $0000055E VOL: 0
+;PCODE: $0000055F VOL: 0
+;PCODE: $00000560 VOL: 0
+; 0001 0458 
+; 0001 0459 // инкременируем адрес
+; 0001 045A g_Addr++;
+;PCODE: $00000561 VOL: 0
+;PCODE: $00000562 VOL: 0
+;PCODE: $00000563 VOL: 0
+;PCODE: $00000564 VOL: 0
+;PCODE: $00000565 VOL: 0
+;PCODE: $00000566 VOL: 0
+; 0001 045B 
+; 0001 045C // гасим индикатор чтения
+; 0001 045D LED_RD_OFF();
+;PCODE: $00000567 VOL: 0
+;PCODE: $00000568 VOL: 0
+; 0001 045E }
+;PCODE: $00000569 VOL: 0
+;PCODE: $0000056A VOL: 0
+;void ChipErase(void)
+; 0001 0464 {
+;PCODE: $0000056B VOL: 0
+;PCODE: $0000056C VOL: 0
+; 0001 0465 // зажигаем индикатор записи
+; 0001 0466 LED_WR_ON();
+;PCODE: $0000056D VOL: 0
+;PCODE: $0000056E VOL: 0
+; 0001 0467 g_IsFuseClock=TRUE;
+;PCODE: $0000056F VOL: 0
+;PCODE: $00000570 VOL: 0
+; 0001 0468 // посылаем команду Chip Erase, задержка и OK
+; 0001 0469 if(g_DeviceType == S89)
+;PCODE: $00000571 VOL: 0
+;PCODE: $00000572 VOL: 0
+;PCODE: $00000573 VOL: 0
+; 0001 046A S89_CHIP_ERASE();
+;PCODE: $00000574 VOL: 0
+;PCODE: $00000575 VOL: 0
+;PCODE: $00000576 VOL: 0
+;PCODE: $00000577 VOL: 0
+;PCODE: $00000578 VOL: 0
+;PCODE: $00000579 VOL: 0
+;PCODE: $0000057A VOL: 0
+; 0001 046B else
+;PCODE: $0000057B VOL: 0
+;PCODE: $0000057C VOL: 0
+; 0001 046C AVR_CHIP_ERASE();
+;PCODE: $0000057D VOL: 0
+;PCODE: $0000057E VOL: 0
+;PCODE: $0000057F VOL: 0
+;PCODE: $00000580 VOL: 0
+;PCODE: $00000581 VOL: 0
+;PCODE: $00000582 VOL: 0
+;PCODE: $00000583 VOL: 0
+;PCODE: $00000584 VOL: 0
+;PCODE: $00000585 VOL: 0
+; 0001 046D DELAY_ERASE();
+;PCODE: $00000586 VOL: 0
+;PCODE: $00000587 VOL: 0
+;PCODE: $00000588 VOL: 0
+;PCODE: $00000589 VOL: 0
+; 0001 046E PutOneChar(ACK);
+;PCODE: $0000058A VOL: 0
+;PCODE: $0000058B VOL: 0
+;PCODE: $0000058C VOL: 0
+; 0001 046F 
+; 0001 0470 // гасим индикатор записи
+; 0001 0471 LED_WR_OFF();
+;PCODE: $0000058D VOL: 0
+;PCODE: $0000058E VOL: 0
+; 0001 0472 g_IsFuseClock=FALSE;
+;PCODE: $0000058F VOL: 0
+;PCODE: $00000590 VOL: 0
+; 0001 0473 }
+;PCODE: $00000591 VOL: 0
+;PCODE: $00000592 VOL: 0
+;void WriteLock(void)
+; 0001 0479 {
+;PCODE: $00000593 VOL: 0
+;PCODE: $00000594 VOL: 0
+; 0001 047A UCHAR data;
+; 0001 047B // проверяем, есть ли данные для команды
+; 0001 047C CheckCommParams(1);
+;PCODE: $00000595 VOL: 0
+;	data -> R17
+;PCODE: $00000596 VOL: 0
+;PCODE: $00000597 VOL: 0
+;PCODE: $00000598 VOL: 0
+; 0001 047D if(TRUE == g_NeedParams)
+;PCODE: $00000599 VOL: 0
+;PCODE: $0000059A VOL: 0
+;PCODE: $0000059B VOL: 0
+; 0001 047E return;
+;PCODE: $0000059C VOL: 0
+;PCODE: $0000059D VOL: 0
+; 0001 047F 
+; 0001 0480 // зажигаем индикатор записи
+; 0001 0481 LED_WR_ON();
+;PCODE: $0000059E VOL: 0
+;PCODE: $0000059F VOL: 0
+;PCODE: $000005A0 VOL: 0
+; 0001 0482 g_IsFuseClock=TRUE;
+;PCODE: $000005A1 VOL: 0
+;PCODE: $000005A2 VOL: 0
+; 0001 0483 
+; 0001 0484 // получаем байт данных, пишем lock bits, задержка и OK
+; 0001 0485 data = GetOneChar();
+;PCODE: $000005A3 VOL: 0
+;PCODE: $000005A4 VOL: 0
+; 0001 0486 if(g_DeviceType == S89)
+;PCODE: $000005A5 VOL: 0
+;PCODE: $000005A6 VOL: 0
+;PCODE: $000005A7 VOL: 0
+; 0001 0487 S89_WR_LOCK(data);
+;PCODE: $000005A8 VOL: 0
+;PCODE: $000005A9 VOL: 0
+;PCODE: $000005AA VOL: 0
+;PCODE: $000005AB VOL: 0
+;PCODE: $000005AC VOL: 0
+;PCODE: $000005AD VOL: 0
+;PCODE: $000005AE VOL: 0
+;PCODE: $000005AF VOL: 0
+;PCODE: $000005B0 VOL: 0
+; 0001 0488 else
+;PCODE: $000005B1 VOL: 0
+;PCODE: $000005B2 VOL: 0
+; 0001 0489 AVR_WR_LOCK(data);
+;PCODE: $000005B3 VOL: 0
+;PCODE: $000005B4 VOL: 0
+;PCODE: $000005B5 VOL: 0
+;PCODE: $000005B6 VOL: 0
+;PCODE: $000005B7 VOL: 0
+;PCODE: $000005B8 VOL: 0
+;PCODE: $000005B9 VOL: 0
+;PCODE: $000005BA VOL: 0
+;PCODE: $000005BB VOL: 0
+; 0001 048A DELAY_WR_FUSE();
+;PCODE: $000005BC VOL: 0
+;PCODE: $000005BD VOL: 0
+;PCODE: $000005BE VOL: 0
+;PCODE: $000005BF VOL: 0
+; 0001 048B PutOneChar(ACK);
+;PCODE: $000005C0 VOL: 0
+;PCODE: $000005C1 VOL: 0
+;PCODE: $000005C2 VOL: 0
+; 0001 048C 
+; 0001 048D // гасим индикатор записи
+; 0001 048E LED_WR_OFF();
+;PCODE: $000005C3 VOL: 0
+;PCODE: $000005C4 VOL: 0
+; 0001 048F g_IsFuseClock=FALSE;
+;PCODE: $000005C5 VOL: 0
+;PCODE: $000005C6 VOL: 0
+; 0001 0490 }
+;PCODE: $000005C7 VOL: 0
+;PCODE: $000005C8 VOL: 0
+;PCODE: $000005C9 VOL: 0
+;void WriteFuse(void)
+; 0001 0496 {
+;PCODE: $000005CA VOL: 0
+;PCODE: $000005CB VOL: 0
+; 0001 0497 UCHAR err,data;
+; 0001 0498 // проверяем, есть ли данные для команды
+; 0001 0499 CheckCommParams(1);
+;PCODE: $000005CC VOL: 0
+;PCODE: $000005CD VOL: 0
+;	err -> R17
+;	data -> R16
+;PCODE: $000005CE VOL: 0
+;PCODE: $000005CF VOL: 0
+;PCODE: $000005D0 VOL: 0
+; 0001 049A if(TRUE == g_NeedParams)
+;PCODE: $000005D1 VOL: 0
+;PCODE: $000005D2 VOL: 0
+;PCODE: $000005D3 VOL: 0
+; 0001 049B return;
+;PCODE: $000005D4 VOL: 0
+;PCODE: $000005D5 VOL: 0
+; 0001 049C 
+; 0001 049D // зажигаем индикатор записи
+; 0001 049E LED_WR_ON();
+;PCODE: $000005D6 VOL: 0
+;PCODE: $000005D7 VOL: 0
+;PCODE: $000005D8 VOL: 0
+; 0001 049F g_IsFuseClock=TRUE;
+;PCODE: $000005D9 VOL: 0
+;PCODE: $000005DA VOL: 0
+; 0001 04A0 // получаем байт данных, пишем fuse bits, задержка и OK
+; 0001 04A1 err = ACK, data = GetOneChar();
+;PCODE: $000005DB VOL: 0
+;PCODE: $000005DC VOL: 0
+;PCODE: $000005DD VOL: 0
+;PCODE: $000005DE VOL: 0
+; 0001 04A2 if(g_DeviceType == S89)
+;PCODE: $000005DF VOL: 0
+;PCODE: $000005E0 VOL: 0
+;PCODE: $000005E1 VOL: 0
+; 0001 04A3 err = NACK;
+;PCODE: $000005E2 VOL: 0
+;PCODE: $000005E3 VOL: 0
+; 0001 04A4 else
+;PCODE: $000005E4 VOL: 0
+;PCODE: $000005E5 VOL: 0
+; 0001 04A5 AVR_WR_FUSE(data);
+;PCODE: $000005E6 VOL: 0
+;PCODE: $000005E7 VOL: 0
+;PCODE: $000005E8 VOL: 0
+;PCODE: $000005E9 VOL: 0
+;PCODE: $000005EA VOL: 0
+;PCODE: $000005EB VOL: 0
+;PCODE: $000005EC VOL: 0
+;PCODE: $000005ED VOL: 0
+; 0001 04A6 DELAY_WR_FUSE();
+;PCODE: $000005EE VOL: 0
+;PCODE: $000005EF VOL: 0
+;PCODE: $000005F0 VOL: 0
+;PCODE: $000005F1 VOL: 0
+; 0001 04A7 PutOneChar(err);
+;PCODE: $000005F2 VOL: 0
+;PCODE: $000005F3 VOL: 0
+; 0001 04A8 
+; 0001 04A9 // гасим индикатор записи
+; 0001 04AA LED_WR_OFF();
+;PCODE: $000005F4 VOL: 0
+;PCODE: $000005F5 VOL: 0
+; 0001 04AB g_IsFuseClock=FALSE;
+;PCODE: $000005F6 VOL: 0
+;PCODE: $000005F7 VOL: 0
+; 0001 04AC }
+;PCODE: $000005F8 VOL: 0
+;PCODE: $000005F9 VOL: 0
+;PCODE: $000005FA VOL: 0
+;void WriteHFuse(void)
+; 0001 04AE {
+;PCODE: $000005FB VOL: 0
+;PCODE: $000005FC VOL: 0
+; 0001 04AF UCHAR err,data;
+; 0001 04B0 // проверяем, есть ли данные для команды
+; 0001 04B1 CheckCommParams(1);
+;PCODE: $000005FD VOL: 0
+;PCODE: $000005FE VOL: 0
+;	err -> R17
+;	data -> R16
+;PCODE: $000005FF VOL: 0
+;PCODE: $00000600 VOL: 0
+;PCODE: $00000601 VOL: 0
+; 0001 04B2 if(TRUE == g_NeedParams)
+;PCODE: $00000602 VOL: 0
+;PCODE: $00000603 VOL: 0
+;PCODE: $00000604 VOL: 0
+; 0001 04B3 return;
+;PCODE: $00000605 VOL: 0
+;PCODE: $00000606 VOL: 0
+; 0001 04B4 
+; 0001 04B5 // зажигаем индикатор записи
+; 0001 04B6 LED_WR_ON();
+;PCODE: $00000607 VOL: 0
+;PCODE: $00000608 VOL: 0
+;PCODE: $00000609 VOL: 0
+; 0001 04B7 g_IsFuseClock=TRUE;
+;PCODE: $0000060A VOL: 0
+;PCODE: $0000060B VOL: 0
+; 0001 04B8 // получаем байт данных, пишем fuse bits, задержка и OK
+; 0001 04B9 err = ACK, data = GetOneChar();
+;PCODE: $0000060C VOL: 0
+;PCODE: $0000060D VOL: 0
+;PCODE: $0000060E VOL: 0
+;PCODE: $0000060F VOL: 0
+; 0001 04BA if(g_DeviceType == S89)
+;PCODE: $00000610 VOL: 0
+;PCODE: $00000611 VOL: 0
+;PCODE: $00000612 VOL: 0
+; 0001 04BB err = NACK;
+;PCODE: $00000613 VOL: 0
+;PCODE: $00000614 VOL: 0
+; 0001 04BC else
+;PCODE: $00000615 VOL: 0
+;PCODE: $00000616 VOL: 0
+; 0001 04BD AVR_WR_FUSE_H(data);
+;PCODE: $00000617 VOL: 0
+;PCODE: $00000618 VOL: 0
+;PCODE: $00000619 VOL: 0
+;PCODE: $0000061A VOL: 0
+;PCODE: $0000061B VOL: 0
+;PCODE: $0000061C VOL: 0
+;PCODE: $0000061D VOL: 0
+;PCODE: $0000061E VOL: 0
+; 0001 04BE DELAY_WR_FUSE();
+;PCODE: $0000061F VOL: 0
+;PCODE: $00000620 VOL: 0
+;PCODE: $00000621 VOL: 0
+;PCODE: $00000622 VOL: 0
+; 0001 04BF PutOneChar(err);
+;PCODE: $00000623 VOL: 0
+;PCODE: $00000624 VOL: 0
+; 0001 04C0 
+; 0001 04C1 // гасим индикатор записи
+; 0001 04C2 LED_WR_OFF();
+;PCODE: $00000625 VOL: 0
+;PCODE: $00000626 VOL: 0
+; 0001 04C3 g_IsFuseClock=FALSE;
+;PCODE: $00000627 VOL: 0
+;PCODE: $00000628 VOL: 0
+; 0001 04C4 }
+;PCODE: $00000629 VOL: 0
+;PCODE: $0000062A VOL: 0
+;PCODE: $0000062B VOL: 0
+;void WriteEXTFuse(void)
+; 0001 04C6 {
+;PCODE: $0000062C VOL: 0
+;PCODE: $0000062D VOL: 0
+; 0001 04C7 UCHAR err,data;
+; 0001 04C8 // проверяем, есть ли данные для команды
+; 0001 04C9 CheckCommParams(1);
+;PCODE: $0000062E VOL: 0
+;PCODE: $0000062F VOL: 0
+;	err -> R17
+;	data -> R16
+;PCODE: $00000630 VOL: 0
+;PCODE: $00000631 VOL: 0
+;PCODE: $00000632 VOL: 0
+; 0001 04CA if(TRUE == g_NeedParams)
+;PCODE: $00000633 VOL: 0
+;PCODE: $00000634 VOL: 0
+;PCODE: $00000635 VOL: 0
+; 0001 04CB return;
+;PCODE: $00000636 VOL: 0
+;PCODE: $00000637 VOL: 0
+; 0001 04CC 
+; 0001 04CD // зажигаем индикатор записи
+; 0001 04CE LED_WR_ON();
+;PCODE: $00000638 VOL: 0
+;PCODE: $00000639 VOL: 0
+;PCODE: $0000063A VOL: 0
+; 0001 04CF g_IsFuseClock=TRUE;
+;PCODE: $0000063B VOL: 0
+;PCODE: $0000063C VOL: 0
+; 0001 04D0 // получаем байт данных, пишем fuse bits, задержка и OK
+; 0001 04D1 err = ACK, data = GetOneChar();
+;PCODE: $0000063D VOL: 0
+;PCODE: $0000063E VOL: 0
+;PCODE: $0000063F VOL: 0
+;PCODE: $00000640 VOL: 0
+; 0001 04D2 if(g_DeviceType == S89)
+;PCODE: $00000641 VOL: 0
+;PCODE: $00000642 VOL: 0
+;PCODE: $00000643 VOL: 0
+; 0001 04D3 err = NACK;
+;PCODE: $00000644 VOL: 0
+;PCODE: $00000645 VOL: 0
+; 0001 04D4 else
+;PCODE: $00000646 VOL: 0
+;PCODE: $00000647 VOL: 0
+; 0001 04D5 AVR_WR_FUSE_EXT(data);
+;PCODE: $00000648 VOL: 0
+;PCODE: $00000649 VOL: 0
+;PCODE: $0000064A VOL: 0
+;PCODE: $0000064B VOL: 0
+;PCODE: $0000064C VOL: 0
+;PCODE: $0000064D VOL: 0
+;PCODE: $0000064E VOL: 0
+;PCODE: $0000064F VOL: 0
+; 0001 04D6 DELAY_WR_FUSE();
+;PCODE: $00000650 VOL: 0
+;PCODE: $00000651 VOL: 0
+;PCODE: $00000652 VOL: 0
+;PCODE: $00000653 VOL: 0
+; 0001 04D7 PutOneChar(err);
+;PCODE: $00000654 VOL: 0
+;PCODE: $00000655 VOL: 0
+; 0001 04D8 
+; 0001 04D9 // гасим индикатор записи
+; 0001 04DA LED_WR_OFF();
+;PCODE: $00000656 VOL: 0
+;PCODE: $00000657 VOL: 0
+; 0001 04DB g_IsFuseClock=FALSE;
+;PCODE: $00000658 VOL: 0
+;PCODE: $00000659 VOL: 0
+; 0001 04DC }
+;PCODE: $0000065A VOL: 0
+;PCODE: $0000065B VOL: 0
+;PCODE: $0000065C VOL: 0
+;void ReadFuse(void)
+; 0001 04E1 {
+;PCODE: $0000065D VOL: 0
+;PCODE: $0000065E VOL: 0
+; 0001 04E2 // зажигаем индикатор чтения
+; 0001 04E3 LED_RD_ON();
+;PCODE: $0000065F VOL: 0
+;PCODE: $00000660 VOL: 0
+; 0001 04E4 g_IsFuseClock=TRUE;
+;PCODE: $00000661 VOL: 0
+;PCODE: $00000662 VOL: 0
+; 0001 04E5 // читаем
+; 0001 04E6 PutOneChar((g_DeviceType == S89)? NACK: AVR_RD_FUSE());
+;PCODE: $00000663 VOL: 0
+;PCODE: $00000664 VOL: 0
+;PCODE: $00000665 VOL: 0
+;PCODE: $00000666 VOL: 0
+;PCODE: $00000667 VOL: 0
+;PCODE: $00000668 VOL: 0
+;PCODE: $00000669 VOL: 0
+;PCODE: $0000066A VOL: 0
+;PCODE: $0000066B VOL: 0
+;PCODE: $0000066C VOL: 0
+;PCODE: $0000066D VOL: 0
+;PCODE: $0000066E VOL: 0
+;PCODE: $0000066F VOL: 0
+;PCODE: $00000670 VOL: 0
+;PCODE: $00000671 VOL: 0
+;PCODE: $00000672 VOL: 0
+;PCODE: $00000673 VOL: 0
+;PCODE: $00000674 VOL: 0
+;PCODE: $00000675 VOL: 0
+; 0001 04E7 
+; 0001 04E8 // гасим индикатор чтения
+; 0001 04E9 LED_RD_OFF();
+;PCODE: $00000676 VOL: 0
+;PCODE: $00000677 VOL: 0
+; 0001 04EA g_IsFuseClock=FALSE;
+;PCODE: $00000678 VOL: 0
+;PCODE: $00000679 VOL: 0
+; 0001 04EB }
+;PCODE: $0000067A VOL: 0
+;PCODE: $0000067B VOL: 0
+;void ReadLock(void)
+; 0001 04F0 {
+;PCODE: $0000067C VOL: 0
+;PCODE: $0000067D VOL: 0
+; 0001 04F1 // зажигаем индикатор чтения
+; 0001 04F2 LED_RD_ON();
+;PCODE: $0000067E VOL: 0
+;PCODE: $0000067F VOL: 0
+; 0001 04F3 g_IsFuseClock=TRUE;
+;PCODE: $00000680 VOL: 0
+;PCODE: $00000681 VOL: 0
+; 0001 04F4 // читаем
+; 0001 04F5 PutOneChar((g_DeviceType == S89)? NACK: AVR_RD_LOCK());
+;PCODE: $00000682 VOL: 0
+;PCODE: $00000683 VOL: 0
+;PCODE: $00000684 VOL: 0
+;PCODE: $00000685 VOL: 0
+;PCODE: $00000686 VOL: 0
+;PCODE: $00000687 VOL: 0
+;PCODE: $00000688 VOL: 0
+;PCODE: $00000689 VOL: 0
+;PCODE: $0000068A VOL: 0
+;PCODE: $0000068B VOL: 0
+;PCODE: $0000068C VOL: 0
+;PCODE: $0000068D VOL: 0
+;PCODE: $0000068E VOL: 0
+;PCODE: $0000068F VOL: 0
+;PCODE: $00000690 VOL: 0
+;PCODE: $00000691 VOL: 0
+;PCODE: $00000692 VOL: 0
+;PCODE: $00000693 VOL: 0
+;PCODE: $00000694 VOL: 0
+; 0001 04F6 
+; 0001 04F7 // гасим индикатор чтения
+; 0001 04F8 LED_RD_OFF();
+;PCODE: $00000695 VOL: 0
+;PCODE: $00000696 VOL: 0
+; 0001 04F9 g_IsFuseClock=FALSE;
+;PCODE: $00000697 VOL: 0
+;PCODE: $00000698 VOL: 0
+; 0001 04FA }
+;PCODE: $00000699 VOL: 0
+;PCODE: $0000069A VOL: 0
+;void ReadHFuse(void)
+; 0001 04FF {
+;PCODE: $0000069B VOL: 0
+;PCODE: $0000069C VOL: 0
+; 0001 0500 // зажигаем индикатор чтения
+; 0001 0501 LED_RD_ON();
+;PCODE: $0000069D VOL: 0
+;PCODE: $0000069E VOL: 0
+; 0001 0502 g_IsFuseClock=TRUE;
+;PCODE: $0000069F VOL: 0
+;PCODE: $000006A0 VOL: 0
+; 0001 0503 // читаем
+; 0001 0504 PutOneChar((g_DeviceType == S89)? NACK: AVR_RD_FUSE_H());
+;PCODE: $000006A1 VOL: 0
+;PCODE: $000006A2 VOL: 0
+;PCODE: $000006A3 VOL: 0
+;PCODE: $000006A4 VOL: 0
+;PCODE: $000006A5 VOL: 0
+;PCODE: $000006A6 VOL: 0
+;PCODE: $000006A7 VOL: 0
+;PCODE: $000006A8 VOL: 0
+;PCODE: $000006A9 VOL: 0
+;PCODE: $000006AA VOL: 0
+;PCODE: $000006AB VOL: 0
+;PCODE: $000006AC VOL: 0
+;PCODE: $000006AD VOL: 0
+;PCODE: $000006AE VOL: 0
+;PCODE: $000006AF VOL: 0
+;PCODE: $000006B0 VOL: 0
+;PCODE: $000006B1 VOL: 0
+;PCODE: $000006B2 VOL: 0
+;PCODE: $000006B3 VOL: 0
+; 0001 0505 
+; 0001 0506 // гасим индикатор чтения
+; 0001 0507 LED_RD_OFF();
+;PCODE: $000006B4 VOL: 0
+;PCODE: $000006B5 VOL: 0
+; 0001 0508 g_IsFuseClock=FALSE;
+;PCODE: $000006B6 VOL: 0
+;PCODE: $000006B7 VOL: 0
+; 0001 0509 }
+;PCODE: $000006B8 VOL: 0
+;PCODE: $000006B9 VOL: 0
+;void ReadEXTFuse(void)
+; 0001 050E {
+;PCODE: $000006BA VOL: 0
+;PCODE: $000006BB VOL: 0
+; 0001 050F // зажигаем индикатор чтения
+; 0001 0510 LED_RD_ON();
+;PCODE: $000006BC VOL: 0
+;PCODE: $000006BD VOL: 0
+; 0001 0511 g_IsFuseClock=TRUE;
+;PCODE: $000006BE VOL: 0
+;PCODE: $000006BF VOL: 0
+; 0001 0512 // читаем
+; 0001 0513 PutOneChar((g_DeviceType == S89)? NACK: AVR_RD_FUSE_EXT());
+;PCODE: $000006C0 VOL: 0
+;PCODE: $000006C1 VOL: 0
+;PCODE: $000006C2 VOL: 0
+;PCODE: $000006C3 VOL: 0
+;PCODE: $000006C4 VOL: 0
+;PCODE: $000006C5 VOL: 0
+;PCODE: $000006C6 VOL: 0
+;PCODE: $000006C7 VOL: 0
+;PCODE: $000006C8 VOL: 0
+;PCODE: $000006C9 VOL: 0
+;PCODE: $000006CA VOL: 0
+;PCODE: $000006CB VOL: 0
+;PCODE: $000006CC VOL: 0
+;PCODE: $000006CD VOL: 0
+;PCODE: $000006CE VOL: 0
+;PCODE: $000006CF VOL: 0
+;PCODE: $000006D0 VOL: 0
+;PCODE: $000006D1 VOL: 0
+;PCODE: $000006D2 VOL: 0
+; 0001 0514 
+; 0001 0515 // гасим индикатор чтения
+; 0001 0516 LED_RD_OFF();
+;PCODE: $000006D3 VOL: 0
+;PCODE: $000006D4 VOL: 0
+; 0001 0517 g_IsFuseClock=FALSE;
+;PCODE: $000006D5 VOL: 0
+;PCODE: $000006D6 VOL: 0
+; 0001 0518 }
+;PCODE: $000006D7 VOL: 0
+;PCODE: $000006D8 VOL: 0
+;void ReadSignature(void)
+; 0001 051D {
+;PCODE: $000006D9 VOL: 0
+;PCODE: $000006DA VOL: 0
+; 0001 051E UCHAR addr;
+; 0001 051F // зажигаем индикатор чтения
+; 0001 0520 LED_RD_ON();
+;PCODE: $000006DB VOL: 0
+;	addr -> R17
+;PCODE: $000006DC VOL: 0
+;PCODE: $000006DD VOL: 0
+; 0001 0521 g_IsFuseClock=TRUE;
+;PCODE: $000006DE VOL: 0
+;PCODE: $000006DF VOL: 0
+; 0001 0522 // читаем последовательно Vendor, Family, Number
+; 0001 0523 addr = 0;
+;PCODE: $000006E0 VOL: 0
+;PCODE: $000006E1 VOL: 0
+; 0001 0524 #ifdef PRINT_LCD
+; 0001 0525 lcd_putsf_row(3,"Sign:0x");
+; 0001 0526 #endif
+; 0001 0527 do
+;PCODE: $000006E2 VOL: 0
+; 0001 0528 {
+; 0001 0529 //PutOneChar((g_DeviceType == S89)?0xFF:(AVR_RD_SIGN(addr)));
+; 0001 052A PutOneChar(AVR_RD_SIGN(addr));//g_txBuf[g_txWR++] = data;
+;PCODE: $000006E3 VOL: 0
+;PCODE: $000006E4 VOL: 0
+;PCODE: $000006E5 VOL: 0
+;PCODE: $000006E6 VOL: 0
+;PCODE: $000006E7 VOL: 0
+;PCODE: $000006E8 VOL: 0
+;PCODE: $000006E9 VOL: 0
+;PCODE: $000006EA VOL: 0
+;PCODE: $000006EB VOL: 0
+;PCODE: $000006EC VOL: 0
+; 0001 052B #ifdef PRINT_LCD
+; 0001 052C lcd_puts_hex(g_MyUDR);
+; 0001 052D #endif
+; 0001 052E addr++;
+;PCODE: $000006ED VOL: 0
+;PCODE: $000006EE VOL: 0
+; 0001 052F }
+; 0001 0530 while(addr<=2);
+;PCODE: $000006EF VOL: 0
+;PCODE: $000006F0 VOL: 0
+;PCODE: $000006F1 VOL: 0
+;PCODE: $000006F2 VOL: 0
+;PCODE: $000006F3 VOL: 0
+;PCODE: $000006F4 VOL: 0
+; 0001 0531 if(CanShow)
+;PCODE: $000006F5 VOL: 0
+;PCODE: $000006F6 VOL: 0
+;PCODE: $000006F7 VOL: 0
+; 0001 0532 delay_ms(200);
+;PCODE: $000006F8 VOL: 0
+;PCODE: $000006F9 VOL: 0
+;PCODE: $000006FA VOL: 0
+; 0001 0533 // гасим индикатор чтения
+; 0001 0534 LED_RD_OFF();
+;PCODE: $000006FB VOL: 0
+;PCODE: $000006FC VOL: 0
+;PCODE: $000006FD VOL: 0
+; 0001 0535 g_IsFuseClock=FALSE;
+;PCODE: $000006FE VOL: 0
+;PCODE: $000006FF VOL: 0
+; 0001 0536 }
+;PCODE: $00000700 VOL: 0
+;PCODE: $00000701 VOL: 0
+;PCODE: $00000702 VOL: 0
+;void ReadCalibrationByte(void)
+; 0001 0539 {
+;PCODE: $00000703 VOL: 0
+;PCODE: $00000704 VOL: 0
+; 0001 053A UCHAR addr;
+; 0001 053B // зажигаем индикатор чтения
+; 0001 053C LED_RD_ON();
+;PCODE: $00000705 VOL: 0
+;	addr -> R17
+;PCODE: $00000706 VOL: 0
+;PCODE: $00000707 VOL: 0
+; 0001 053D g_IsFuseClock=TRUE;
+;PCODE: $00000708 VOL: 0
+;PCODE: $00000709 VOL: 0
+; 0001 053E // читаем последовательно Vendor, Family, Number
+; 0001 053F addr = 0;// case when 4 calibration bytes
+;PCODE: $0000070A VOL: 0
+;PCODE: $0000070B VOL: 0
+; 0001 0540 do
+;PCODE: $0000070C VOL: 0
+; 0001 0541 {
+; 0001 0542 //PutOneChar((g_DeviceType == S89)?0xFF:(AVR_RD_SIGN(addr)));
+; 0001 0543 PutOneChar(AVR_RD_CALIBR(addr));//g_txBuf[g_txWR++] = data;
+;PCODE: $0000070D VOL: 0
+;PCODE: $0000070E VOL: 0
+;PCODE: $0000070F VOL: 0
+;PCODE: $00000710 VOL: 0
+;PCODE: $00000711 VOL: 0
+;PCODE: $00000712 VOL: 0
+;PCODE: $00000713 VOL: 0
+;PCODE: $00000714 VOL: 0
+;PCODE: $00000715 VOL: 0
+;PCODE: $00000716 VOL: 0
+; 0001 0544 addr++;
+;PCODE: $00000717 VOL: 0
+;PCODE: $00000718 VOL: 0
+; 0001 0545 }
+; 0001 0546 while(addr<=3); // case when 4 calibration bytes
+;PCODE: $00000719 VOL: 0
+;PCODE: $0000071A VOL: 0
+;PCODE: $0000071B VOL: 0
+;PCODE: $0000071C VOL: 0
+;PCODE: $0000071D VOL: 0
+;PCODE: $0000071E VOL: 0
+; 0001 0547 // гасим индикатор чтения
+; 0001 0548 LED_RD_OFF();
+;PCODE: $0000071F VOL: 0
+;PCODE: $00000720 VOL: 0
+; 0001 0549 g_IsFuseClock=FALSE;
+;PCODE: $00000721 VOL: 0
+;PCODE: $00000722 VOL: 0
+; 0001 054A }
+;PCODE: $00000723 VOL: 0
+;PCODE: $00000724 VOL: 0
+;PCODE: $00000725 VOL: 0
+;void LeaveProgMode(void)
+; 0001 0550 {
+;PCODE: $00000726 VOL: 0
+;PCODE: $00000727 VOL: 0
+; 0001 0551 ReleasePorts();
+;PCODE: $00000728 VOL: 0
+; 0001 0552 PutOneChar(ACK);
+;PCODE: $00000729 VOL: 0
+;PCODE: $0000072A VOL: 0
+;PCODE: $0000072B VOL: 0
+; 0001 0553 }
+;PCODE: $0000072C VOL: 0
+;PCODE: $0000072D VOL: 0
+;void GetBlockMode(void)
+; 0001 0559 {
+;PCODE: $0000072E VOL: 0
+;PCODE: $0000072F VOL: 0
+; 0001 055A PutOneChar(YES);
+;PCODE: $00000730 VOL: 0
+;PCODE: $00000731 VOL: 0
+;PCODE: $00000732 VOL: 0
+; 0001 055B PutOneChar((UCHAR)(AVR910_REPORT_BLOCK_SIZE >> 8));
+;PCODE: $00000733 VOL: 0
+;PCODE: $00000734 VOL: 0
+;PCODE: $00000735 VOL: 0
+; 0001 055C PutOneChar(AVR910_REPORT_BLOCK_SIZE & 0xFF);
+;PCODE: $00000736 VOL: 0
+;PCODE: $00000737 VOL: 0
+;PCODE: $00000738 VOL: 0
+; 0001 055D }
+;PCODE: $00000739 VOL: 0
+;PCODE: $0000073A VOL: 0
+;void GetSWID(void)
+; 0001 0563 {
+;PCODE: $0000073B VOL: 0
+;PCODE: $0000073C VOL: 0
+; 0001 0564 
+; 0001 0565 UCHAR flash *ptr = SwID;
+; 0001 0566 while(0 != *ptr)
+;PCODE: $0000073D VOL: 0
+;PCODE: $0000073E VOL: 0
+;	*ptr -> R16,R17
+;PCODE: $0000073F VOL: 0
+;PCODE: $00000740 VOL: 0
+;PCODE: $00000741 VOL: 0
+;PCODE: $00000742 VOL: 0
+;PCODE: $00000743 VOL: 0
+;PCODE: $00000744 VOL: 0
+;PCODE: $00000745 VOL: 0
+;PCODE: $00000746 VOL: 0
+; 0001 0567 PutOneChar(*ptr++);
+;PCODE: $00000747 VOL: 0
+;PCODE: $00000748 VOL: 0
+;PCODE: $00000749 VOL: 0
+;PCODE: $0000074A VOL: 0
+;PCODE: $0000074B VOL: 0
+;PCODE: $0000074C VOL: 0
+;PCODE: $0000074D VOL: 0
+;PCODE: $0000074E VOL: 0
+; 0001 0568 }
+;PCODE: $0000074F VOL: 0
+;PCODE: $00000750 VOL: 0
+;PCODE: $00000751 VOL: 0
+;void GetSWVer(void)
+; 0001 056E {
+;PCODE: $00000752 VOL: 0
+;PCODE: $00000753 VOL: 0
+; 0001 056F PutOneChar(SOFTWARE_VER_1);
+;PCODE: $00000754 VOL: 0
+;PCODE: $00000755 VOL: 0
+;PCODE: $00000756 VOL: 0
+; 0001 0570 PutOneChar(SOFTWARE_VER_2);
+;PCODE: $00000757 VOL: 0
+;PCODE: $00000758 VOL: 0
+;PCODE: $00000759 VOL: 0
+; 0001 0571 }
+;PCODE: $0000075A VOL: 0
+;PCODE: $0000075B VOL: 0
+;void GetHWVer(void)
+; 0001 0577 {
+;PCODE: $0000075C VOL: 0
+;PCODE: $0000075D VOL: 0
+; 0001 0578 PutOneChar(HARDWARE_VER_1);
+;PCODE: $0000075E VOL: 0
+;PCODE: $0000075F VOL: 0
+;PCODE: $00000760 VOL: 0
+; 0001 0579 PutOneChar(HARDWARE_VER_2);
+;PCODE: $00000761 VOL: 0
+;PCODE: $00000762 VOL: 0
+;PCODE: $00000763 VOL: 0
+; 0001 057A }
+;PCODE: $00000764 VOL: 0
+;PCODE: $00000765 VOL: 0
+;void GetAutoIncAddr(void)
+; 0001 0580 {
+;PCODE: $00000766 VOL: 0
+;PCODE: $00000767 VOL: 0
+; 0001 0581 PutOneChar(ACK);
+;PCODE: $00000768 VOL: 0
+;PCODE: $00000769 VOL: 0
+;PCODE: $0000076A VOL: 0
+; 0001 0582 }
+;PCODE: $0000076B VOL: 0
+;PCODE: $0000076C VOL: 0
+;void GetPROGType(void)
+; 0001 0588 {
+;PCODE: $0000076D VOL: 0
+;PCODE: $0000076E VOL: 0
+; 0001 0589 PutOneChar(PROGRAMMER_TYPE);
+;PCODE: $0000076F VOL: 0
+;PCODE: $00000770 VOL: 0
+;PCODE: $00000771 VOL: 0
+; 0001 058A }
+;PCODE: $00000772 VOL: 0
+;PCODE: $00000773 VOL: 0
+;void SetAddr(void)
+; 0001 0590 {
+;PCODE: $00000774 VOL: 0
+;PCODE: $00000775 VOL: 0
+; 0001 0591 // проверяем, есть ли данные для команды
+; 0001 0592 CheckCommParams(2);
+;PCODE: $00000776 VOL: 0
+;PCODE: $00000777 VOL: 0
+;PCODE: $00000778 VOL: 0
+; 0001 0593 if(TRUE == g_NeedParams)
+;PCODE: $00000779 VOL: 0
+;PCODE: $0000077A VOL: 0
+;PCODE: $0000077B VOL: 0
+; 0001 0594 return;
+;PCODE: $0000077C VOL: 0
+; 0001 0595 
+; 0001 0596 g_Addr = MAKEUINT(GetOneChar(), GetOneChar());
+;PCODE: $0000077D VOL: 0
+;PCODE: $0000077E VOL: 0
+;PCODE: $0000077F VOL: 0
+;PCODE: $00000780 VOL: 0
+;PCODE: $00000781 VOL: 0
+;PCODE: $00000782 VOL: 0
+;PCODE: $00000783 VOL: 0
+;PCODE: $00000784 VOL: 0
+;PCODE: $00000785 VOL: 0
+; 0001 0597 PutOneChar(ACK);
+;PCODE: $00000786 VOL: 0
+;PCODE: $00000787 VOL: 0
+;PCODE: $00000788 VOL: 0
+; 0001 0598 }
+;PCODE: $00000789 VOL: 0
+;PCODE: $0000078A VOL: 0
+;void ReadBlockCommand(void)
+; 0001 059E {
+;PCODE: $0000078B VOL: 0
+;PCODE: $0000078C VOL: 0
+; 0001 059F UCHAR size_h,size_l;
+; 0001 05A0 // проверяем, есть ли данные для команды
+; 0001 05A1 CheckCommParams(3);
+;PCODE: $0000078D VOL: 0
+;PCODE: $0000078E VOL: 0
+;	size_h -> R17
+;	size_l -> R16
+;PCODE: $0000078F VOL: 0
+;PCODE: $00000790 VOL: 0
+;PCODE: $00000791 VOL: 0
+; 0001 05A2 if(TRUE == g_NeedParams)
+;PCODE: $00000792 VOL: 0
+;PCODE: $00000793 VOL: 0
+;PCODE: $00000794 VOL: 0
+; 0001 05A3 return;
+;PCODE: $00000795 VOL: 0
+;PCODE: $00000796 VOL: 0
+; 0001 05A4 
+; 0001 05A5 // получаем размер блока и тип памяти
+; 0001 05A6 size_h = GetOneChar();
+;PCODE: $00000797 VOL: 0
+;PCODE: $00000798 VOL: 0
+;PCODE: $00000799 VOL: 0
+; 0001 05A7 size_l = GetOneChar();
+;PCODE: $0000079A VOL: 0
+;PCODE: $0000079B VOL: 0
+; 0001 05A8 g_BlockSize = ((UINT)(size_h << 8)) | ((UINT)(size_l));
+;PCODE: $0000079C VOL: 0
+;PCODE: $0000079D VOL: 0
+;PCODE: $0000079E VOL: 0
+;PCODE: $0000079F VOL: 0
+;PCODE: $000007A0 VOL: 0
+;PCODE: $000007A1 VOL: 0
+;PCODE: $000007A2 VOL: 0
+;PCODE: $000007A3 VOL: 0
+;PCODE: $000007A4 VOL: 0
+; 0001 05A9 g_MemType = GetOneChar();
+;PCODE: $000007A5 VOL: 0
+;PCODE: $000007A6 VOL: 0
+; 0001 05AA 
+; 0001 05AB g_Operation = OPERATION_READ;
+;PCODE: $000007A7 VOL: 0
+;PCODE: $000007A8 VOL: 0
+; 0001 05AC g_BlockMode = TRUE;
+;PCODE: $000007A9 VOL: 0
+;PCODE: $000007AA VOL: 0
+; 0001 05AD 
+; 0001 05AE // проверяем код устройства
+; 0001 05AF if(S89 != g_DeviceType)
+;PCODE: $000007AB VOL: 0
+;PCODE: $000007AC VOL: 0
+;PCODE: $000007AD VOL: 0
+; 0001 05B0 if('F' == g_MemType)// в память программ AVR пишем словами
+;PCODE: $000007AE VOL: 0
+;PCODE: $000007AF VOL: 0
+;PCODE: $000007B0 VOL: 0
+; 0001 05B1 g_BlockSize /= 2;
+;PCODE: $000007B1 VOL: 0
+;PCODE: $000007B2 VOL: 0
+;PCODE: $000007B3 VOL: 0
+; 0001 05B2 ReadBlock();
+;PCODE: $000007B4 VOL: 0
+;PCODE: $000007B5 VOL: 0
+;PCODE: $000007B6 VOL: 0
+; 0001 05B3 }
+;PCODE: $000007B7 VOL: 0
+;PCODE: $000007B8 VOL: 0
+;PCODE: $000007B9 VOL: 0
+;void ReadBlock(void)
+; 0001 05B9 {
+;PCODE: $000007BA VOL: 0
+;PCODE: $000007BB VOL: 0
+; 0001 05BA // проверяем тип памяти
+; 0001 05BB if('F' == g_MemType)//FLASH
+;PCODE: $000007BC VOL: 0
+;PCODE: $000007BD VOL: 0
+;PCODE: $000007BE VOL: 0
+; 0001 05BC {
+; 0001 05BD // заполняем буфер данными
+; 0001 05BE while(g_txWR < AVR910_TX_DATA_SIZE)
+;PCODE: $000007BF VOL: 0
+;PCODE: $000007C0 VOL: 0
+;PCODE: $000007C1 VOL: 0
+;PCODE: $000007C2 VOL: 0
+; 0001 05BF {
+; 0001 05C0 ReadProg(0x20, 0x28);
+;PCODE: $000007C3 VOL: 0
+;PCODE: $000007C4 VOL: 0
+;PCODE: $000007C5 VOL: 0
+;PCODE: $000007C6 VOL: 0
+;PCODE: $000007C7 VOL: 0
+; 0001 05C1 if(0 == --g_BlockSize)
+;PCODE: $000007C8 VOL: 0
+;PCODE: $000007C9 VOL: 0
+;PCODE: $000007CA VOL: 0
+;PCODE: $000007CB VOL: 0
+;PCODE: $000007CC VOL: 0
+;PCODE: $000007CD VOL: 0
+; 0001 05C2 {
+; 0001 05C3 g_BlockMode = FALSE;
+;PCODE: $000007CE VOL: 0
+;PCODE: $000007CF VOL: 0
+; 0001 05C4 break;
+;PCODE: $000007D0 VOL: 0
+; 0001 05C5 }
+; 0001 05C6 }
+;PCODE: $000007D1 VOL: 0
+;PCODE: $000007D2 VOL: 0
+;PCODE: $000007D3 VOL: 0
+; 0001 05C7 
+; 0001 05C8 }
+; 0001 05C9 else// EEPROM
+;PCODE: $000007D4 VOL: 0
+;PCODE: $000007D5 VOL: 0
+; 0001 05CA {
+; 0001 05CB // заполняем буфер данными
+; 0001 05CC while(g_txWR < AVR910_TX_DATA_SIZE)
+;PCODE: $000007D6 VOL: 0
+;PCODE: $000007D7 VOL: 0
+;PCODE: $000007D8 VOL: 0
+;PCODE: $000007D9 VOL: 0
+; 0001 05CD {
+; 0001 05CE ReadData();
+;PCODE: $000007DA VOL: 0
+; 0001 05CF if(0 == --g_BlockSize)
+;PCODE: $000007DB VOL: 0
+;PCODE: $000007DC VOL: 0
+;PCODE: $000007DD VOL: 0
+;PCODE: $000007DE VOL: 0
+;PCODE: $000007DF VOL: 0
+;PCODE: $000007E0 VOL: 0
+; 0001 05D0 {
+; 0001 05D1 g_BlockMode = FALSE;
+;PCODE: $000007E1 VOL: 0
+;PCODE: $000007E2 VOL: 0
+; 0001 05D2 break;
+;PCODE: $000007E3 VOL: 0
+; 0001 05D3 }
+; 0001 05D4 }
+;PCODE: $000007E4 VOL: 0
+;PCODE: $000007E5 VOL: 0
+;PCODE: $000007E6 VOL: 0
+; 0001 05D5 }
+;PCODE: $000007E7 VOL: 0
+; 0001 05D6 }
+;PCODE: $000007E8 VOL: 0
+;PCODE: $000007E9 VOL: 0
+;void WriteBlockCommand(void)
+; 0001 05DC {
+;PCODE: $000007EA VOL: 0
+;PCODE: $000007EB VOL: 0
+; 0001 05DD UCHAR size_h,size_l,size_e=1;
+; 0001 05DE // проверяем, есть ли данные для команды
+; 0001 05DF CheckCommParams(4);
+;PCODE: $000007EC VOL: 0
+;	size_h -> R17
+;	size_l -> R16
+;	size_e -> R19
+;PCODE: $000007ED VOL: 0
+;PCODE: $000007EE VOL: 0
+;PCODE: $000007EF VOL: 0
+;PCODE: $000007F0 VOL: 0
+;PCODE: $000007F1 VOL: 0
+; 0001 05E0 if(TRUE == g_NeedParams){// if less than 4 bytes waiting==true -> for big size
+;PCODE: $000007F2 VOL: 0
+;PCODE: $000007F3 VOL: 0
+;PCODE: $000007F4 VOL: 0
+; 0001 05E1 CheckCommParams(3);
+;PCODE: $000007F5 VOL: 0
+;PCODE: $000007F6 VOL: 0
+;PCODE: $000007F7 VOL: 0
+; 0001 05E2 size_e=0;
+;PCODE: $000007F8 VOL: 0
+;PCODE: $000007F9 VOL: 0
+; 0001 05E3 if(TRUE == g_NeedParams)
+;PCODE: $000007FA VOL: 0
+;PCODE: $000007FB VOL: 0
+;PCODE: $000007FC VOL: 0
+; 0001 05E4 return;
+;PCODE: $000007FD VOL: 0
+;PCODE: $000007FE VOL: 0
+;PCODE: $000007FF VOL: 0
+; 0001 05E5 }
+;PCODE: $00000800 VOL: 0
+; 0001 05E6 
+; 0001 05E7 // получаем размер блока и тип памяти
+; 0001 05E8 if(size_e)
+;PCODE: $00000801 VOL: 0
+;PCODE: $00000802 VOL: 0
+;PCODE: $00000803 VOL: 0
+; 0001 05E9 size_e = GetOneChar();
+;PCODE: $00000804 VOL: 0
+;PCODE: $00000805 VOL: 0
+; 0001 05EA size_h	= GetOneChar();
+;PCODE: $00000806 VOL: 0
+;PCODE: $00000807 VOL: 0
+;PCODE: $00000808 VOL: 0
+; 0001 05EB size_l	= GetOneChar();
+;PCODE: $00000809 VOL: 0
+;PCODE: $0000080A VOL: 0
+; 0001 05EC g_BlockSize		= ((ULONG)((ULONG)size_e << 16)) | ((UINT)(size_h << 8)) | ((UINT)(size_l));
+;PCODE: $0000080B VOL: 0
+;PCODE: $0000080C VOL: 0
+;PCODE: $0000080D VOL: 0
+;PCODE: $0000080E VOL: 0
+;PCODE: $0000080F VOL: 0
+;PCODE: $00000810 VOL: 0
+;PCODE: $00000811 VOL: 0
+;PCODE: $00000812 VOL: 0
+;PCODE: $00000813 VOL: 0
+;PCODE: $00000814 VOL: 0
+;PCODE: $00000815 VOL: 0
+;PCODE: $00000816 VOL: 0
+;PCODE: $00000817 VOL: 0
+;PCODE: $00000818 VOL: 0
+;PCODE: $00000819 VOL: 0
+;PCODE: $0000081A VOL: 0
+; 0001 05ED g_MemType		= GetOneChar();
+;PCODE: $0000081B VOL: 0
+;PCODE: $0000081C VOL: 0
+; 0001 05EE g_BlockMode		= TRUE;
+;PCODE: $0000081D VOL: 0
+;PCODE: $0000081E VOL: 0
+; 0001 05EF g_Operation		= OPERATION_WRITE;
+;PCODE: $0000081F VOL: 0
+;PCODE: $00000820 VOL: 0
+; 0001 05F0 g_WordCount 	= 0;
+;PCODE: $00000821 VOL: 0
+;PCODE: $00000822 VOL: 0
+; 0001 05F1 
+; 0001 05F2 // проверяем код устройства
+; 0001 05F3 if(S89 != g_DeviceType)
+;PCODE: $00000823 VOL: 0
+;PCODE: $00000824 VOL: 0
+;PCODE: $00000825 VOL: 0
+; 0001 05F4 if('F' == g_MemType)// в память программ AVR пишем словами*/
+;PCODE: $00000826 VOL: 0
+;PCODE: $00000827 VOL: 0
+;PCODE: $00000828 VOL: 0
+; 0001 05F5 g_BlockSize /= 2;
+;PCODE: $00000829 VOL: 0
+;PCODE: $0000082A VOL: 0
+;PCODE: $0000082B VOL: 0
+; 0001 05F6 }
+;PCODE: $0000082C VOL: 0
+;PCODE: $0000082D VOL: 0
+;PCODE: $0000082E VOL: 0
+;PCODE: $0000082F VOL: 0
+;PCODE: $00000830 VOL: 0
+;PCODE: $00000831 VOL: 0
+;void WriteBlock(void)
+; 0001 05FC {
+;PCODE: $00000832 VOL: 0
+;PCODE: $00000833 VOL: 0
+; 0001 05FD // проверяем тип памяти
+; 0001 05FE if('E' == g_MemType)// EEPROM
+;PCODE: $00000834 VOL: 0
+;PCODE: $00000835 VOL: 0
+;PCODE: $00000836 VOL: 0
+; 0001 05FF {
+; 0001 0600 //while(g_rxLen)
+; 0001 0601 while(0 < g_FIFODataSize)
+;PCODE: $00000837 VOL: 0
+;PCODE: $00000838 VOL: 0
+;PCODE: $00000839 VOL: 0
+;PCODE: $0000083A VOL: 0
+; 0001 0602 {
+; 0001 0603 WriteData();
+;PCODE: $0000083B VOL: 0
+; 0001 0604 g_BlockSize--;
+;PCODE: $0000083C VOL: 0
+;PCODE: $0000083D VOL: 0
+;PCODE: $0000083E VOL: 0
+;PCODE: $0000083F VOL: 0
+; 0001 0605 }
+;PCODE: $00000840 VOL: 0
+;PCODE: $00000841 VOL: 0
+; 0001 0606 }
+; 0001 0607 
+; 0001 0608 if('F' == g_MemType)//Flash
+;PCODE: $00000842 VOL: 0
+;PCODE: $00000843 VOL: 0
+;PCODE: $00000844 VOL: 0
+;PCODE: $00000845 VOL: 0
+; 0001 0609 {
+; 0001 060A //while(g_rxLen)
+; 0001 060B while(0 < g_FIFODataSize)
+;PCODE: $00000846 VOL: 0
+;PCODE: $00000847 VOL: 0
+;PCODE: $00000848 VOL: 0
+;PCODE: $00000849 VOL: 0
+; 0001 060C {
+; 0001 060D WriteProgLB();
+;PCODE: $0000084A VOL: 0
+; 0001 060E WriteProgHB();
+;PCODE: $0000084B VOL: 0
+; 0001 060F g_BlockSize--;
+;PCODE: $0000084C VOL: 0
+;PCODE: $0000084D VOL: 0
+;PCODE: $0000084E VOL: 0
+;PCODE: $0000084F VOL: 0
+; 0001 0610 
+; 0001 0611 // Проверяем заполняемость страницы
+; 0001 0612 if(MEGA == g_DeviceType)
+;PCODE: $00000850 VOL: 0
+;PCODE: $00000851 VOL: 0
+;PCODE: $00000852 VOL: 0
+; 0001 0613 {
+; 0001 0614 g_WordCount++;
+;PCODE: $00000853 VOL: 0
+;PCODE: $00000854 VOL: 0
+;PCODE: $00000855 VOL: 0
+; 0001 0615 if(g_WordCount == g_DevicePollCode)
+;PCODE: $00000856 VOL: 0
+;PCODE: $00000857 VOL: 0
+;PCODE: $00000858 VOL: 0
+;PCODE: $00000859 VOL: 0
+; 0001 0616 {
+; 0001 0617 WritePage();
+;PCODE: $0000085A VOL: 0
+; 0001 0618 g_WordCount = 0;
+;PCODE: $0000085B VOL: 0
+;PCODE: $0000085C VOL: 0
+; 0001 0619 }
+; 0001 061A }
+;PCODE: $0000085D VOL: 0
+; 0001 061B }
+;PCODE: $0000085E VOL: 0
+;PCODE: $0000085F VOL: 0
+;PCODE: $00000860 VOL: 0
+; 0001 061C }
+; 0001 061D 
+; 0001 061E // если блок кончился
+; 0001 061F if(0 == g_BlockSize)
+;PCODE: $00000861 VOL: 0
+;PCODE: $00000862 VOL: 0
+;PCODE: $00000863 VOL: 0
+;PCODE: $00000864 VOL: 0
+; 0001 0620 {
+; 0001 0621 // а страница не догруженна
+; 0001 0622 if(g_WordCount != 0)
+;PCODE: $00000865 VOL: 0
+;PCODE: $00000866 VOL: 0
+;PCODE: $00000867 VOL: 0
+; 0001 0623 
+; 0001 0624 // значит конец записи данных,
+; 0001 0625 // если писали в память программ то догружаем страницу
+; 0001 0626 if('F' == g_MemType)//Flash
+;PCODE: $00000868 VOL: 0
+;PCODE: $00000869 VOL: 0
+;PCODE: $0000086A VOL: 0
+; 0001 0627 WritePage();
+;PCODE: $0000086B VOL: 0
+; 0001 0628 
+; 0001 0629 // отмечаем, что блок принят
+; 0001 062A g_BlockMode = FALSE;
+;PCODE: $0000086C VOL: 0
+;PCODE: $0000086D VOL: 0
+;PCODE: $0000086E VOL: 0
+;PCODE: $0000086F VOL: 0
+; 0001 062B PutOneChar(ACK);
+;PCODE: $00000870 VOL: 0
+;PCODE: $00000871 VOL: 0
+;PCODE: $00000872 VOL: 0
+; 0001 062C }
+; 0001 062D }
+;PCODE: $00000873 VOL: 0
+;PCODE: $00000874 VOL: 0
+;PCODE: $00000875 VOL: 0
+;UCHAR WriteBlockBin(void)
+; 0001 062F {
+;PCODE: $00000876 VOL: 0
+;PCODE: $00000877 VOL: 0
+; 0001 0630 UCHAR chk_data,next_data,WordCount,adr_ext,adr_hi,adr_lo,adr_ext_b,adr_hi_b,adr_lo_b,readCounter,boot=0;
+; 0001 0631 UINT bc=0,bootPages,appCS,bootCS;
+; 0001 0632 
+; 0001 0633 //copy intel hex to page buffer
+; 0001 0634 LastOffset=2000L; //16bit addresses and 16bit data counter, coded from 1000->1023 24bytes
+;PCODE: $00000878 VOL: 0
+;PCODE: $00000879 VOL: 0
+;PCODE: $0000087A VOL: 0
+;PCODE: $0000087B VOL: 0
+;PCODE: $0000087C VOL: 0
+;PCODE: $0000087D VOL: 0
+;PCODE: $0000087E VOL: 0
+;PCODE: $0000087F VOL: 0
+;	chk_data -> R17
+;	next_data -> R16
+;	WordCount -> R19
+;	adr_ext -> R18
+;	adr_hi -> R21
+;	adr_lo -> R20
+;	adr_ext_b -> Y+18
+;	adr_hi_b -> Y+17
+;	adr_lo_b -> Y+16
+;	readCounter -> Y+15
+;	boot -> Y+14
+;	bc -> Y+12
+;	bootPages -> Y+10
+;	appCS -> Y+8
+;	bootCS -> Y+6
+;PCODE: $00000880 VOL: 0
+;PCODE: $00000881 VOL: 0
+; 0001 0635 if(fileOpen()==FALSE)
+;PCODE: $00000882 VOL: 0
+;PCODE: $00000883 VOL: 0
+;PCODE: $00000884 VOL: 0
+; 0001 0636 return FALSE;
+;PCODE: $00000885 VOL: 0
+;PCODE: $00000886 VOL: 0
+;PCODE: $00000887 VOL: 0
+;PCODE: $00000888 VOL: 0
+; 0001 0637 if(SetBinFileOffset(LastOffset)==FALSE)//if(SetFlashArea()==0)
+;PCODE: $00000889 VOL: 0
+;PCODE: $0000088A VOL: 0
+;PCODE: $0000088B VOL: 0
+;PCODE: $0000088C VOL: 0
+;PCODE: $0000088D VOL: 0
+;PCODE: $0000088E VOL: 0
+; 0001 0638 return FALSE;
+;PCODE: $0000088F VOL: 0
+;PCODE: $00000890 VOL: 0
+;PCODE: $00000891 VOL: 0
+;PCODE: $00000892 VOL: 0
+; 0001 0639 if(fileRead()==FALSE)
+;PCODE: $00000893 VOL: 0
+;PCODE: $00000894 VOL: 0
+;PCODE: $00000895 VOL: 0
+;PCODE: $00000896 VOL: 0
+; 0001 063A return FALSE;
+;PCODE: $00000897 VOL: 0
+;PCODE: $00000898 VOL: 0
+;PCODE: $00000899 VOL: 0
+;PCODE: $0000089A VOL: 0
+; 0001 063B bc=0;
+;PCODE: $0000089B VOL: 0
+;PCODE: $0000089C VOL: 0
+;PCODE: $0000089D VOL: 0
+; 0001 063C adr_ext = buffer[bc++];
+;PCODE: $0000089E VOL: 0
+;PCODE: $0000089F VOL: 0
+;PCODE: $000008A0 VOL: 0
+;PCODE: $000008A1 VOL: 0
+;PCODE: $000008A2 VOL: 0
+;PCODE: $000008A3 VOL: 0
+; 0001 063D adr_hi = buffer[bc++];
+;PCODE: $000008A4 VOL: 0
+;PCODE: $000008A5 VOL: 0
+;PCODE: $000008A6 VOL: 0
+;PCODE: $000008A7 VOL: 0
+;PCODE: $000008A8 VOL: 0
+;PCODE: $000008A9 VOL: 0
+; 0001 063E adr_lo = buffer[bc++];
+;PCODE: $000008AA VOL: 0
+;PCODE: $000008AB VOL: 0
+;PCODE: $000008AC VOL: 0
+;PCODE: $000008AD VOL: 0
+;PCODE: $000008AE VOL: 0
+;PCODE: $000008AF VOL: 0
+; 0001 063F g_BlockSize = buffer[bc++];
+;PCODE: $000008B0 VOL: 0
+;PCODE: $000008B1 VOL: 0
+;PCODE: $000008B2 VOL: 0
+;PCODE: $000008B3 VOL: 0
+;PCODE: $000008B4 VOL: 0
+;PCODE: $000008B5 VOL: 0
+;PCODE: $000008B6 VOL: 0
+;PCODE: $000008B7 VOL: 0
+; 0001 0640 g_BlockSize = (g_BlockSize<<8) | buffer[bc++];//app pages counter
+;PCODE: $000008B8 VOL: 0
+;PCODE: $000008B9 VOL: 0
+;PCODE: $000008BA VOL: 0
+;PCODE: $000008BB VOL: 0
+;PCODE: $000008BC VOL: 0
+;PCODE: $000008BD VOL: 0
+;PCODE: $000008BE VOL: 0
+;PCODE: $000008BF VOL: 0
+;PCODE: $000008C0 VOL: 0
+;PCODE: $000008C1 VOL: 0
+;PCODE: $000008C2 VOL: 0
+;PCODE: $000008C3 VOL: 0
+;PCODE: $000008C4 VOL: 0
+; 0001 0641 appCS = buffer[bc++];
+;PCODE: $000008C5 VOL: 0
+;PCODE: $000008C6 VOL: 0
+;PCODE: $000008C7 VOL: 0
+;PCODE: $000008C8 VOL: 0
+;PCODE: $000008C9 VOL: 0
+;PCODE: $000008CA VOL: 0
+;PCODE: $000008CB VOL: 0
+;PCODE: $000008CC VOL: 0
+; 0001 0642 appCS = (appCS<<8) | buffer[bc++];
+;PCODE: $000008CD VOL: 0
+;PCODE: $000008CE VOL: 0
+;PCODE: $000008CF VOL: 0
+;PCODE: $000008D0 VOL: 0
+;PCODE: $000008D1 VOL: 0
+;PCODE: $000008D2 VOL: 0
+;PCODE: $000008D3 VOL: 0
+;PCODE: $000008D4 VOL: 0
+;PCODE: $000008D5 VOL: 0
+;PCODE: $000008D6 VOL: 0
+;PCODE: $000008D7 VOL: 0
+;PCODE: $000008D8 VOL: 0
+; 0001 0643 adr_ext_b = buffer[bc++];
+;PCODE: $000008D9 VOL: 0
+;PCODE: $000008DA VOL: 0
+;PCODE: $000008DB VOL: 0
+;PCODE: $000008DC VOL: 0
+;PCODE: $000008DD VOL: 0
+;PCODE: $000008DE VOL: 0
+;PCODE: $000008DF VOL: 0
+; 0001 0644 adr_hi_b = buffer[bc++];
+;PCODE: $000008E0 VOL: 0
+;PCODE: $000008E1 VOL: 0
+;PCODE: $000008E2 VOL: 0
+;PCODE: $000008E3 VOL: 0
+;PCODE: $000008E4 VOL: 0
+;PCODE: $000008E5 VOL: 0
+;PCODE: $000008E6 VOL: 0
+; 0001 0645 adr_lo_b = buffer[bc++];
+;PCODE: $000008E7 VOL: 0
+;PCODE: $000008E8 VOL: 0
+;PCODE: $000008E9 VOL: 0
+;PCODE: $000008EA VOL: 0
+;PCODE: $000008EB VOL: 0
+;PCODE: $000008EC VOL: 0
+;PCODE: $000008ED VOL: 0
+; 0001 0646 bootPages =buffer[bc++];
+;PCODE: $000008EE VOL: 0
+;PCODE: $000008EF VOL: 0
+;PCODE: $000008F0 VOL: 0
+;PCODE: $000008F1 VOL: 0
+;PCODE: $000008F2 VOL: 0
+;PCODE: $000008F3 VOL: 0
+;PCODE: $000008F4 VOL: 0
+;PCODE: $000008F5 VOL: 0
+; 0001 0647 bootPages = (bootPages<<8) | buffer[bc++];//app pages counter
+;PCODE: $000008F6 VOL: 0
+;PCODE: $000008F7 VOL: 0
+;PCODE: $000008F8 VOL: 0
+;PCODE: $000008F9 VOL: 0
+;PCODE: $000008FA VOL: 0
+;PCODE: $000008FB VOL: 0
+;PCODE: $000008FC VOL: 0
+;PCODE: $000008FD VOL: 0
+;PCODE: $000008FE VOL: 0
+;PCODE: $000008FF VOL: 0
+;PCODE: $00000900 VOL: 0
+;PCODE: $00000901 VOL: 0
+; 0001 0648 if(bootPages!=0)
+;PCODE: $00000902 VOL: 0
+;PCODE: $00000903 VOL: 0
+;PCODE: $00000904 VOL: 0
+; 0001 0649 boot=1;
+;PCODE: $00000905 VOL: 0
+;PCODE: $00000906 VOL: 0
+; 0001 064A bootCS = buffer[bc++];
+;PCODE: $00000907 VOL: 0
+;PCODE: $00000908 VOL: 0
+;PCODE: $00000909 VOL: 0
+;PCODE: $0000090A VOL: 0
+;PCODE: $0000090B VOL: 0
+;PCODE: $0000090C VOL: 0
+;PCODE: $0000090D VOL: 0
+;PCODE: $0000090E VOL: 0
+;PCODE: $0000090F VOL: 0
+; 0001 064B bootCS = (bootCS<<8) | buffer[bc++];
+;PCODE: $00000910 VOL: 0
+;PCODE: $00000911 VOL: 0
+;PCODE: $00000912 VOL: 0
+;PCODE: $00000913 VOL: 0
+;PCODE: $00000914 VOL: 0
+;PCODE: $00000915 VOL: 0
+;PCODE: $00000916 VOL: 0
+;PCODE: $00000917 VOL: 0
+;PCODE: $00000918 VOL: 0
+;PCODE: $00000919 VOL: 0
+;PCODE: $0000091A VOL: 0
+;PCODE: $0000091B VOL: 0
+; 0001 064C bc++;
+;PCODE: $0000091C VOL: 0
+;PCODE: $0000091D VOL: 0
+;PCODE: $0000091E VOL: 0
+; 0001 064D g_DevicePollCode=buffer[bc++];
+;PCODE: $0000091F VOL: 0
+;PCODE: $00000920 VOL: 0
+;PCODE: $00000921 VOL: 0
+;PCODE: $00000922 VOL: 0
+;PCODE: $00000923 VOL: 0
+;PCODE: $00000924 VOL: 0
+;PCODE: $00000925 VOL: 0
+; 0001 064E WordCount=g_DevicePollCode;
+;PCODE: $00000926 VOL: 0
+;PCODE: $00000927 VOL: 0
+; 0001 064F if(g_BlockSize==0){
+;PCODE: $00000928 VOL: 0
+;PCODE: $00000929 VOL: 0
+;PCODE: $0000092A VOL: 0
+; 0001 0650 appCS=bootCS;
+;PCODE: $0000092B VOL: 0
+;PCODE: $0000092C VOL: 0
+; 0001 0651 bootCS=0;
+;PCODE: $0000092D VOL: 0
+;PCODE: $0000092E VOL: 0
+; 0001 0652 g_Addr=0;
+;PCODE: $0000092F VOL: 0
+;PCODE: $00000930 VOL: 0
+; 0001 0653 g_BlockSize=bootPages;
+;PCODE: $00000931 VOL: 0
+;PCODE: $00000932 VOL: 0
+;PCODE: $00000933 VOL: 0
+; 0001 0654 bootPages=0;
+;PCODE: $00000934 VOL: 0
+;PCODE: $00000935 VOL: 0
+; 0001 0655 adr_ext=adr_ext_b;
+;PCODE: $00000936 VOL: 0
+;PCODE: $00000937 VOL: 0
+; 0001 0656 adr_hi=adr_hi_b;
+;PCODE: $00000938 VOL: 0
+;PCODE: $00000939 VOL: 0
+; 0001 0657 adr_lo=adr_lo_b;
+;PCODE: $0000093A VOL: 0
+;PCODE: $0000093B VOL: 0
+; 0001 0658 boot=0;
+;PCODE: $0000093C VOL: 0
+;PCODE: $0000093D VOL: 0
+; 0001 0659 }
+; 0001 065A /*start debug
+; 0001 065B #ifdef PRINT_LCD
+; 0001 065C lcd_putsf_row(1,"");
+; 0001 065D lcd_puts_hex(adr_hi);
+; 0001 065E lcd_puts_hex(adr_lo);
+; 0001 065F lcd_puts_hex(g_BlockSize>>8);
+; 0001 0660 lcd_puts_hex(g_BlockSize);
+; 0001 0661 lcd_puts_hex(appCS>>8);
+; 0001 0662 lcd_puts_hex(appCS);
+; 0001 0663 lcd_puts_hex(g_DevicePollCode);
+; 0001 0664 #endif
+; 0001 0665 end debug*/
+; 0001 0666 bc=0;
+;PCODE: $0000093E VOL: 0
+;PCODE: $0000093F VOL: 0
+;PCODE: $00000940 VOL: 0
+; 0001 0667 LastOffset=2048L;
+;PCODE: $00000941 VOL: 0
+;PCODE: $00000942 VOL: 0
+; 0001 0668 g_Addr=0;
+;PCODE: $00000943 VOL: 0
+;PCODE: $00000944 VOL: 0
+; 0001 0669 if(readPageBin((UINT)g_DevicePollCode<<1,pageBuffer)==FALSE)
+;PCODE: $00000945 VOL: 0
+;PCODE: $00000946 VOL: 0
+;PCODE: $00000947 VOL: 0
+;PCODE: $00000948 VOL: 0
+;PCODE: $00000949 VOL: 0
+;PCODE: $0000094A VOL: 0
+;PCODE: $0000094B VOL: 0
+;PCODE: $0000094C VOL: 0
+;PCODE: $0000094D VOL: 0
+; 0001 066A return FALSE;
+;PCODE: $0000094E VOL: 0
+;PCODE: $0000094F VOL: 0
+;PCODE: $00000950 VOL: 0
+;PCODE: $00000951 VOL: 0
+; 0001 066B //#asm("cli");
+; 0001 066C while(g_BlockSize>0)
+;PCODE: $00000952 VOL: 0
+;PCODE: $00000953 VOL: 0
+;PCODE: $00000954 VOL: 0
+;PCODE: $00000955 VOL: 0
+;PCODE: $00000956 VOL: 0
+; 0001 066D {
+; 0001 066E if(boot!=0&&bootPages==0)
+;PCODE: $00000957 VOL: 0
+;PCODE: $00000958 VOL: 0
+;PCODE: $00000959 VOL: 0
+;PCODE: $0000095A VOL: 0
+;PCODE: $0000095B VOL: 0
+;PCODE: $0000095C VOL: 0
+;PCODE: $0000095D VOL: 0
+;PCODE: $0000095E VOL: 0
+;PCODE: $0000095F VOL: 0
+;PCODE: $00000960 VOL: 0
+; 0001 066F {
+; 0001 0670 adr_ext=adr_ext_b;
+;PCODE: $00000961 VOL: 0
+;PCODE: $00000962 VOL: 0
+; 0001 0671 adr_hi=adr_hi_b;
+;PCODE: $00000963 VOL: 0
+;PCODE: $00000964 VOL: 0
+; 0001 0672 adr_lo=adr_lo_b;
+;PCODE: $00000965 VOL: 0
+;PCODE: $00000966 VOL: 0
+; 0001 0673 boot=0;
+;PCODE: $00000967 VOL: 0
+;PCODE: $00000968 VOL: 0
+; 0001 0674 /*
+; 0001 0675 #ifdef PRINT_LCD
+; 0001 0676 lcd_putsf_row(2,"");
+; 0001 0677 lcd_puts_hex(adr_hi);
+; 0001 0678 lcd_puts_hex(adr_lo);
+; 0001 0679 lcd_puts_hex(g_BlockSize>>8);
+; 0001 067A lcd_puts_hex(g_BlockSize);
+; 0001 067B lcd_puts_hex(appCS>>8);
+; 0001 067C lcd_puts_hex(appCS);
+; 0001 067D lcd_puts_hex(g_DevicePollCode);
+; 0001 067E #endif
+; 0001 067F */
+; 0001 0680 }
+; 0001 0681 //WriteProgLB();
+; 0001 0682 //AVR_WR_FLASH_LB(g_Addr, buffer[nbytesCounter++]);
+; 0001 0683 /* Wait for empty transmit buffer */
+; 0001 0684 while ( ( UCSR0A & (0x20))==0 );
+;PCODE: $00000969 VOL: 0
+;PCODE: $0000096A VOL: 0
+;PCODE: $0000096B VOL: 0
+;PCODE: $0000096C VOL: 0
+;PCODE: $0000096D VOL: 0
+;PCODE: $0000096E VOL: 0
+;PCODE: $0000096F VOL: 0
+; 0001 0685 UDR0 = 0x40;
+;PCODE: $00000970 VOL: 0
+;PCODE: $00000971 VOL: 0
+; 0001 0686 while ( ( UCSR0A & (0x20))==0 );
+;PCODE: $00000972 VOL: 0
+;PCODE: $00000973 VOL: 0
+;PCODE: $00000974 VOL: 0
+;PCODE: $00000975 VOL: 0
+;PCODE: $00000976 VOL: 0
+;PCODE: $00000977 VOL: 0
+; 0001 0687 UDR0 = 0;
+;PCODE: $00000978 VOL: 0
+;PCODE: $00000979 VOL: 0
+; 0001 0688 while ( ( UCSR0A & (0x20))==0 );
+;PCODE: $0000097A VOL: 0
+;PCODE: $0000097B VOL: 0
+;PCODE: $0000097C VOL: 0
+;PCODE: $0000097D VOL: 0
+;PCODE: $0000097E VOL: 0
+;PCODE: $0000097F VOL: 0
+; 0001 0689 UDR0 = adr_lo;
+;PCODE: $00000980 VOL: 0
+;PCODE: $00000981 VOL: 0
+; 0001 068A next_data=pageBuffer[bc++];
+;PCODE: $00000982 VOL: 0
+;PCODE: $00000983 VOL: 0
+;PCODE: $00000984 VOL: 0
+;PCODE: $00000985 VOL: 0
+;PCODE: $00000986 VOL: 0
+;PCODE: $00000987 VOL: 0
+; 0001 068B while ( ( UCSR0A & (0x20))==0 );
+;PCODE: $00000988 VOL: 0
+;PCODE: $00000989 VOL: 0
+;PCODE: $0000098A VOL: 0
+;PCODE: $0000098B VOL: 0
+;PCODE: $0000098C VOL: 0
+;PCODE: $0000098D VOL: 0
+; 0001 068C UDR0 = next_data;
+;PCODE: $0000098E VOL: 0
+;PCODE: $0000098F VOL: 0
+; 0001 068D //--BlockSize;
+; 0001 068E while ( ( UCSR0A & (0x20))==0 );
+;PCODE: $00000990 VOL: 0
+;PCODE: $00000991 VOL: 0
+;PCODE: $00000992 VOL: 0
+;PCODE: $00000993 VOL: 0
+;PCODE: $00000994 VOL: 0
+;PCODE: $00000995 VOL: 0
+; 0001 068F UDR0 = 0x48;
+;PCODE: $00000996 VOL: 0
+;PCODE: $00000997 VOL: 0
+; 0001 0690 --WordCount;
+;PCODE: $00000998 VOL: 0
+;PCODE: $00000999 VOL: 0
+; 0001 0691 while ( ( UCSR0A & (0x20))==0 );
+;PCODE: $0000099A VOL: 0
+;PCODE: $0000099B VOL: 0
+;PCODE: $0000099C VOL: 0
+;PCODE: $0000099D VOL: 0
+;PCODE: $0000099E VOL: 0
+;PCODE: $0000099F VOL: 0
+; 0001 0692 UDR0 = 0;
+;PCODE: $000009A0 VOL: 0
+;PCODE: $000009A1 VOL: 0
+; 0001 0693 while ( ( UCSR0A & (0x20))==0 );
+;PCODE: $000009A2 VOL: 0
+;PCODE: $000009A3 VOL: 0
+;PCODE: $000009A4 VOL: 0
+;PCODE: $000009A5 VOL: 0
+;PCODE: $000009A6 VOL: 0
+;PCODE: $000009A7 VOL: 0
+; 0001 0694 UDR0 = adr_lo++;
+;PCODE: $000009A8 VOL: 0
+;PCODE: $000009A9 VOL: 0
+;PCODE: $000009AA VOL: 0
+;PCODE: $000009AB VOL: 0
+; 0001 0695 next_data=pageBuffer[bc++];
+;PCODE: $000009AC VOL: 0
+;PCODE: $000009AD VOL: 0
+;PCODE: $000009AE VOL: 0
+;PCODE: $000009AF VOL: 0
+;PCODE: $000009B0 VOL: 0
+;PCODE: $000009B1 VOL: 0
+; 0001 0696 while ( ( UCSR0A & (0x20))==0 );
+;PCODE: $000009B2 VOL: 0
+;PCODE: $000009B3 VOL: 0
+;PCODE: $000009B4 VOL: 0
+;PCODE: $000009B5 VOL: 0
+;PCODE: $000009B6 VOL: 0
+;PCODE: $000009B7 VOL: 0
+; 0001 0697 UDR0 =   next_data;
+;PCODE: $000009B8 VOL: 0
+;PCODE: $000009B9 VOL: 0
+; 0001 0698 if(WordCount==0)
+;PCODE: $000009BA VOL: 0
+;PCODE: $000009BB VOL: 0
+; 0001 0699 {
+; 0001 069A //WritePage();
+; 0001 069B while ( ( UCSR0A & (0x20))==0 );
+;PCODE: $000009BC VOL: 0
+;PCODE: $000009BD VOL: 0
+;PCODE: $000009BE VOL: 0
+;PCODE: $000009BF VOL: 0
+;PCODE: $000009C0 VOL: 0
+;PCODE: $000009C1 VOL: 0
+; 0001 069C UDR0 = 0x4C;
+;PCODE: $000009C2 VOL: 0
+;PCODE: $000009C3 VOL: 0
+; 0001 069D while ( ( UCSR0A & (0x20))==0 );
+;PCODE: $000009C4 VOL: 0
+;PCODE: $000009C5 VOL: 0
+;PCODE: $000009C6 VOL: 0
+;PCODE: $000009C7 VOL: 0
+;PCODE: $000009C8 VOL: 0
+;PCODE: $000009C9 VOL: 0
+; 0001 069E UDR0 = adr_hi;
+;PCODE: $000009CA VOL: 0
+;PCODE: $000009CB VOL: 0
+; 0001 069F while ( ( UCSR0A & (0x20))==0 );
+;PCODE: $000009CC VOL: 0
+;PCODE: $000009CD VOL: 0
+;PCODE: $000009CE VOL: 0
+;PCODE: $000009CF VOL: 0
+;PCODE: $000009D0 VOL: 0
+;PCODE: $000009D1 VOL: 0
+; 0001 06A0 UDR0 = adr_lo-1;
+;PCODE: $000009D2 VOL: 0
+;PCODE: $000009D3 VOL: 0
+;PCODE: $000009D4 VOL: 0
+; 0001 06A1 while ( ( UCSR0A & (0x20))==0 );
+;PCODE: $000009D5 VOL: 0
+;PCODE: $000009D6 VOL: 0
+;PCODE: $000009D7 VOL: 0
+;PCODE: $000009D8 VOL: 0
+;PCODE: $000009D9 VOL: 0
+;PCODE: $000009DA VOL: 0
+; 0001 06A2 UDR0 = 0;
+;PCODE: $000009DB VOL: 0
+;PCODE: $000009DC VOL: 0
+; 0001 06A3 while ( ( UCSR0A & (0x20))==0 );
+;PCODE: $000009DD VOL: 0
+;PCODE: $000009DE VOL: 0
+;PCODE: $000009DF VOL: 0
+;PCODE: $000009E0 VOL: 0
+;PCODE: $000009E1 VOL: 0
+;PCODE: $000009E2 VOL: 0
+; 0001 06A4 chk_data=0xff;
+;PCODE: $000009E3 VOL: 0
+;PCODE: $000009E4 VOL: 0
+; 0001 06A5 bc-=(UINT)(g_DevicePollCode<<1);
+;PCODE: $000009E5 VOL: 0
+;PCODE: $000009E6 VOL: 0
+;PCODE: $000009E7 VOL: 0
+;PCODE: $000009E8 VOL: 0
+;PCODE: $000009E9 VOL: 0
+;PCODE: $000009EA VOL: 0
+; 0001 06A6 adr_lo-=g_DevicePollCode;
+;PCODE: $000009EB VOL: 0
+;PCODE: $000009EC VOL: 0
+;PCODE: $000009ED VOL: 0
+; 0001 06A7 //g_BlockSize-=g_DevicePollCode;
+; 0001 06A8 g_BlockSize--;
+;PCODE: $000009EE VOL: 0
+;PCODE: $000009EF VOL: 0
+;PCODE: $000009F0 VOL: 0
+;PCODE: $000009F1 VOL: 0
+; 0001 06A9 //copy intel hex to page buffer
+; 0001 06AA if(g_BlockSize > 0 || bootPages>0){//if not end of file then read next part to write
+;PCODE: $000009F2 VOL: 0
+;PCODE: $000009F3 VOL: 0
+;PCODE: $000009F4 VOL: 0
+;PCODE: $000009F5 VOL: 0
+;PCODE: $000009F6 VOL: 0
+;PCODE: $000009F7 VOL: 0
+;PCODE: $000009F8 VOL: 0
+;PCODE: $000009F9 VOL: 0
+; 0001 06AB if(g_BlockSize==0){
+;PCODE: $000009FA VOL: 0
+;PCODE: $000009FB VOL: 0
+;PCODE: $000009FC VOL: 0
+; 0001 06AC if(g_Addr!=appCS){
+;PCODE: $000009FD VOL: 0
+;PCODE: $000009FE VOL: 0
+;PCODE: $000009FF VOL: 0
+;PCODE: $00000A00 VOL: 0
+; 0001 06AD #ifdef PRINT_LCD
+; 0001 06AE lcd_putsf_row(3,"cs r");
+; 0001 06AF lcd_puts_hex(g_Addr>>8);
+; 0001 06B0 lcd_puts_hex(g_Addr);
+; 0001 06B1 lcd_putsf(" e");
+; 0001 06B2 lcd_puts_hex(appCS>>8);
+; 0001 06B3 lcd_puts_hex(appCS);
+; 0001 06B4 #endif
+; 0001 06B5 return FALSE;
+;PCODE: $00000A01 VOL: 0
+;PCODE: $00000A02 VOL: 0
+;PCODE: $00000A03 VOL: 0
+;PCODE: $00000A04 VOL: 0
+; 0001 06B6 }
+; 0001 06B7 appCS=bootCS;
+;PCODE: $00000A05 VOL: 0
+;PCODE: $00000A06 VOL: 0
+;PCODE: $00000A07 VOL: 0
+; 0001 06B8 g_Addr=0;
+;PCODE: $00000A08 VOL: 0
+;PCODE: $00000A09 VOL: 0
+; 0001 06B9 g_BlockSize=bootPages;
+;PCODE: $00000A0A VOL: 0
+;PCODE: $00000A0B VOL: 0
+;PCODE: $00000A0C VOL: 0
+; 0001 06BA bootPages=0;
+;PCODE: $00000A0D VOL: 0
+;PCODE: $00000A0E VOL: 0
+; 0001 06BB //boot=0;
+; 0001 06BC }
+; 0001 06BD if(bc!=0){
+;PCODE: $00000A0F VOL: 0
+;PCODE: $00000A10 VOL: 0
+;PCODE: $00000A11 VOL: 0
+;PCODE: $00000A12 VOL: 0
+; 0001 06BE if(readPageBin((UINT)g_DevicePollCode<<1,pageBuffer)==FALSE)
+;PCODE: $00000A13 VOL: 0
+;PCODE: $00000A14 VOL: 0
+;PCODE: $00000A15 VOL: 0
+;PCODE: $00000A16 VOL: 0
+;PCODE: $00000A17 VOL: 0
+;PCODE: $00000A18 VOL: 0
+;PCODE: $00000A19 VOL: 0
+;PCODE: $00000A1A VOL: 0
+;PCODE: $00000A1B VOL: 0
+; 0001 06BF return FALSE;
+;PCODE: $00000A1C VOL: 0
+;PCODE: $00000A1D VOL: 0
+;PCODE: $00000A1E VOL: 0
+;PCODE: $00000A1F VOL: 0
+; 0001 06C0 }
+;PCODE: $00000A20 VOL: 0
+; 0001 06C1 else{
+;PCODE: $00000A21 VOL: 0
+;PCODE: $00000A22 VOL: 0
+; 0001 06C2 if(readPageBin((UINT)g_DevicePollCode<<1,&pageBuffer[(UINT)(g_DevicePollCode<<1)])==FALSE)
+;PCODE: $00000A23 VOL: 0
+;PCODE: $00000A24 VOL: 0
+;PCODE: $00000A25 VOL: 0
+;PCODE: $00000A26 VOL: 0
+;PCODE: $00000A27 VOL: 0
+;PCODE: $00000A28 VOL: 0
+;PCODE: $00000A29 VOL: 0
+;PCODE: $00000A2A VOL: 0
+;PCODE: $00000A2B VOL: 0
+;PCODE: $00000A2C VOL: 0
+;PCODE: $00000A2D VOL: 0
+;PCODE: $00000A2E VOL: 0
+; 0001 06C3 return FALSE;
+;PCODE: $00000A2F VOL: 0
+;PCODE: $00000A30 VOL: 0
+;PCODE: $00000A31 VOL: 0
+;PCODE: $00000A32 VOL: 0
+; 0001 06C4 }
+;PCODE: $00000A33 VOL: 0
+;PCODE: $00000A34 VOL: 0
+; 0001 06C5 }
+; 0001 06C6 else{
+;PCODE: $00000A35 VOL: 0
+;PCODE: $00000A36 VOL: 0
+; 0001 06C7 delay_ms(1);
+;PCODE: $00000A37 VOL: 0
+;PCODE: $00000A38 VOL: 0
+;PCODE: $00000A39 VOL: 0
+; 0001 06C8 }
+;PCODE: $00000A3A VOL: 0
+; 0001 06C9 while(WordCount != g_DevicePollCode){
+;PCODE: $00000A3B VOL: 0
+;PCODE: $00000A3C VOL: 0
+;PCODE: $00000A3D VOL: 0
+;PCODE: $00000A3E VOL: 0
+; 0001 06CA if(chk_data==0xff){
+;PCODE: $00000A3F VOL: 0
+;PCODE: $00000A40 VOL: 0
+;PCODE: $00000A41 VOL: 0
+; 0001 06CB if(pageBuffer[bc]!=0xff){
+;PCODE: $00000A42 VOL: 0
+;PCODE: $00000A43 VOL: 0
+;PCODE: $00000A44 VOL: 0
+;PCODE: $00000A45 VOL: 0
+;PCODE: $00000A46 VOL: 0
+; 0001 06CC chk_data=pageBuffer[bc];
+;PCODE: $00000A47 VOL: 0
+;PCODE: $00000A48 VOL: 0
+;PCODE: $00000A49 VOL: 0
+; 0001 06CD while ( ( UCSR0A & (0x80)) )
+;PCODE: $00000A4A VOL: 0
+;PCODE: $00000A4B VOL: 0
+;PCODE: $00000A4C VOL: 0
+;PCODE: $00000A4D VOL: 0
+; 0001 06CE next_data=UDR0;
+;PCODE: $00000A4E VOL: 0
+;PCODE: $00000A4F VOL: 0
+;PCODE: $00000A50 VOL: 0
+;PCODE: $00000A51 VOL: 0
+; 0001 06D0 readCounter=20;
+;PCODE: $00000A52 VOL: 0
+;PCODE: $00000A53 VOL: 0
+; 0001 06D1 //do
+; 0001 06D2 while((--readCounter)!=0)
+;PCODE: $00000A54 VOL: 0
+;PCODE: $00000A55 VOL: 0
+;PCODE: $00000A56 VOL: 0
+;PCODE: $00000A57 VOL: 0
+;PCODE: $00000A58 VOL: 0
+; 0001 06D3 {
+; 0001 06D4 while ( ( UCSR0A & (0x20))==0 );
+;PCODE: $00000A59 VOL: 0
+;PCODE: $00000A5A VOL: 0
+;PCODE: $00000A5B VOL: 0
+;PCODE: $00000A5C VOL: 0
+;PCODE: $00000A5D VOL: 0
+;PCODE: $00000A5E VOL: 0
+; 0001 06D5 UDR0 =bc%2? 0x28:0x20;
+;PCODE: $00000A5F VOL: 0
+;PCODE: $00000A60 VOL: 0
+;PCODE: $00000A61 VOL: 0
+;PCODE: $00000A62 VOL: 0
+;PCODE: $00000A63 VOL: 0
+;PCODE: $00000A64 VOL: 0
+;PCODE: $00000A65 VOL: 0
+;PCODE: $00000A66 VOL: 0
+;PCODE: $00000A67 VOL: 0
+;PCODE: $00000A68 VOL: 0
+; 0001 06D6 while ( ( UCSR0A & (0x80)) ==0);
+;PCODE: $00000A69 VOL: 0
+;PCODE: $00000A6A VOL: 0
+;PCODE: $00000A6B VOL: 0
+;PCODE: $00000A6C VOL: 0
+;PCODE: $00000A6D VOL: 0
+;PCODE: $00000A6E VOL: 0
+; 0001 06D7 next_data= UDR0;
+;PCODE: $00000A6F VOL: 0
+;PCODE: $00000A70 VOL: 0
+; 0001 06D8 while ( ( UCSR0A & (0x20))==0 );
+;PCODE: $00000A71 VOL: 0
+;PCODE: $00000A72 VOL: 0
+;PCODE: $00000A73 VOL: 0
+;PCODE: $00000A74 VOL: 0
+;PCODE: $00000A75 VOL: 0
+;PCODE: $00000A76 VOL: 0
+; 0001 06D9 UDR0 = adr_hi;
+;PCODE: $00000A77 VOL: 0
+;PCODE: $00000A78 VOL: 0
+; 0001 06DA while ( ( UCSR0A & (0x80)) ==0);
+;PCODE: $00000A79 VOL: 0
+;PCODE: $00000A7A VOL: 0
+;PCODE: $00000A7B VOL: 0
+;PCODE: $00000A7C VOL: 0
+;PCODE: $00000A7D VOL: 0
+;PCODE: $00000A7E VOL: 0
+; 0001 06DB next_data=UDR0;
+;PCODE: $00000A7F VOL: 0
+;PCODE: $00000A80 VOL: 0
+; 0001 06DC while ( ( UCSR0A & (0x20)) ==0 );
+;PCODE: $00000A81 VOL: 0
+;PCODE: $00000A82 VOL: 0
+;PCODE: $00000A83 VOL: 0
+;PCODE: $00000A84 VOL: 0
+;PCODE: $00000A85 VOL: 0
+;PCODE: $00000A86 VOL: 0
+; 0001 06DD UDR0 = adr_lo;
+;PCODE: $00000A87 VOL: 0
+;PCODE: $00000A88 VOL: 0
+; 0001 06DE while ( ( UCSR0A & (0x80)) ==0);
+;PCODE: $00000A89 VOL: 0
+;PCODE: $00000A8A VOL: 0
+;PCODE: $00000A8B VOL: 0
+;PCODE: $00000A8C VOL: 0
+;PCODE: $00000A8D VOL: 0
+;PCODE: $00000A8E VOL: 0
+; 0001 06DF next_data=UDR0;
+;PCODE: $00000A8F VOL: 0
+;PCODE: $00000A90 VOL: 0
+; 0001 06E0 while ( ( UCSR0A & (0x20)) ==0 );
+;PCODE: $00000A91 VOL: 0
+;PCODE: $00000A92 VOL: 0
+;PCODE: $00000A93 VOL: 0
+;PCODE: $00000A94 VOL: 0
+;PCODE: $00000A95 VOL: 0
+;PCODE: $00000A96 VOL: 0
+; 0001 06E1 UDR0 = 0x0;
+;PCODE: $00000A97 VOL: 0
+;PCODE: $00000A98 VOL: 0
+; 0001 06E2 while ( ( UCSR0A & (0x80)) ==0);
+;PCODE: $00000A99 VOL: 0
+;PCODE: $00000A9A VOL: 0
+;PCODE: $00000A9B VOL: 0
+;PCODE: $00000A9C VOL: 0
+;PCODE: $00000A9D VOL: 0
+;PCODE: $00000A9E VOL: 0
+; 0001 06E3 next_data= UDR0;
+;PCODE: $00000A9F VOL: 0
+;PCODE: $00000AA0 VOL: 0
+; 0001 06E4 if(next_data==chk_data){
+;PCODE: $00000AA1 VOL: 0
+;PCODE: $00000AA2 VOL: 0
+;PCODE: $00000AA3 VOL: 0
+; 0001 06E5 /*
+; 0001 06E6 if(g_BlockSize==0){
+; 0001 06E7 #ifdef PRINT_LCD
+; 0001 06E8 lcd_putsf_row(3,"0cd=");
+; 0001 06E9 lcd_puts_hex(chk_data);
+; 0001 06EA lcd_putsf(" nd=");
+; 0001 06EB lcd_puts_hex(next_data);
+; 0001 06EC while(1);
+; 0001 06ED #endif
+; 0001 06EE }
+; 0001 06EF */
+; 0001 06F0 break;
+;PCODE: $00000AA4 VOL: 0
+; 0001 06F1 }
+; 0001 06F2 else{
+;PCODE: $00000AA5 VOL: 0
+;PCODE: $00000AA6 VOL: 0
+; 0001 06F3 delay_ms(1);
+;PCODE: $00000AA7 VOL: 0
+;PCODE: $00000AA8 VOL: 0
+;PCODE: $00000AA9 VOL: 0
+; 0001 06F4 /*
+; 0001 06F5 #ifdef PRINT_LCD
+; 0001 06F6 lcd_putsf_row(3,"cd=");
+; 0001 06F7 lcd_puts_hex(chk_data);
+; 0001 06F8 lcd_putsf(" nd=");
+; 0001 06F9 lcd_puts_hex(next_data);
+; 0001 06FA while(1);
+; 0001 06FB #endif
+; 0001 06FC */
+; 0001 06FD }
+;PCODE: $00000AAA VOL: 0
+; 0001 06FE //delay_ms(10);
+; 0001 06FF /*
+; 0001 0700 if((--readCounter)==0){
+; 0001 0701 break;
+; 0001 0702 }
+; 0001 0703 */
+; 0001 0704 /*
+; 0001 0705 #ifdef PRINT_LCD
+; 0001 0706 lcd_putsf_row(3,"cd=");
+; 0001 0707 lcd_puts_hex(chk_data);
+; 0001 0708 lcd_putsf(" nd=");
+; 0001 0709 lcd_puts_hex(next_data);
+; 0001 070A #endif
+; 0001 070B */
+; 0001 070C }
+;PCODE: $00000AAB VOL: 0
+;PCODE: $00000AAC VOL: 0
+; 0001 070D //while(next_data!=chk_data);
+; 0001 070E 
+; 0001 070F }
+; 0001 0710 }
+;PCODE: $00000AAD VOL: 0
+; 0001 0711 if(bc%2){
+;PCODE: $00000AAE VOL: 0
+;PCODE: $00000AAF VOL: 0
+;PCODE: $00000AB0 VOL: 0
+;PCODE: $00000AB1 VOL: 0
+; 0001 0712 adr_lo++;
+;PCODE: $00000AB2 VOL: 0
+;PCODE: $00000AB3 VOL: 0
+; 0001 0713 WordCount++;
+;PCODE: $00000AB4 VOL: 0
+;PCODE: $00000AB5 VOL: 0
+; 0001 0714 }
+; 0001 0715 bc++;
+;PCODE: $00000AB6 VOL: 0
+;PCODE: $00000AB7 VOL: 0
+;PCODE: $00000AB8 VOL: 0
+;PCODE: $00000AB9 VOL: 0
+; 0001 0716 }
+;PCODE: $00000ABA VOL: 0
+;PCODE: $00000ABB VOL: 0
+; 0001 0717 if(chk_data==0xff){
+;PCODE: $00000ABC VOL: 0
+;PCODE: $00000ABD VOL: 0
+;PCODE: $00000ABE VOL: 0
+; 0001 0718 DELAY_WR_FLASH();
+;PCODE: $00000ABF VOL: 0
+;PCODE: $00000AC0 VOL: 0
+;PCODE: $00000AC1 VOL: 0
+; 0001 0719 DELAY_WR_FLASH();
+;PCODE: $00000AC2 VOL: 0
+;PCODE: $00000AC3 VOL: 0
+;PCODE: $00000AC4 VOL: 0
+; 0001 071A //delay_ms(10);
+; 0001 071B }
+; 0001 071C //adr_hi=Addr>>8;
+; 0001 071D WordCount=0;
+;PCODE: $00000AC5 VOL: 0
+;PCODE: $00000AC6 VOL: 0
+;PCODE: $00000AC7 VOL: 0
+; 0001 071E adr_lo-=g_DevicePollCode;
+;PCODE: $00000AC8 VOL: 0
+;PCODE: $00000AC9 VOL: 0
+;PCODE: $00000ACA VOL: 0
+; 0001 071F bc-=(UINT)(g_DevicePollCode<<1);
+;PCODE: $00000ACB VOL: 0
+;PCODE: $00000ACC VOL: 0
+;PCODE: $00000ACD VOL: 0
+;PCODE: $00000ACE VOL: 0
+;PCODE: $00000ACF VOL: 0
+;PCODE: $00000AD0 VOL: 0
+; 0001 0720 while ( ( UCSR0A & (0x80)) )
+;PCODE: $00000AD1 VOL: 0
+;PCODE: $00000AD2 VOL: 0
+;PCODE: $00000AD3 VOL: 0
+;PCODE: $00000AD4 VOL: 0
+; 0001 0721 next_data=UDR0;
+;PCODE: $00000AD5 VOL: 0
+;PCODE: $00000AD6 VOL: 0
+;PCODE: $00000AD7 VOL: 0
+;PCODE: $00000AD8 VOL: 0
+; 0001 0722 while ( ( (*(unsigned char *) 0xc0) & (0x20))==0 );
+;PCODE: $00000AD9 VOL: 0
+;PCODE: $00000ADA VOL: 0
+;PCODE: $00000ADB VOL: 0
+;PCODE: $00000ADC VOL: 0
+;PCODE: $00000ADD VOL: 0
+;PCODE: $00000ADE VOL: 0
+; 0001 0723 UDR0 = 0x20;
+;PCODE: $00000ADF VOL: 0
+;PCODE: $00000AE0 VOL: 0
+; 0001 0724 while(WordCount != g_DevicePollCode){
+;PCODE: $00000AE1 VOL: 0
+;PCODE: $00000AE2 VOL: 0
+;PCODE: $00000AE3 VOL: 0
+;PCODE: $00000AE4 VOL: 0
+; 0001 0725 
+; 0001 0726 while ( ( UCSR0A & (0x20))==0 );
+;PCODE: $00000AE5 VOL: 0
+;PCODE: $00000AE6 VOL: 0
+;PCODE: $00000AE7 VOL: 0
+;PCODE: $00000AE8 VOL: 0
+;PCODE: $00000AE9 VOL: 0
+;PCODE: $00000AEA VOL: 0
+; 0001 0727 UDR0 = adr_hi;
+;PCODE: $00000AEB VOL: 0
+;PCODE: $00000AEC VOL: 0
+; 0001 0728 while ( ( UCSR0A & (0x80)) ==0);
+;PCODE: $00000AED VOL: 0
+;PCODE: $00000AEE VOL: 0
+;PCODE: $00000AEF VOL: 0
+;PCODE: $00000AF0 VOL: 0
+;PCODE: $00000AF1 VOL: 0
+;PCODE: $00000AF2 VOL: 0
+; 0001 0729 next_data=UDR0;
+;PCODE: $00000AF3 VOL: 0
+;PCODE: $00000AF4 VOL: 0
+; 0001 072A while ( ( UCSR0A & (0x20))==0 );
+;PCODE: $00000AF5 VOL: 0
+;PCODE: $00000AF6 VOL: 0
+;PCODE: $00000AF7 VOL: 0
+;PCODE: $00000AF8 VOL: 0
+;PCODE: $00000AF9 VOL: 0
+;PCODE: $00000AFA VOL: 0
+; 0001 072B UDR0 = adr_lo;
+;PCODE: $00000AFB VOL: 0
+;PCODE: $00000AFC VOL: 0
+; 0001 072C while ( ( UCSR0A & (0x80)) ==0);
+;PCODE: $00000AFD VOL: 0
+;PCODE: $00000AFE VOL: 0
+;PCODE: $00000AFF VOL: 0
+;PCODE: $00000B00 VOL: 0
+;PCODE: $00000B01 VOL: 0
+;PCODE: $00000B02 VOL: 0
+; 0001 072D next_data=UDR0;
+;PCODE: $00000B03 VOL: 0
+;PCODE: $00000B04 VOL: 0
+; 0001 072E while ( ( UCSR0A & (0x20))==0 );
+;PCODE: $00000B05 VOL: 0
+;PCODE: $00000B06 VOL: 0
+;PCODE: $00000B07 VOL: 0
+;PCODE: $00000B08 VOL: 0
+;PCODE: $00000B09 VOL: 0
+;PCODE: $00000B0A VOL: 0
+; 0001 072F UDR0 = 0x0;
+;PCODE: $00000B0B VOL: 0
+;PCODE: $00000B0C VOL: 0
+; 0001 0730 while ( ( UCSR0A & (0x80)) ==0);
+;PCODE: $00000B0D VOL: 0
+;PCODE: $00000B0E VOL: 0
+;PCODE: $00000B0F VOL: 0
+;PCODE: $00000B10 VOL: 0
+;PCODE: $00000B11 VOL: 0
+;PCODE: $00000B12 VOL: 0
+; 0001 0731 next_data= UDR0;
+;PCODE: $00000B13 VOL: 0
+;PCODE: $00000B14 VOL: 0
+; 0001 0732 while ( ( UCSR0A & (0x20))==0 );
+;PCODE: $00000B15 VOL: 0
+;PCODE: $00000B16 VOL: 0
+;PCODE: $00000B17 VOL: 0
+;PCODE: $00000B18 VOL: 0
+;PCODE: $00000B19 VOL: 0
+;PCODE: $00000B1A VOL: 0
+; 0001 0733 UDR0 = 0x28;
+;PCODE: $00000B1B VOL: 0
+;PCODE: $00000B1C VOL: 0
+; 0001 0734 chk_data=pageBuffer[bc++];
+;PCODE: $00000B1D VOL: 0
+;PCODE: $00000B1E VOL: 0
+;PCODE: $00000B1F VOL: 0
+;PCODE: $00000B20 VOL: 0
+;PCODE: $00000B21 VOL: 0
+;PCODE: $00000B22 VOL: 0
+; 0001 0735 while ( ( UCSR0A & (0x80))==0);
+;PCODE: $00000B23 VOL: 0
+;PCODE: $00000B24 VOL: 0
+;PCODE: $00000B25 VOL: 0
+;PCODE: $00000B26 VOL: 0
+;PCODE: $00000B27 VOL: 0
+;PCODE: $00000B28 VOL: 0
+; 0001 0736 next_data= UDR0;
+;PCODE: $00000B29 VOL: 0
+;PCODE: $00000B2A VOL: 0
+; 0001 0737 if(next_data!=chk_data){
+;PCODE: $00000B2B VOL: 0
+;PCODE: $00000B2C VOL: 0
+;PCODE: $00000B2D VOL: 0
+; 0001 0738 /*
+; 0001 0739 while(1){
+; 0001 073A lcd_putsf_row(0,"Lo Addr");
+; 0001 073B lcd_puts_hex(adr_hi);
+; 0001 073C lcd_puts_hex(adr_lo);
+; 0001 073D lcd_putsf_row(1,"R");
+; 0001 073E lcd_puts_hex((next_data));
+; 0001 073F lcd_putsf_row(2,"W");
+; 0001 0740 lcd_puts_hex(chk_data);
+; 0001 0741 }
+; 0001 0742 */
+; 0001 0743 return FALSE;
+;PCODE: $00000B2E VOL: 0
+;PCODE: $00000B2F VOL: 0
+;PCODE: $00000B30 VOL: 0
+;PCODE: $00000B31 VOL: 0
+; 0001 0744 }
+; 0001 0745 while ( ( UCSR0A & (0x20))==0 );
+;PCODE: $00000B32 VOL: 0
+;PCODE: $00000B33 VOL: 0
+;PCODE: $00000B34 VOL: 0
+;PCODE: $00000B35 VOL: 0
+;PCODE: $00000B36 VOL: 0
+;PCODE: $00000B37 VOL: 0
+;PCODE: $00000B38 VOL: 0
+; 0001 0746 UDR0 = adr_hi;
+;PCODE: $00000B39 VOL: 0
+;PCODE: $00000B3A VOL: 0
+; 0001 0747 ++WordCount;
+;PCODE: $00000B3B VOL: 0
+;PCODE: $00000B3C VOL: 0
+; 0001 0748 while ( ( UCSR0A & (0x80))==0 );
+;PCODE: $00000B3D VOL: 0
+;PCODE: $00000B3E VOL: 0
+;PCODE: $00000B3F VOL: 0
+;PCODE: $00000B40 VOL: 0
+;PCODE: $00000B41 VOL: 0
+;PCODE: $00000B42 VOL: 0
+; 0001 0749 next_data=UDR0;
+;PCODE: $00000B43 VOL: 0
+;PCODE: $00000B44 VOL: 0
+; 0001 074A while ( ( UCSR0A & (0x20))==0 );
+;PCODE: $00000B45 VOL: 0
+;PCODE: $00000B46 VOL: 0
+;PCODE: $00000B47 VOL: 0
+;PCODE: $00000B48 VOL: 0
+;PCODE: $00000B49 VOL: 0
+;PCODE: $00000B4A VOL: 0
+; 0001 074B UDR0 = adr_lo++;
+;PCODE: $00000B4B VOL: 0
+;PCODE: $00000B4C VOL: 0
+;PCODE: $00000B4D VOL: 0
+;PCODE: $00000B4E VOL: 0
+; 0001 074C while ( ( UCSR0A & (0x80))==0 );
+;PCODE: $00000B4F VOL: 0
+;PCODE: $00000B50 VOL: 0
+;PCODE: $00000B51 VOL: 0
+;PCODE: $00000B52 VOL: 0
+;PCODE: $00000B53 VOL: 0
+;PCODE: $00000B54 VOL: 0
+; 0001 074D next_data=UDR0;
+;PCODE: $00000B55 VOL: 0
+;PCODE: $00000B56 VOL: 0
+; 0001 074E while ( ( UCSR0A & (0x20))==0 );
+;PCODE: $00000B57 VOL: 0
+;PCODE: $00000B58 VOL: 0
+;PCODE: $00000B59 VOL: 0
+;PCODE: $00000B5A VOL: 0
+;PCODE: $00000B5B VOL: 0
+;PCODE: $00000B5C VOL: 0
+; 0001 074F UDR0 = 0x0;
+;PCODE: $00000B5D VOL: 0
+;PCODE: $00000B5E VOL: 0
+; 0001 0750 if(!adr_lo)
+;PCODE: $00000B5F VOL: 0
+;PCODE: $00000B60 VOL: 0
+; 0001 0751 ++adr_hi;
+;PCODE: $00000B61 VOL: 0
+;PCODE: $00000B62 VOL: 0
+; 0001 0752 while ( ( UCSR0A & (0x80))==0 );
+;PCODE: $00000B63 VOL: 0
+;PCODE: $00000B64 VOL: 0
+;PCODE: $00000B65 VOL: 0
+;PCODE: $00000B66 VOL: 0
+;PCODE: $00000B67 VOL: 0
+;PCODE: $00000B68 VOL: 0
+;PCODE: $00000B69 VOL: 0
+; 0001 0753 next_data=UDR0;
+;PCODE: $00000B6A VOL: 0
+;PCODE: $00000B6B VOL: 0
+; 0001 0754 while ( ( UCSR0A & (0x20))==0 );
+;PCODE: $00000B6C VOL: 0
+;PCODE: $00000B6D VOL: 0
+;PCODE: $00000B6E VOL: 0
+;PCODE: $00000B6F VOL: 0
+;PCODE: $00000B70 VOL: 0
+;PCODE: $00000B71 VOL: 0
+; 0001 0755 UDR0 = 0x20;
+;PCODE: $00000B72 VOL: 0
+;PCODE: $00000B73 VOL: 0
+; 0001 0756 chk_data=pageBuffer[bc++];
+;PCODE: $00000B74 VOL: 0
+;PCODE: $00000B75 VOL: 0
+;PCODE: $00000B76 VOL: 0
+;PCODE: $00000B77 VOL: 0
+;PCODE: $00000B78 VOL: 0
+;PCODE: $00000B79 VOL: 0
+; 0001 0757 while ( ( UCSR0A & (0x80))==0);
+;PCODE: $00000B7A VOL: 0
+;PCODE: $00000B7B VOL: 0
+;PCODE: $00000B7C VOL: 0
+;PCODE: $00000B7D VOL: 0
+;PCODE: $00000B7E VOL: 0
+;PCODE: $00000B7F VOL: 0
+; 0001 0758 next_data= UDR0;
+;PCODE: $00000B80 VOL: 0
+;PCODE: $00000B81 VOL: 0
+; 0001 0759 if(next_data!=chk_data){
+;PCODE: $00000B82 VOL: 0
+;PCODE: $00000B83 VOL: 0
+;PCODE: $00000B84 VOL: 0
+; 0001 075A /*
+; 0001 075B while(1){
+; 0001 075C lcd_putsf_row(0,"Hi Addr ");
+; 0001 075D if(!adr_lo){
+; 0001 075E adr_lo=0xff;
+; 0001 075F adr_hi--;
+; 0001 0760 }
+; 0001 0761 lcd_puts_hex(adr_hi);
+; 0001 0762 lcd_puts_hex(adr_lo);
+; 0001 0763 lcd_putsf_row(1,"R");
+; 0001 0764 lcd_puts_hex((next_data));
+; 0001 0765 lcd_putsf_row(2,"W");
+; 0001 0766 lcd_puts_hex(chk_data);
+; 0001 0767 }
+; 0001 0768 */
+; 0001 0769 return FALSE;
+;PCODE: $00000B85 VOL: 0
+;PCODE: $00000B86 VOL: 0
+;PCODE: $00000B87 VOL: 0
+;PCODE: $00000B88 VOL: 0
+; 0001 076A }
+; 0001 076B }
+;PCODE: $00000B89 VOL: 0
+;PCODE: $00000B8A VOL: 0
+;PCODE: $00000B8B VOL: 0
+; 0001 076C while ( ( UCSR0A & (0x20))==0 );
+;PCODE: $00000B8C VOL: 0
+;PCODE: $00000B8D VOL: 0
+;PCODE: $00000B8E VOL: 0
+;PCODE: $00000B8F VOL: 0
+;PCODE: $00000B90 VOL: 0
+;PCODE: $00000B91 VOL: 0
+; 0001 076D UDR0 = 0x20;
+;PCODE: $00000B92 VOL: 0
+;PCODE: $00000B93 VOL: 0
+; 0001 076E while ( ( UCSR0A & (0x20))==0 );
+;PCODE: $00000B94 VOL: 0
+;PCODE: $00000B95 VOL: 0
+;PCODE: $00000B96 VOL: 0
+;PCODE: $00000B97 VOL: 0
+;PCODE: $00000B98 VOL: 0
+;PCODE: $00000B99 VOL: 0
+; 0001 076F UDR0 = 0x20;
+;PCODE: $00000B9A VOL: 0
+;PCODE: $00000B9B VOL: 0
+; 0001 0770 while ( ( UCSR0A & (0x20))==0 );
+;PCODE: $00000B9C VOL: 0
+;PCODE: $00000B9D VOL: 0
+;PCODE: $00000B9E VOL: 0
+;PCODE: $00000B9F VOL: 0
+;PCODE: $00000BA0 VOL: 0
+;PCODE: $00000BA1 VOL: 0
+; 0001 0771 UDR0 = 0x20;
+;PCODE: $00000BA2 VOL: 0
+;PCODE: $00000BA3 VOL: 0
+; 0001 0772 if(bc>=(UINT)g_DevicePollCode<<2)
+;PCODE: $00000BA4 VOL: 0
+;PCODE: $00000BA5 VOL: 0
+;PCODE: $00000BA6 VOL: 0
+;PCODE: $00000BA7 VOL: 0
+;PCODE: $00000BA8 VOL: 0
+;PCODE: $00000BA9 VOL: 0
+; 0001 0773 bc=0;
+;PCODE: $00000BAA VOL: 0
+;PCODE: $00000BAB VOL: 0
+; 0001 0774 }
+;PCODE: $00000BAC VOL: 0
+; 0001 0775 }
+;PCODE: $00000BAD VOL: 0
+;PCODE: $00000BAE VOL: 0
+;PCODE: $00000BAF VOL: 0
+; 0001 0776 if(g_Addr!=appCS){
+;PCODE: $00000BB0 VOL: 0
+;PCODE: $00000BB1 VOL: 0
+;PCODE: $00000BB2 VOL: 0
+;PCODE: $00000BB3 VOL: 0
+; 0001 0777 #ifdef PRINT_LCD
+; 0001 0778 lcd_putsf_row(3,"cs r");
+; 0001 0779 lcd_puts_hex(g_Addr>>8);
+; 0001 077A lcd_puts_hex(g_Addr);
+; 0001 077B lcd_putsf(" e");
+; 0001 077C lcd_puts_hex(appCS>>8);
+; 0001 077D lcd_puts_hex(appCS);
+; 0001 077E #endif
+; 0001 077F return FALSE;
+;PCODE: $00000BB4 VOL: 0
+;PCODE: $00000BB5 VOL: 0
+;PCODE: $00000BB6 VOL: 0
+;PCODE: $00000BB7 VOL: 0
+; 0001 0780 }
+; 0001 0781 #asm("sei");
+;PCODE: $00000BB8 VOL: 0
+;PCODE: $00000BB9 VOL: 0
+; 0001 0782 return TRUE;
+;PCODE: $00000BBA VOL: 0
+;PCODE: $00000BBB VOL: 0
+;PCODE: $00000BBC VOL: 0
+;PCODE: $00000BBD VOL: 0
+; 0001 0783 }
+;PCODE: $00000BBE VOL: 0
+;void FIFO_Reset(void)
+; 0001 0789 {
+;PCODE: $00000BBF VOL: 0
+;PCODE: $00000BC0 VOL: 0
+; 0001 078A g_wrI =
+; 0001 078B g_rdI = 0;
+;PCODE: $00000BC1 VOL: 0
+;PCODE: $00000BC2 VOL: 0
+;PCODE: $00000BC3 VOL: 0
+; 0001 078C g_FIFODataSize = 0;
+;PCODE: $00000BC4 VOL: 0
+;PCODE: $00000BC5 VOL: 0
+; 0001 078D }
+;PCODE: $00000BC6 VOL: 0
+;PCODE: $00000BC7 VOL: 0
+;void FIFO_Write(UCHAR data)
+; 0001 0793 {
+;PCODE: $00000BC8 VOL: 0
+;PCODE: $00000BC9 VOL: 0
+; 0001 0794 if(AVR910_FIFO_SIZE > g_FIFODataSize)
+;	data -> Y+0
+;PCODE: $00000BCA VOL: 0
+;PCODE: $00000BCB VOL: 0
+;PCODE: $00000BCC VOL: 0
+; 0001 0795 {
+; 0001 0796 g_FIFO[g_wrI++] = data;
+;PCODE: $00000BCD VOL: 0
+;PCODE: $00000BCE VOL: 0
+;PCODE: $00000BCF VOL: 0
+;PCODE: $00000BD0 VOL: 0
+;PCODE: $00000BD1 VOL: 0
+;PCODE: $00000BD2 VOL: 0
+;PCODE: $00000BD3 VOL: 0
+;PCODE: $00000BD4 VOL: 0
+; 0001 0797 g_wrI &= AVR910_FIFO_MASK;
+;PCODE: $00000BD5 VOL: 0
+;PCODE: $00000BD6 VOL: 0
+;PCODE: $00000BD7 VOL: 0
+; 0001 0798 g_FIFODataSize++;
+;PCODE: $00000BD8 VOL: 0
+;PCODE: $00000BD9 VOL: 0
+;PCODE: $00000BDA VOL: 0
+; 0001 0799 }
+; 0001 079A }
+;PCODE: $00000BDB VOL: 0
+;PCODE: $00000BDC VOL: 0
+;PCODE: $00000BDD VOL: 0
+;PCODE: $00000BDE VOL: 0
+;UCHAR FIFO_Read(void)
+; 0001 07A0 {
+;PCODE: $00000BDF VOL: 0
+;PCODE: $00000BE0 VOL: 0
+; 0001 07A1 if(0 < g_FIFODataSize)
+;PCODE: $00000BE1 VOL: 0
+;PCODE: $00000BE2 VOL: 0
+;PCODE: $00000BE3 VOL: 0
+; 0001 07A2 {
+; 0001 07A3 UCHAR data = g_FIFO[g_rdI++];
+; 0001 07A4 g_rdI &= AVR910_FIFO_MASK;
+;PCODE: $00000BE4 VOL: 0
+;	data -> Y+0
+;PCODE: $00000BE5 VOL: 0
+;PCODE: $00000BE6 VOL: 0
+;PCODE: $00000BE7 VOL: 0
+;PCODE: $00000BE8 VOL: 0
+;PCODE: $00000BE9 VOL: 0
+;PCODE: $00000BEA VOL: 0
+;PCODE: $00000BEB VOL: 0
+;PCODE: $00000BEC VOL: 0
+;PCODE: $00000BED VOL: 0
+;PCODE: $00000BEE VOL: 0
+;PCODE: $00000BEF VOL: 0
+; 0001 07A5 g_FIFODataSize--;
+;PCODE: $00000BF0 VOL: 0
+;PCODE: $00000BF1 VOL: 0
+;PCODE: $00000BF2 VOL: 0
+; 0001 07A6 return data;
+;PCODE: $00000BF3 VOL: 0
+;PCODE: $00000BF4 VOL: 0
+;PCODE: $00000BF5 VOL: 0
+; 0001 07A7 }
+;PCODE: $00000BF6 VOL: 0
+; 0001 07A8 
+; 0001 07A9 return 0;
+;PCODE: $00000BF7 VOL: 0
+;PCODE: $00000BF8 VOL: 0
+;PCODE: $00000BF9 VOL: 0
+; 0001 07AA }
+;PCODE: $00000BFA VOL: 0
+;void CheckCommParams(UCHAR req_bytes)
+; 0001 07B0 {
+;PCODE: $00000BFB VOL: 0
+;PCODE: $00000BFC VOL: 0
+; 0001 07B1 // если в FIFO меньше данных, чем требуется для параметров команды
+; 0001 07B2 // устанавливаем флаг ожидания прихода параметров
+; 0001 07B3 if(req_bytes > g_FIFODataSize)
+;	req_bytes -> Y+0
+;PCODE: $00000BFD VOL: 0
+;PCODE: $00000BFE VOL: 0
+;PCODE: $00000BFF VOL: 0
+;PCODE: $00000C00 VOL: 0
+; 0001 07B4 g_NeedParams = TRUE;
+;PCODE: $00000C01 VOL: 0
+;PCODE: $00000C02 VOL: 0
+; 0001 07B5 else
+;PCODE: $00000C03 VOL: 0
+;PCODE: $00000C04 VOL: 0
+; 0001 07B6 g_NeedParams = FALSE;
+;PCODE: $00000C05 VOL: 0
+;PCODE: $00000C06 VOL: 0
+; 0001 07B7 }
+;PCODE: $00000C07 VOL: 0
+;PCODE: $00000C08 VOL: 0
+;PCODE: $00000C09 VOL: 0
+;PCODE: $00000C0A VOL: 0

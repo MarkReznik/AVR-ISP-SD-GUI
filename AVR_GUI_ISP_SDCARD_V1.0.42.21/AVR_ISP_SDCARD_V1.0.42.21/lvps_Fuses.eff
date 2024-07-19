@@ -1,0 +1,8 @@
+[History]
+Version=Version 4.0 (Build 3645)
+Created=2/1/2015 10:28:44 PM
+[ELF]
+File=D:\MyProjects\My_AVR_Programmer\m64_ISP_SDCARD_V04\lvps.elf
+[Hex Fuses]
+Values=0xFF,0xC1
+Count=2
